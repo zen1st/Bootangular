@@ -42,6 +42,9 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { AdminComponent } from './admin/admin.component';
 import { SignupComponent } from './signup/signup.component';
+import { PostPreviewComponent } from './post-preview/post-preview.component';
+import { AuthTestComponent } from './auth-test/auth-test.component';
+import { ArticleComponent } from './article/article.component';
 
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
@@ -61,7 +64,10 @@ export function initUserFactory(userService: UserService) {
     ChangePasswordComponent,
     ForbiddenComponent,
     AdminComponent,
-    SignupComponent
+    SignupComponent,
+    PostPreviewComponent,
+    AuthTestComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserAnimationsModule,
