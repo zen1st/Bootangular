@@ -19,7 +19,7 @@ import { Subject } from 'rxjs/SUbject';
 })
 export class SignupComponent implements OnInit, OnDestroy {
   title = 'Sign up';
-  githubLink = 'https://github.com/bfwg/angular-spring-starter';
+  githubLink = 'https://github.com/zen1st/Bootangular';
   form: FormGroup;
 
   /**

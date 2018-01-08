@@ -19,7 +19,7 @@ import { Subject } from 'rxjs/SUbject';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   title = 'Login';
-  githubLink = 'https://github.com/bfwg/angular-spring-starter';
+  githubLink = 'https://github.com/zen1st/Bootangular';
   form: FormGroup;
 
   /**
