@@ -25,7 +25,8 @@ import {
   AuthService,
   UserService,
   FooService,
-  ConfigService
+  ConfigService,
+  ArticleService
 } from './service';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -50,7 +51,8 @@ describe('AppComponent', () => {
         AuthService,
         UserService,
         FooService,
-        ConfigService
+        ConfigService,
+		ArticleService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();

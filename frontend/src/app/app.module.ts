@@ -36,7 +36,8 @@ import {
   AuthService,
   UserService,
   FooService,
-  ConfigService
+  ConfigService,
+  ArticleService
 } from './service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
@@ -45,6 +46,7 @@ import { SignupComponent } from './signup/signup.component';
 import { PostPreviewComponent } from './post-preview/post-preview.component';
 import { AuthTestComponent } from './auth-test/auth-test.component';
 import { ArticleComponent } from './article/article.component';
+import { PageHeaderComponent } from './page-header/page-header.component';
 
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
@@ -67,7 +69,8 @@ export function initUserFactory(userService: UserService) {
     SignupComponent,
     PostPreviewComponent,
     AuthTestComponent,
-    ArticleComponent
+    ArticleComponent,
+    PageHeaderComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -96,6 +99,7 @@ export function initUserFactory(userService: UserService) {
     ApiService,
     UserService,
     ConfigService,
+	ArticleService,
     MatIconRegistry,
     {
       'provide': APP_INITIALIZER,

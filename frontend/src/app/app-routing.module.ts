@@ -46,9 +46,12 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'article',
-    component: ArticleComponent,
-    pathMatch: 'full'
+    path: 'article/post',
+    component: ArticleComponent
+  },
+  {
+    path: 'article/:id',
+    component: ArticleComponent
   },
   {
     path: '404',

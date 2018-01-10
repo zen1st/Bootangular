@@ -25,6 +25,12 @@
 			  </a>
             </li>
 			
+			<li class="nav-item">
+              <a class="nav-link" href="javascript:void(0)" *ngIf="hasSignedIn()" routerLink="/article/post">
+				<span>Post Article</span>
+			  </a>
+            </li>
+			
             <li class="nav-item">
               <a class="nav-link greeting-button" href="javascript:void(0)" *ngIf="hasSignedIn()" [matMenuTriggerFor]="accountMenu">
 				<span>Greetings, {{userName()}}</span>
@@ -34,12 +40,6 @@
             <li class="nav-item">
               <a class="nav-link greeting-hamburger" href="javascript:void(0)" *ngIf="hasSignedIn()" href="contact.html" [matMenuTriggerFor]="accountMenu">
 				<mat-icon>menu</mat-icon>
-			  </a>
-            </li>
-			
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/authtest">
-			  <span>Auth Test</span>
 			  </a>
             </li>
 			
@@ -56,18 +56,3 @@
         </div>
       </div>
     </nav>
-	
-<!-- Page Header -->
-    <header class="masthead" style="background-image: url('assets/image/home-bg.jpg')">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
-              <h1>EZ Blogs</h1>
-              <span class="subheading">A Public Blog by EZ</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
