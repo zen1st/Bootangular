@@ -1,5 +1,5 @@
 import { Component, OnInit, Input} from '@angular/core';
-import { PostPreview } from '../model/postPreview';
+//import { PostPreview } from '../model/postPreview';
 
 @Component({
   selector: 'app-post-preview',
@@ -8,11 +8,12 @@ import { PostPreview } from '../model/postPreview';
 })
 export class PostPreviewComponent implements OnInit {
 
-@Input() postPreview: PostPreview;
+@Input('postPreview') postPreview: any;
 
   constructor() { }
 
   ngOnInit() {
+	  this.postPreview.createdAt = new Date(this.postPreview.createdAt);
   }
 
 }

@@ -15,9 +15,10 @@ export class ArticleComponent implements OnInit {
 	private sub: any;
 	action: string;
 	id: number;
+	title;
+	subheading;
 	currentUser;
 	currentArticle;
-	subheading;
 	form: FormGroup;
 	
 	constructor(private route: ActivatedRoute, 
@@ -43,14 +44,32 @@ export class ArticleComponent implements OnInit {
 			if(this.action == "view" && this.id) {
 				this.articleService.getArticle(this.id).subscribe(data => this.getArticleSuccess(data), err => this.failed(err));
 			}
+			else if(this.action=="post"){
+				
+				if (typeof this.currentUser === 'undefined' || this.currentUser === null) {
+					this.router.navigate(['/403']);
+				}
+				else{
+					this.title="Posting a New Article";
+				}
+			}
 			else if(this.action == "edit" && this.id){
-				this.articleService.getArticle(this.id).subscribe(data => this.getArticleSuccess(data), err => this.failed(err));
+				
+				if (typeof this.currentUser === 'undefined' || this.currentUser === null) {
+					this.router.navigate(['/403']);
+				}
+				else{
+					this.articleService.getArticle(this.id).subscribe(
+					data => this.getArticleSuccess(data), 
+					err => this.failed(err));
+				}
 			}
 		});
 	}
 	
 	getArticleSuccess(data){
 		this.currentArticle = data;
+		this.title = data.title;
 		this.subheading = "By " + data.createdBy + " on " + new Date(data.createdAt);
 		
 		if(this.action == "edit")
@@ -95,7 +114,6 @@ export class ArticleComponent implements OnInit {
 	{
 		var r = confirm("Are you sure?");
 		if (r == true) {
-			
 			this.articleService.deleteArticle(this.id).subscribe(
 				suc => {
 					console.log(suc);
