@@ -20,6 +20,10 @@ export class ArticleService {
   postArticle(body:any) {
     return this.apiService.post(this.config.article_url, body).map(article => this.currentArticle = article);
   }
+  
+  putArticle(id:number, body:any) {
+    return this.apiService.put(this.config.article_url+"/"+id, body).map(article => this.currentArticle = article);
+  }
 
   deleteArticle(id:number) {
     return this.apiService.delete(this.config.article_url+"/"+id).map(article => this.currentArticle = article);

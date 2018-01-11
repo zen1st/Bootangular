@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from '../model/index';
 import { ArticleService, UserService } from '../service/index';
@@ -13,6 +13,7 @@ import { Router } from "@angular/router";
 export class ArticleComponent implements OnInit {
 
 	private sub: any;
+	action: string;
 	id: number;
 	currentUser;
 	currentArticle;
@@ -27,13 +28,6 @@ export class ArticleComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.sub = this.route.params.subscribe(params => {
-			this.id = +params['id']; // (+) converts string 'id' to a number
-		});
-
-		if(this.id) {
-			this.articleService.getArticle(this.id).subscribe(data => this.success(data), err => this.failed(err));
-		}
 		
 		this.currentUser = this.userService.currentUser;
 		
@@ -41,13 +35,31 @@ export class ArticleComponent implements OnInit {
 		  title:[''],
 		  content: ['']
 		});
+	 
+		this.sub = this.route.params.subscribe(params => {
+			this.action = params['action'];
+			this.id = +params['id']; // (+) converts string 'id' to a number
+			
+			if(this.action == "view" && this.id) {
+				this.articleService.getArticle(this.id).subscribe(data => this.getArticleSuccess(data), err => this.failed(err));
+			}
+			else if(this.action == "edit" && this.id){
+				this.articleService.getArticle(this.id).subscribe(data => this.getArticleSuccess(data), err => this.failed(err));
+			}
+		});
 	}
-
-	success(data){
+	
+	getArticleSuccess(data){
 		this.currentArticle = data;
 		this.subheading = "By " + data.createdBy + " on " + new Date(data.createdAt);
 		
-		console.log(this.form.value);
+		if(this.action == "edit")
+		{
+			this.form = this.formBuilder.group({
+			  title:[data.title],
+			  content: [data.content]
+			});
+		}
 	}
 
 	failed(err){
@@ -55,21 +67,47 @@ export class ArticleComponent implements OnInit {
 	}
 	
 	onSubmit(){
-		
-		this.articleService.postArticle(this.form.value).subscribe(
-			suc => {
-				console.log(suc);
-				this.router.navigate(['/article/'+suc.id]);
-			},
-			err => {
-				console.log(err );
-			}
-		);
+		if(this.action == "post"){
+			this.articleService.postArticle(this.form.value).subscribe(
+				suc => {
+					//console.log(suc);
+					this.router.navigate(['/article/view/'+suc.id]);
+				},
+				err => {
+					console.log(err );
+				}
+			);
+		}
+		else if(this.action == "edit"){
+			this.articleService.putArticle(this.id, this.form.value).subscribe(
+				suc => {
+					//console.log(suc);
+					this.router.navigate(['/article/view/'+suc.id]);
+				},
+				err => {
+					console.log(err );
+				}
+			);
+		}
 	}
 	
-	editArticle()
+	deleteArticle()
 	{
-		//console.log("editing");
+		var r = confirm("Are you sure?");
+		if (r == true) {
+			
+			this.articleService.deleteArticle(this.id).subscribe(
+				suc => {
+					console.log(suc);
+				},
+				err => {
+					console.log(err );
+				}
+			);
+		} 
+		else {
+			
+		}
 	}
 	
 	ngOnDestroy() {

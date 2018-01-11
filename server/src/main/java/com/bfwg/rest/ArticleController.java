@@ -47,7 +47,8 @@ public class ArticleController {
             return ResponseEntity.notFound().build();
         }
         
-        System.out.println(articleDetails.getCreatedBy());
+        System.out.println(article.getCreatedBy());
+        
         article.setTitle(articleDetails.getTitle());
         article.setContent(articleDetails.getContent());
 

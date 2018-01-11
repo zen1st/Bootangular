@@ -46,11 +46,12 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'article/post',
-    component: ArticleComponent
+    path: 'article/:action',
+    component: ArticleComponent,
+	canActivate: [LoginGuard]
   },
   {
-    path: 'article/:id',
+    path: 'article/:action/:id',
     component: ArticleComponent
   },
   {

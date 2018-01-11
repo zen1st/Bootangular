@@ -3,16 +3,24 @@
     <article>
       <div class="container">
         <div class="row">
-		<button type="button" class="btn btn-primary btn-block" 
-		(click)= "editArticle()"
-		*ngIf="currentUser?.username == currentArticle?.createdBy && currentUser">
-		Edit</button>
+		
+			<div class="col-lg-8 col-md-10 mx-auto" *ngIf="action=='view'&& currentUser?.username == currentArticle?.createdBy && currentUser">
+				<button type="button" class="btn btn-danger float-right" 
+				(click)="deleteArticle()">
+				Delete</button>
+				<button type="button" class="btn btn-primary float-right" 
+				[routerLink]="['/article/edit/', id]">
+				Edit</button>
+			</div>
+		
           <div class="col-lg-8 col-md-10 mx-auto">
-		  <br><br>
-			{{currentArticle?.content}}
+			<div *ngIf="action=='view'">{{currentArticle?.content}}</div>
+			
 			<form name="postArticleForm" id="postArticleForm" [formGroup]="form" (ngSubmit)="onSubmit()" 
 			#postArticleForm="ngForm"
-			*ngIf="!id && currentUser ">
+			*ngIf="(action=='post' || (action=='edit'&& currentUser?.username == currentArticle?.createdBy)) 
+			&& currentUser">
+			
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Title</label>
@@ -37,6 +45,7 @@
               <button [disabled]="!postArticleForm.form.valid" type="submit" class="btn btn-primary" id="submitArticleButton">Submit</button>
             </div>
           </form>
+		  
           </div>
         </div>
       </div>
