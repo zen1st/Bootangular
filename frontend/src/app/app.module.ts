@@ -3,6 +3,9 @@ import { NgModule, APP_INITIALIZER} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { EscapeHtmlPipe } from './pipes/keep-html.pipe';
+
 // material
 import {
   MatButtonModule,
@@ -72,7 +75,8 @@ export function initUserFactory(userService: UserService) {
     AuthTestComponent,
     ArticleComponent,
     PageHeaderComponent,
-    AuthorComponent
+    AuthorComponent,
+	EscapeHtmlPipe
   ],
   imports: [
     BrowserAnimationsModule,
@@ -90,7 +94,9 @@ export function initUserFactory(userService: UserService) {
     MatToolbarModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+	FroalaEditorModule.forRoot(), 
+	FroalaViewModule.forRoot()
   ],
   providers: [
     LoginGuard,
