@@ -4,7 +4,7 @@ export class Article{
         public title?: string,
         public content?: any,
         public createdAt?: any,
-        public createdAt?: any,
+        public createdBy?: any,
     ) {
     }
 }

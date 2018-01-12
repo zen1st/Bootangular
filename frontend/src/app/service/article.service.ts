@@ -26,7 +26,7 @@ export class ArticleService {
   }
 
   deleteArticle(id:number) {
-    return this.apiService.delete(this.config.article_url+"/"+id).map(article => this.currentArticle = article);
+    return this.apiService.delete(this.config.article_url+"/"+id);
   }
   
   getAll() {

@@ -1,9 +1,11 @@
 package com.bfwg.rest;
 
 import com.bfwg.model.Article;
+import com.bfwg.model.User;
 import com.bfwg.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,13 +49,21 @@ public class ArticleController {
             return ResponseEntity.notFound().build();
         }
         
-        System.out.println(article.getCreatedBy());
+ 
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = user.getUsername(); //get logged in username
         
-        article.setTitle(articleDetails.getTitle());
-        article.setContent(articleDetails.getContent());
-
-        Article updatedArticle = articleRepository.save(article);
-        return ResponseEntity.ok(updatedArticle);
+        //Prevent other users from editing your article
+        if(!article.getCreatedBy().equals(name)) {
+        	return ResponseEntity.badRequest().build();
+        }
+        else {
+	        article.setTitle(articleDetails.getTitle());
+	        article.setContent(articleDetails.getContent());
+	
+	        Article updatedArticle = articleRepository.save(article);
+	        return ResponseEntity.ok(updatedArticle);
+        }
     }
 
     // Delete a article
@@ -64,7 +74,17 @@ public class ArticleController {
             return ResponseEntity.notFound().build();
         }
 
-        articleRepository.delete(article);
-        return ResponseEntity.ok().build();
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = user.getUsername(); //get logged in username
+        
+        //Prevent other users from deleting your article
+        if(!article.getCreatedBy().equals(name)) {
+        	return ResponseEntity.badRequest().build();
+        }
+        else {
+        	articleRepository.delete(article);
+        	System.out.println(ResponseEntity.ok().build());
+        	return ResponseEntity.ok().build();
+        }
     }
 }

@@ -31,7 +31,7 @@ export class ArticleComponent implements OnInit {
 	ngOnInit() {
 		
 		this.currentUser = this.userService.currentUser;
-		
+					
 		this.form = this.formBuilder.group({
 		  title:[''],
 		  content: ['']
@@ -83,6 +83,7 @@ export class ArticleComponent implements OnInit {
 
 	failed(err){
 		console.log(err);
+		this.router.navigate(['/404']);
 	}
 	
 	onSubmit(){
@@ -100,7 +101,7 @@ export class ArticleComponent implements OnInit {
 		else if(this.action == "edit"){
 			this.articleService.putArticle(this.id, this.form.value).subscribe(
 				suc => {
-					//console.log(suc);
+					console.log(suc);
 					this.router.navigate(['/article/view/'+suc.id]);
 				},
 				err => {
@@ -120,6 +121,7 @@ export class ArticleComponent implements OnInit {
 				},
 				err => {
 					console.log(err );
+					this.router.navigate(['/']);
 				}
 			);
 		} 

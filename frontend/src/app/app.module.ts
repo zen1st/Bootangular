@@ -47,6 +47,7 @@ import { PostPreviewComponent } from './post-preview/post-preview.component';
 import { AuthTestComponent } from './auth-test/auth-test.component';
 import { ArticleComponent } from './article/article.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
+import { AuthorComponent } from './author/author.component';
 
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
@@ -70,7 +71,8 @@ export function initUserFactory(userService: UserService) {
     PostPreviewComponent,
     AuthTestComponent,
     ArticleComponent,
-    PageHeaderComponent
+    PageHeaderComponent,
+    AuthorComponent
   ],
   imports: [
     BrowserAnimationsModule,

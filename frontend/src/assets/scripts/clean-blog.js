@@ -1,7 +1,7 @@
 //(function($) {
 $(document).ready(function(){
-  "use strict"; // Start of use strict
-
+//$(window).on('load', function(){
+  //"use strict"; // Start of use strict
   // Floating label headings for the contact form
   $("body").on("input propertychange", ".floating-label-form-group", function(e) {
     $(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
@@ -13,10 +13,11 @@ $(document).ready(function(){
 
   // Show the navbar when the page is scrolled up
   var MQL = 992;
-
+	var headerHeight=$('#mainNav').height();
+	
   //primary navigation slide-in effect
   if ($(window).width() > MQL) {
-    var headerHeight = $('#mainNav').height();
+	//headerHeight = $('#mainNav').height();
     $(window).on('scroll', {
         previousTop: 0
       },
@@ -27,6 +28,7 @@ $(document).ready(function(){
           //if scrolling up...
           if (currentTop > 0 && $('#mainNav').hasClass('is-fixed')) {
             $('#mainNav').addClass('is-visible');
+			console.log("$('#mainNav').addClass('is-visible')");
           } else {
             $('#mainNav').removeClass('is-visible is-fixed');
           }
@@ -39,12 +41,16 @@ $(document).ready(function(){
       });
   }
   else{
+	  console.log("less");
 	$('#mainNav').css("position", "fixed");
+	console.log($('#mainNav'));
   }
   
 	$(window).on('resize', function(){
 	  if ($(window).width() > MQL) {
-		var headerHeight = $('#mainNav').height();
+		  
+		//headerHeight = $('#mainNav').height();
+		
 		$(window).on('scroll', {
 			previousTop: 0
 		  },
@@ -70,6 +76,5 @@ $(document).ready(function(){
 		$('#mainNav').css("position", "fixed");
 	  }
 	});
-
 });
 //})(jQuery); // End of use strict
