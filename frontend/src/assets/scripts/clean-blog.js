@@ -1,7 +1,6 @@
 //(function($) {
 $(document).ready(function(){
-//$(window).on('load', function(){
-  //"use strict"; // Start of use strict
+  "use strict"; // Start of use strict
   // Floating label headings for the contact form
   $("body").on("input propertychange", ".floating-label-form-group", function(e) {
     $(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
@@ -13,22 +12,25 @@ $(document).ready(function(){
 
   // Show the navbar when the page is scrolled up
   var MQL = 992;
-	var headerHeight=$('#mainNav').height();
+  
+	var headerHeight;
 	
   //primary navigation slide-in effect
   if ($(window).width() > MQL) {
-	//headerHeight = $('#mainNav').height();
+	
     $(window).on('scroll', {
         previousTop: 0
       },
       function() {
+		headerHeight=$('#mainNav').height();
+		
         var currentTop = $(window).scrollTop();
         //check if user is scrolling up
         if (currentTop < this.previousTop) {
           //if scrolling up...
           if (currentTop > 0 && $('#mainNav').hasClass('is-fixed')) {
             $('#mainNav').addClass('is-visible');
-			console.log("$('#mainNav').addClass('is-visible')");
+			
           } else {
             $('#mainNav').removeClass('is-visible is-fixed');
           }
@@ -41,36 +43,12 @@ $(document).ready(function(){
       });
   }
   else{
-	  console.log("less");
-	$('#mainNav').css("position", "fixed");
-	console.log($('#mainNav'));
+	$('#mainNav').css("position", "fixed");	
   }
   
 	$(window).on('resize', function(){
 	  if ($(window).width() > MQL) {
-		  
-		//headerHeight = $('#mainNav').height();
-		
-		$(window).on('scroll', {
-			previousTop: 0
-		  },
-		  function() {
-			var currentTop = $(window).scrollTop();
-			//check if user is scrolling up
-			if (currentTop < this.previousTop) {
-			  //if scrolling up...
-			  if (currentTop > 0 && $('#mainNav').hasClass('is-fixed')) {
-				$('#mainNav').addClass('is-visible');
-			  } else {
-				$('#mainNav').removeClass('is-visible is-fixed');
-			  }
-			} else if (currentTop > this.previousTop) {
-			  //if scrolling down...
-			  $('#mainNav').removeClass('is-visible');
-			  if (currentTop > headerHeight && !$('#mainNav').hasClass('is-fixed')) $('#mainNav').addClass('is-fixed');
-			}
-			this.previousTop = currentTop;
-		  });
+		$('#mainNav').css("position", "");
 	  }
 	  else{
 		$('#mainNav').css("position", "fixed");

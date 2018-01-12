@@ -40,7 +40,6 @@ public class Article implements Serializable {
     @Column(name = "createdAt", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    //private ZonedDateTime createdAt;
     private Date createdAt;
         
     @Column(name = "updatedBy")
@@ -50,7 +49,6 @@ public class Article implements Serializable {
     @Column(name = "updatedAt", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    //private ZonedDateTime updatedAt;
     private Date updatedAt;
 
     // Getters and Setters
@@ -69,7 +67,16 @@ public class Article implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	/*
+	public String getContent() {
+		return content;
+	}
 
+	public void setContent(String content) {
+		this.content = content;
+	}
+	*/
+	
 	public String getContent() {
 		return content;
 	}

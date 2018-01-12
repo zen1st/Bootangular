@@ -38,7 +38,12 @@
 				formControlName="content"
 				data-validation-required-message="Please enter your content."></textarea>
 				-->
-				<div [froalaEditor] formControlName="content" required >Hello, Froala!</div>
+				<div [froalaEditor] 
+				id="content" 
+				class="form-control" 
+				formControlName="content" 
+				required >Hello, Froala!</div>
+				
                 <p class="help-block text-danger"></p>
               </div>
             </div>
