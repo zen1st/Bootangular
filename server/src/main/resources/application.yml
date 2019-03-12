@@ -11,14 +11,3 @@ logging:
   level:
     org.springframework.web: ERROR
     com.bfwg: DEBUG
-
-spring:
-  jpa:
-    hibernate:
-      # possible values: validate | update | create | create-drop
-      ddl-auto: create
-  datasource:
-    url: jdbc:mysql://localhost:3306/test2?useSSL=false
-    username: root
-    password: 
-    driver-class-name: com.mysql.jdbc.Driver
