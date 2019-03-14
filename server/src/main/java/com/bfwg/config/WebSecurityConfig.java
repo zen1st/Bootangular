@@ -81,7 +81,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers("/api/article/**").permitAll()
-        .anyRequest().authenticated().and().formLogin().loginPage("/api/login")
+        .anyRequest().authenticated()
+        .and().formLogin().loginPage("/api/login")
         .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
         .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
         .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
