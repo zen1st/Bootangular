@@ -74,14 +74,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().ignoringAntMatchers("/api/login", "/api/signup")
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+    http.csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
         .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers("/api/article/**").permitAll()
-        .anyRequest().authenticated()
+        .antMatchers("/api/signup","/api/article/**").permitAll()
+        .antMatchers("/api/**").authenticated()
         .and().formLogin().loginPage("/api/login")
         .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
         .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
