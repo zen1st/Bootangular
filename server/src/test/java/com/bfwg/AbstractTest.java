@@ -2,7 +2,6 @@ package com.bfwg;
 
 import com.bfwg.model.Authority;
 import com.bfwg.model.User;
-import com.bfwg.model.UserRoleName;
 import com.bfwg.repository.UserRepository;
 import com.bfwg.security.auth.AnonAuthentication;
 import com.bfwg.security.auth.TokenBasedAuthentication;
@@ -65,7 +64,7 @@ public abstract class AbstractTest {
 
 		User user = new User();
 		Authority userAuthority = new Authority();
-		userAuthority.setName( UserRoleName.ROLE_USER );
+		userAuthority.setName("ROLE_USER");
 		List<Authority> userAuthorities = new ArrayList<>();
 		userAuthorities.add(userAuthority);
 		user.setUsername("user");
@@ -77,8 +76,8 @@ public abstract class AbstractTest {
     protected User buildTestAdmin() {
         Authority userAuthority = new Authority();
         Authority adminAuthority = new Authority();
-        userAuthority.setName( UserRoleName.ROLE_USER );
-        adminAuthority.setName( UserRoleName.ROLE_ADMIN );
+        userAuthority.setName("ROLE_USER");
+        adminAuthority.setName("ROLE_ADMIN");
         List<Authority> adminAuthorities = new ArrayList<>();
         adminAuthorities.add(userAuthority);
         adminAuthorities.add(adminAuthority);

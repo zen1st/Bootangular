@@ -10,7 +10,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name="AUTHORITY")
+@Table(name="Authority")
 public class Authority implements GrantedAuthority {
 
     @Id
@@ -18,21 +18,20 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Enumerated( EnumType.STRING)
     @Column(name="name")
-    UserRoleName name;
+    String name;
 
     @Override
     public String getAuthority() {
-        return name.name();
+        return name;
     }
 
-    public void setName(UserRoleName name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     @JsonIgnore
-    public UserRoleName getName() {
+    public String getName() {
         return name;
     }
 
