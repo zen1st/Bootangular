@@ -29,10 +29,35 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		
+		<!-- 2fa -->
+		<!-- https://mvnrepository.com/artifact/org.jboss.aerogear/aerogear-otp-java -->
+<dependency>
+    <groupId>org.jboss.aerogear</groupId>
+    <artifactId>aerogear-otp-java</artifactId>
+    <version>1.0.0</version>
+    <scope>provided</scope>
+</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		
+		<!-- Password Validation -->
+<!-- https://mvnrepository.com/artifact/org.passay/passay -->
+<dependency>
+    <groupId>org.passay</groupId>
+    <artifactId>passay</artifactId>
+    <version>1.0</version>
+</dependency>
+		
+		<!-- Spring Data JPA dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -68,6 +93,31 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
+<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>27.1-jre</version>
+</dependency>
+
+ <!-- User Agent parser -->
+<!-- https://mvnrepository.com/artifact/com.github.ua-parser/uap-java -->
+<dependency>
+    <groupId>com.github.ua-parser</groupId>
+    <artifactId>uap-java</artifactId>
+    <version>1.4.0</version>
+</dependency>
+
+<!-- maxmind dependency -->
+<!-- https://mvnrepository.com/artifact/com.maxmind.geoip2/geoip2 -->
+<dependency>
+    <groupId>com.maxmind.geoip2</groupId>
+    <artifactId>geoip2</artifactId>
+    <version>2.12.0</version>
+</dependency>
+
+		
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-devtools</artifactId>

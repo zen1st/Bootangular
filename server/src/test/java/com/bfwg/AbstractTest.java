@@ -1,11 +1,13 @@
 package com.bfwg;
 
-import com.bfwg.model.Authority;
-import com.bfwg.model.User;
-import com.bfwg.repository.UserRepository;
-import com.bfwg.security.auth.AnonAuthentication;
-import com.bfwg.security.auth.TokenBasedAuthentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sb.Application;
+import com.sb.dao.UserRepository;
+import com.sb.pojo.Authority;
+import com.sb.pojo.User;
+import com.sb.security.auth.AnonAuthentication;
+import com.sb.security.auth.TokenBasedAuthentication;
+
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 
