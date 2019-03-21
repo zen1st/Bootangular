@@ -3,7 +3,7 @@ import {
   FooService,
   ConfigService,
   UserService
-} from '../service';
+} from 'app/service';
 
 @Component({
   selector: 'app-auth-test',

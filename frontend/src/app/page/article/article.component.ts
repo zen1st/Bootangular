@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Article } from '../model/index';
-import { ArticleService, UserService } from '../service/index';
+import { Article } from 'app/model/index';
+import { ArticleService, UserService } from 'app/service/index';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 

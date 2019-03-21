@@ -2,12 +2,12 @@ import { Inject } from '@angular/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DisplayMessage } from '../shared/models/display-message';
+import { DisplayMessage } from 'app/shared/models/display-message';
 import { Subscription } from 'rxjs/Subscription';
 import {
   UserService,
   AuthService
-} from '../service';
+} from 'app/service';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';

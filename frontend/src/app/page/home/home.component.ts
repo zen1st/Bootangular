@@ -1,5 +1,5 @@
 import { Component, OnInit, Input} from '@angular/core';
-import { ArticleService} from '../service/index';
+import { ArticleService} from 'app/service/index';
 //import { POSTPREVIEWS } from '../model/postPreview';
 
 @Component({

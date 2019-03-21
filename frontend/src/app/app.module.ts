@@ -22,18 +22,33 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './home';
-import { LoginComponent } from './login';
+//import { HomeComponent } from './home';
+//import { LoginComponent } from './login';
 import { LoginGuard, GuestGuard, AdminGuard } from './guard';
-import { NotFoundComponent } from './not-found';
+//import { NotFoundComponent } from './not-found';
 import { AccountMenuComponent } from './component/header/account-menu/account-menu.component';
 import {
+  //AccountMenuComponent,
   HeaderComponent,
   ApiCardComponent,
   FooterComponent,
-  GithubComponent
+  GithubComponent,
+  PostPreviewComponent,
+  TestCompComponent,
+  PageHeaderComponent
 } from './component';
-
+import {
+  HomeComponent,
+  LoginComponent,
+  NotFoundComponent,
+  ChangePasswordComponent,
+  ForbiddenComponent,
+  AdminComponent,
+  SignupComponent,
+  AuthTestComponent,
+  ArticleComponent,
+  AuthorComponent,
+} from './page';
 import {
   ApiService,
   AuthService,
@@ -42,6 +57,7 @@ import {
   ConfigService,
   ArticleService
 } from './service';
+/*
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { AdminComponent } from './admin/admin.component';
@@ -51,7 +67,8 @@ import { AuthTestComponent } from './auth-test/auth-test.component';
 import { ArticleComponent } from './article/article.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { AuthorComponent } from './author/author.component';
-
+import { TestCompComponent } from './test-comp/test-comp.component';
+*/
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
 }
@@ -76,7 +93,8 @@ export function initUserFactory(userService: UserService) {
     ArticleComponent,
     PageHeaderComponent,
     AuthorComponent,
-	EscapeHtmlPipe
+	EscapeHtmlPipe,
+	TestCompComponent
   ],
   imports: [
     BrowserAnimationsModule,
