@@ -38,6 +38,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   returnUrl: string;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
+  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
+  
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -58,7 +60,9 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.form = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
-      password: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
+	  email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+	  password: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(30), Validators.pattern(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?\/&gt;.&lt;,])(?!.*\s).*$/)])],
+	  matchingPassword: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(30), Validators.pattern(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?\/&gt;.&lt;,])(?!.*\s).*$/)])],
       firstname:[''],
       lastname: ['']
     });
@@ -88,9 +92,12 @@ export class SignupComponent implements OnInit, OnDestroy {
       this.authService.login(this.form.value).subscribe(data =>{
         this.userService.getMyInfo().subscribe();
       })
+	  alert("Please check your email to verify.");
       this.router.navigate([this.returnUrl]);
+	  //console.log("one");
     },
     error => {
+		//console.log("two");
       this.submitted = false;
       console.log("Sign up error" + JSON.stringify(error));
       this.notification = { msgType: 'error', msgBody: error['error'].errorMessage };
@@ -99,4 +106,17 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
 
+}
+
+function cVal(control)
+{
+	//console.log();
+	//http://regexlib.com/Search.aspx?k=strong%20password&AspxAutoDetectCookieSupport=1
+	if(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?\/&gt;.&lt;,])(?!.*\s).*$/.test(control.value))
+	{
+		console.log("yes");
+		return { cVal: true};
+	}
+	console.log("no");
+	return { cVal: false };
 }

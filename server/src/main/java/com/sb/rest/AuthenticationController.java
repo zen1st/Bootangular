@@ -44,7 +44,7 @@ public class AuthenticationController {
     public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response) {
 
         String authToken = tokenHelper.getToken( request );
-        if (authToken != null && tokenHelper.canTokenBeRefreshed(authToken)) {
+        if (authToken != null) { //&& tokenHelper.canTokenBeRefreshed(authToken)) {
             // TODO check user password last update
             String refreshedToken = tokenHelper.refreshToken(authToken);
 
@@ -56,6 +56,7 @@ public class AuthenticationController {
             response.addCookie( authCookie );
 
             UserTokenState userTokenState = new UserTokenState(refreshedToken, EXPIRES_IN);
+            
             return ResponseEntity.ok(userTokenState);
         } else {
             UserTokenState userTokenState = new UserTokenState();
@@ -72,6 +73,7 @@ public class AuthenticationController {
         return ResponseEntity.accepted().body(result);
     }
 
+    
     static class PasswordChanger {
         public String oldPassword;
         public String newPassword;

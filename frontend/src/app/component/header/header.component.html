@@ -31,6 +31,12 @@
 			  </a>
             </li>
 			
+			<li class="nav-item">
+              <a class="nav-link" href="javascript:void(0)" *ngIf="hasSignedIn()"  (click)="onClickMe()">
+				<span>Refresh Token</span>
+			  </a>
+            </li>
+			
             <li class="nav-item">
               <a class="nav-link greeting-button" href="javascript:void(0)" *ngIf="hasSignedIn()" [matMenuTriggerFor]="accountMenu">
 				<span>Greetings, {{userName()}}</span>

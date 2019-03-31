@@ -21,9 +21,20 @@
           <input matInput formControlName="username" required>
         </mat-input-container>
         <mat-input-container>
+          <label>Email: </label>
+          <input matInput formControlName="email" required type="email" >
+        </mat-input-container>
+		        <mat-input-container>
           <label>Password: </label>
           <input matInput formControlName="password" required type="password">
         </mat-input-container>
+		        <mat-input-container>
+          <label>Please re-type your Password: </label>
+          <input matInput formControlName="matchingPassword" required type="password">
+        </mat-input-container>
+		<div class="error-msg" *ngIf="signupForm.value.password !== signupForm.value.matchingPassword">
+		Passwords don't match.
+		</div>
         <mat-input-container>
           <label>First Name: </label>
           <input matInput formControlName="firstname">
@@ -32,7 +43,7 @@
           <label>Last Name: </label>
           <input matInput formControlName="lastname">
         </mat-input-container>
-        <button type="submit" [disabled]="!signupForm.form.valid" mat-raised-button color="primary">Sign up</button>
+        <button type="submit" [disabled]="!signupForm.form.valid || signupForm.value.password !== signupForm.value.matchingPassword" mat-raised-button color="primary">Sign up</button>
       </form>
       <br>
 

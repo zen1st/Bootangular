@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -18,7 +20,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class PublicController {
 
     @RequestMapping( method = GET, value= "/foo")
-    public Map<String, String> getFoo() {
+    public Map<String, String> getFoo(HttpServletRequest request) {
+    	
         Map<String, String> fooObj = new HashMap<>();
         fooObj.put("foo", "bar");
         return fooObj;

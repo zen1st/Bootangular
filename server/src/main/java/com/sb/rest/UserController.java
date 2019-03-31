@@ -54,7 +54,7 @@ public class UserController {
   public GenericResponse registerUserAccount(@Valid @RequestBody final UserDto accountDto, final HttpServletRequest request) {
       LOGGER.debug("Registering user account with information: {}", accountDto);
       final User registered = userService.registerNewUserAccount(accountDto);
-      //eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
+      eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
      return new GenericResponse("success");
   }
 

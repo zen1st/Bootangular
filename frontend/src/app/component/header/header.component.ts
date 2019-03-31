@@ -5,6 +5,8 @@ import {
 } from '../../service';
 import { Router } from '@angular/router';
 
+import { interval } from 'rxjs/observable/interval';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -33,7 +35,16 @@ export class HeaderComponent implements OnInit {
 
   userName() {
     const user = this.userService.currentUser;
-    return user.firstname + ' ' + user.lastname;
+    return user.firstName + ' ' + user.lastName;
+  }
+  
+  onClickMe() {
+	  
+	  this.userService.initUser();
+	  
+//var source = interval(1000);
+//var subscribe = source.subscribe(val => console.log(val));
+	
   }
 
 }

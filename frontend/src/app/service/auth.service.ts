@@ -19,7 +19,7 @@ export class AuthService {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     });
-    const body = `username=${user.username}&password=${user.password}`;
+    const body = `username=${user.username}&password=${user.password}&rememberMe=${user.rememberMe}`;
     return this.apiService.post(this.config.login_url, body, loginHeaders).map(() => {
       console.log("Login success");
       this.userService.getMyInfo().subscribe();
@@ -42,7 +42,7 @@ export class AuthService {
         this.userService.currentUser = null;
       });
   }
-
+  
   changePassowrd(passwordChanger) {
     return this.apiService.post(this.config.change_password_url, passwordChanger);
   }

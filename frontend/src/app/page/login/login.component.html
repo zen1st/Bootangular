@@ -17,11 +17,12 @@
 
         <form *ngIf="!submitted" [formGroup]="form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
           <mat-input-container>
-            <input matInput formControlName="username" required placeholder="user/admin">
+            <input matInput formControlName="username" required placeholder="user/admin" [(ngModel)]="theUsername">
           </mat-input-container>
           <mat-input-container>
-            <input matInput formControlName="password" required type="password" placeholder="123">
+            <input matInput formControlName="password" required type="password" placeholder="123" [(ngModel)]="thePassword">
           </mat-input-container>
+          <input name="rememberMe" formControlName="rememberMe" type="checkbox" [(ngModel)]="theCheckbox"> Remember me on this Computer
           <button type="submit" [disabled]="!loginForm.form.valid" mat-raised-button color="primary">Login</button>
         </form>
 		<!-- <br>

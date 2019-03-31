@@ -56,10 +56,22 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+	
+	/*
     this.form = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
-      password: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])]
-    });
+      password: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
+	  remember-me : new FormGroup({})
+    });*/
+	
+	
+	this.form = this.formBuilder.group({
+  username: ['', Validators.required],
+  password: ['', Validators.required],
+  rememberMe: null
+});
+	
+	//console.log(this.form);
   }
 
   ngOnDestroy() {
@@ -90,6 +102,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.notification = undefined;
     this.submitted = true;
 
+	console.log(this.form.value);
+	
     this.authService.login(this.form.value)
     // show me the animation
     .delay(1000)
@@ -98,8 +112,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.router.navigate([this.returnUrl]);
     },
     error => {
+		//console.log(error.error.message);
       this.submitted = false;
-      this.notification = { msgType: 'error', msgBody: 'Incorrect username or password.' };
+      this.notification = { msgType: 'error', msgBody: error.error.message };
+      //this.notification = { msgType: 'error', msgBody: 'Incorrect username or password.' };
     });
 
   }

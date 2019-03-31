@@ -8,7 +8,7 @@ import com.sb.validation.PasswordMatches;
 import com.sb.validation.ValidEmail;
 import com.sb.validation.ValidPassword;
 
-//@PasswordMatches
+@PasswordMatches
 public class UserDto {
 	
     @NotNull
@@ -26,16 +26,16 @@ public class UserDto {
     @ValidPassword
     private String password;
 
-    //@NotNull
-    //@Size(min = 1)
-    //private String matchingPassword;
+    @NotNull
+    @Size(min = 1)
+    private String matchingPassword;
 
-    /*
+    
     @ValidEmail
     @NotNull
     @Size(min = 1, message = "{Size.userDto.email}")
     private String email;
-	*/
+	
     
     private boolean isUsing2FA;
     
@@ -47,14 +47,14 @@ public class UserDto {
         this.username = username;
     }
     
-    /*
+    
     public String getEmail() {
         return email;
     }
 
     public void setEmail(final String email) {
         this.email = email;
-    }*/
+    }
 
     private Integer role;
 
@@ -90,14 +90,14 @@ public class UserDto {
         this.password = password;
     }
 
-    /*
+    
     public String getMatchingPassword() {
         return matchingPassword;
     }
 
     public void setMatchingPassword(final String matchingPassword) {
         this.matchingPassword = matchingPassword;
-    }*/
+    }
 
     public boolean isUsing2FA() {
         return isUsing2FA;

@@ -1,25 +1,32 @@
 package com.sb.rest;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
@@ -34,7 +41,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sb.dto.UserDto;
 import com.sb.pojo.User;
+import com.sb.pojo.UserTokenState;
 import com.sb.pojo.VerificationToken;
+import com.sb.security.TokenHelper;
 import com.sb.security.auth.ISecurityUserService;
 import com.sb.security.registration.OnRegistrationCompleteEvent;
 import com.sb.service.UserService;
@@ -66,6 +75,15 @@ public class AuthCtrl {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    TokenHelper tokenHelper;
+
+    @Value("${jwt.expires_in}")
+    private int EXPIRES_IN;
+
+    @Value("${jwt.cookie}")
+    private String TOKEN_COOKIE;
+    
     public AuthCtrl() {
         super();
     }
@@ -76,37 +94,85 @@ public class AuthCtrl {
     @ResponseBody
     public GenericResponse registerUserAccount(@Valid @RequestBody final UserDto accountDto, final HttpServletRequest request) {
         LOGGER.debug("Registering user account with information: {}", accountDto);
-
         final User registered = userService.registerNewUserAccount(accountDto);
-        //eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
-        return new GenericResponse("success");
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
+       return new GenericResponse("success");
     }
     
-    
+    @RequestMapping(value = "/verifyEmail", method = RequestMethod.GET)
+    public ModelAndView confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token) throws UnsupportedEncodingException {
+    	
+        Locale locale = request.getLocale();
+        
+        final String result = userService.validateVerificationToken(token);
+        if (result.equals("valid")) {
+            final User user = userService.getUser(token);
+            // if (user.isUsing2FA()) {
+            // model.addAttribute("qr", userService.generateQRUrl(user));
+            // return "redirect:/qrcode.html?lang=" + locale.getLanguage();
+            // }
+            authWithoutPassword(user);
+            //model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
+            //return "redirect:/?lang=" + locale.getLanguage();
+            
+            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/login");
+            modelAndView.addObject("message", messages.getMessage("message.accountVerified", null, locale));
+            return modelAndView;
+        }
 
-    @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
-    //public String confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token) throws UnsupportedEncodingException {
-    public ModelAndView method() {
-        return new ModelAndView("redirect:" + "http://localhost:8080/login");
+        //model.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
+        //model.addAttribute("expired", "expired".equals(result));
+        //model.addAttribute("token", token);
+        //return "redirect:/badUser?lang=" + locale.getLanguage();
+
+        ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/badUser");
+        modelAndView.addObject("message", messages.getMessage("auth.message." + result, null, locale));
+        modelAndView.addObject("expired", "expired".equals(result));
+        modelAndView.addObject("token", token);
+        return modelAndView;
     }
 
-
-    
     // user activation - verification
 
     @RequestMapping(value = "/resendEmailVerification", method = RequestMethod.GET)
     @ResponseBody
-    public String resendRegistrationToken(final HttpServletRequest request, @RequestParam("token") final String existingToken) {
+    public GenericResponse resendRegistrationToken(final HttpServletRequest request, @RequestParam("token") final String existingToken) {
     	
-    	/*
+    	
         final VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
         final User user = userService.getUser(newToken.getToken());
         mailSender.send(constructResendVerificationTokenEmail(getAppUrl(request), request.getLocale(), newToken, user));
         
-        return new GenericResponse(messages.getMessage("message.resendToken", null, request.getLocale()));*/
-    	
-    	return "Testing: " + existingToken;
+        return new GenericResponse(messages.getMessage("message.resendToken", null, request.getLocale()));
     }
+    
+    // Refresh Auth Token
+    @RequestMapping(value = "/refreshAuthToken", method = RequestMethod.GET)
+    public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response) {
+
+        String authToken = tokenHelper.getToken( request );
+        if (authToken != null) {// && tokenHelper.canTokenBeRefreshed(authToken)) {
+            // TODO check user password last update
+            String refreshedToken = tokenHelper.refreshToken(authToken);
+
+            Cookie authCookie = new Cookie( TOKEN_COOKIE, ( refreshedToken ) );
+            authCookie.setPath( "/" );
+            authCookie.setHttpOnly( true );
+            authCookie.setMaxAge( EXPIRES_IN );
+            // Add cookie to response
+            response.addCookie( authCookie );
+
+            UserTokenState userTokenState = new UserTokenState(refreshedToken, EXPIRES_IN);
+            
+            System.out.println("yes");
+            return ResponseEntity.ok(userTokenState);
+        } else {
+            UserTokenState userTokenState = new UserTokenState();
+            System.out.println("no");
+           return ResponseEntity.accepted().body(userTokenState);
+        }
+    }
+    
 
     // Reset password
     /*
@@ -206,13 +272,16 @@ public class AuthCtrl {
         // request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
     }
 
-    /*
+    
     public void authWithoutPassword(User user) {
+    	/*
         List<Privilege> privileges = user.getRoles().stream().map(role -> role.getPrivileges()).flatMap(list -> list.stream()).distinct().collect(Collectors.toList());
         List<GrantedAuthority> authorities = privileges.stream().map(p -> new SimpleGrantedAuthority(p.getName())).collect(Collectors.toList());
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+        */
+    	Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-    }*/
+    }
 }

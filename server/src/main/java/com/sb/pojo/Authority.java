@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name="Authority")
@@ -22,6 +24,7 @@ public class Authority implements GrantedAuthority {
 	@Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonProperty(access = Access.WRITE_ONLY)
     private Long id;
 	
     @ManyToMany(mappedBy = "authorities")

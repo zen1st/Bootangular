@@ -41,7 +41,9 @@ import {
   AuthTestComponent,
   ArticleComponent,
   AuthorComponent,
+  BadUserComponent
 } from './page';
+import { VerifyEmailComponent } from './page/verify-email/verify-email.component';
 
 
 export const routes: Routes = [
@@ -59,6 +61,16 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [GuestGuard]
+  },
+  {
+    path: 'verifyEmail/:token',
+    component: VerifyEmailComponent,
+    canActivate: [GuestGuard]
+  },
+  {
+    path: 'badUser',
+    component: BadUserComponent,
     canActivate: [GuestGuard]
   },
   {

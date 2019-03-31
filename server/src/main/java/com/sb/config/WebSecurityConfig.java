@@ -1,6 +1,7 @@
 package com.sb.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,12 +9,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -74,30 +77,52 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private AuthenticationFailureHandler authenticationFailureHandler;
-
+  
+  @Autowired
+  @Qualifier("persistentTokenRepository")
+  private PersistentTokenRepository persistentTokenRepository;
+  
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     //http.csrf().disable()
-	  http.csrf().ignoringAntMatchers("/h2/*","/api/login", "/api/signup")
+	  http.csrf().ignoringAntMatchers("/**","/h2/*","/api/auth/login", "/api/auth/signup") // The "/**" allows for UI inspect mode to send a remember me cookie 
 	  	.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
         .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers("/api/signup","/api/article/**", "/api/auth/signup", "/api/auth/resendEmailVerification","/api/auth/registrationConfirm").permitAll()
+        .antMatchers("/api/auth/signup", 
+        		"/api/auth/verifyEmail", 
+        		"/api/auth/resendEmailVerification", 
+        		"/api/auth/refreshAuthToken",
+        		"/api/article/**").permitAll()
         .antMatchers("/api/**").authenticated()
-        .and().formLogin().loginPage("/api/login")
+        .and().formLogin().loginPage("/api/auth/login")
         .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
-        .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+        .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
         .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
-    
+	  
+  
+	  http.rememberMe()
+	  .rememberMeParameter("rememberMe")
+	  .rememberMeCookieName("remember-me")
+	  .tokenRepository(persistentTokenRepository)
+	  .userDetailsService(jwtUserDetailsService);
+
     //unables h2 db ui
     http.headers().frameOptions().sameOrigin();
 
   }
-
+	
   @Bean
   public SessionRegistry sessionRegistry() {
       return new SessionRegistryImpl();
+  }
+  
+  //Prevent org.springframework.security.web.authentication.rememberme.CookieTheftException: Invalid remember-me token (Series/token) mismatch. Implies previous cookie theft attack.
+  @Override
+  public void configure(WebSecurity web) throws Exception {
+       web.ignoring()
+          .antMatchers("/resources/**");
   }
 }

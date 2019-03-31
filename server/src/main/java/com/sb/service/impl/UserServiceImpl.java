@@ -82,13 +82,14 @@ public class UserServiceImpl implements UserService {
       user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
       
       //comment this out for email verification
-      user.setEnabled(true);
+      //user.setEnabled(true);
       
-      //user.setEmail(accountDto.getEmail());
+      user.setEmail(accountDto.getEmail());
       //user.setUsing2FA(accountDto.isUsing2FA());
       user.setAuthorities(Arrays.asList(roleRepository.findByName("ROLE_USER")));
       return userRepository.save(user);
   }
+  
   
   @Override
   public User getUser(final String verificationToken) {

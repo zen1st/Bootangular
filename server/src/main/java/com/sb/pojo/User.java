@@ -20,6 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "USER")
@@ -28,6 +30,7 @@ public class User implements UserDetails, Serializable {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonProperty(access = Access.WRITE_ONLY)
     private Long id;
 	
     private String username;
@@ -41,12 +44,14 @@ public class User implements UserDetails, Serializable {
     private String email;
 
     @Column(length = 60)
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
     private boolean enabled;
 
     //private boolean isUsing2FA;
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String secret;
 
     //
