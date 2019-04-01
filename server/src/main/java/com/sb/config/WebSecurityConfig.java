@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -85,24 +86,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     //http.csrf().disable()
-	  http.csrf().ignoringAntMatchers("/**","/h2/*","/api/auth/login", "/api/auth/signup") // The "/**" allows for UI inspect mode to send a remember me cookie 
-	  	.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-        .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
-        .authorizeRequests()
-        .antMatchers("/api/auth/signup", 
-        		"/api/auth/verifyEmail", 
-        		"/api/auth/resendEmailVerification", 
-        		"/api/auth/refreshAuthToken",
-        		"/api/article/**").permitAll()
-        .antMatchers("/api/**").authenticated()
-        .and().formLogin().loginPage("/api/auth/login")
-        .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
-        .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
-        .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
-	  
-  
+	  http.csrf().ignoringAntMatchers("/h2/**","/api/auth/login", "/api/auth/signup")
+      .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+      .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+      .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
+      .authorizeRequests()
+      .antMatchers("/api/auth/signup",
+      		"/api/auth/verifyEmail", 
+      		"/api/auth/resendEmailVerification", 
+      		"/api/auth/refreshAuthToken",
+      		"/api/article/**").permitAll()
+      .antMatchers("/api/**").authenticated()
+      //.anyRequest().authenticated()
+      .and().formLogin().loginPage("/api/auth/login")
+      .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
+      .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
+      .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
+	    
 	  http.rememberMe()
 	  .rememberMeParameter("rememberMe")
 	  .rememberMeCookieName("remember-me")
@@ -119,10 +120,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       return new SessionRegistryImpl();
   }
   
-  //Prevent org.springframework.security.web.authentication.rememberme.CookieTheftException: Invalid remember-me token (Series/token) mismatch. Implies previous cookie theft attack.
   @Override
   public void configure(WebSecurity web) throws Exception {
-       web.ignoring()
-          .antMatchers("/resources/**");
+      // TokenAuthenticationFilter will ignore the below paths
+      web.ignoring().antMatchers(
+              HttpMethod.GET,
+              "/*",
+              "/assets/**",
+              "/webjars/**",
+              "/*.html",
+              "/favicon.ico",
+              "/**/*.html",
+              "/**/*.css",
+              "/**/*.js"
+          );
   }
 }

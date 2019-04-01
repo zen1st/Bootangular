@@ -43,7 +43,6 @@ public class AppConfig {
 	    # Hibernate properties
 	    hibernate.show_sql=true
 	    hibernate.hbm2ddl.auto=validate
-
 	    
 	    #C3P0 properties
 	    hibernate.c3p0.min_size=5

@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 @Component
@@ -35,6 +36,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication ) throws IOException, ServletException {
+		
 		clearAuthenticationAttributes(request);
 		User user = (User)authentication.getPrincipal();
 

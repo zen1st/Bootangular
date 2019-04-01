@@ -164,11 +164,10 @@ public class AuthCtrl {
 
             UserTokenState userTokenState = new UserTokenState(refreshedToken, EXPIRES_IN);
             
-            System.out.println("yes");
             return ResponseEntity.ok(userTokenState);
         } else {
             UserTokenState userTokenState = new UserTokenState();
-            System.out.println("no");
+          
            return ResponseEntity.accepted().body(userTokenState);
         }
     }
