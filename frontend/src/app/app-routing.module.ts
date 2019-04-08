@@ -44,7 +44,7 @@ import {
   BadUserComponent
 } from './page';
 import { VerifyEmailComponent } from './page/verify-email/verify-email.component';
-
+import { ResetPasswordComponent } from './page/reset-password/reset-password.component';
 
 export const routes: Routes = [
   {
@@ -72,6 +72,11 @@ export const routes: Routes = [
     path: 'badUser',
     component: BadUserComponent,
     canActivate: [GuestGuard]
+  },
+  {
+    path: 'resetPassword',
+    component: ResetPasswordComponent,
+	canActivate: [GuestGuard]
   },
   {
     path: 'change-password',

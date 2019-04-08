@@ -6,10 +6,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.sb.dao.ArticleRepository;
+import com.sb.dao.AuthorityRepository;
 import com.sb.pojo.Article;
+import com.sb.pojo.Authority;
 import com.sb.pojo.User;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -18,6 +23,9 @@ public class ArticleController {
 
     @Autowired
     ArticleRepository articleRepository;
+    
+    @Autowired
+    AuthorityRepository authRepo;
 
     // Get All Articles
     @GetMapping("/article")
@@ -43,8 +51,9 @@ public class ArticleController {
 
 	// Update a article
     @PutMapping("/article/{id}")
-    public ResponseEntity<Article> updateArticle(@PathVariable(value = "id") Long articleId, 
-                                           @Valid @RequestBody Article articleDetails) {
+    public ResponseEntity<Article> updateArticle(HttpServletRequest request,
+    		@PathVariable(value = "id") Long articleId, 
+    		@Valid @RequestBody Article articleDetails) {
         Article article = articleRepository.findOne(articleId);
         if(article == null) {
             return ResponseEntity.notFound().build();
@@ -55,21 +64,21 @@ public class ArticleController {
         String name = user.getUsername(); //get logged in username
         
         //Prevent other users from editing your article
-        if(!article.getCreatedBy().equals(name)) {
-        	return ResponseEntity.badRequest().build();
-        }
-        else {
+        if(article.getCreatedBy().equals(name) || request.isUserInRole("ROLE_ADMIN")){
 	        article.setTitle(articleDetails.getTitle());
 	        article.setContent(articleDetails.getContent());
 	
 	        Article updatedArticle = articleRepository.save(article);
 	        return ResponseEntity.ok(updatedArticle);
         }
+        else {
+	        return ResponseEntity.badRequest().build();
+        }
     }
 
     // Delete a article
     @DeleteMapping("/article/{id}")
-    public ResponseEntity<Article> deleteArticle(@PathVariable(value = "id") Long articleId) {
+    public ResponseEntity<Article> deleteArticle(HttpServletRequest request, @PathVariable(value = "id") Long articleId) {
         Article article = articleRepository.findOne(articleId);
         if(article == null) {
             return ResponseEntity.notFound().build();
@@ -79,13 +88,12 @@ public class ArticleController {
         String name = user.getUsername(); //get logged in username
         
         //Prevent other users from deleting your article
-        if(!article.getCreatedBy().equals(name)) {
-        	return ResponseEntity.badRequest().build();
+        if(article.getCreatedBy().equals(name) || request.isUserInRole("ROLE_ADMIN")){
+        	articleRepository.delete(article);
+        	return ResponseEntity.ok().build();
         }
         else {
-        	articleRepository.delete(article);
-        	System.out.println(ResponseEntity.ok().build());
-        	return ResponseEntity.ok().build();
+        	return ResponseEntity.badRequest().build();
         }
     }
 }

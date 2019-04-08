@@ -22,7 +22,9 @@ export class ConfigService {
   
   private _refresh_token_url = this._auth_url + '/refreshAuthToken';
   
-  private _change_password_url = this._api_url + '/changePassword';
+  private _reset_password_url = this._auth_url + '/resetPassword';
+  
+  private _change_password_url = this._auth_url + '/changePassword';
 
   private _whoami_url = this._api_url + '/whoami';
   
@@ -64,6 +66,10 @@ export class ConfigService {
   
   get refresh_token_url(): string {
       return this._refresh_token_url;
+  }
+  
+  get reset_password_url(): string {
+      return this._reset_password_url;
   }
   
   get change_password_url(): string {

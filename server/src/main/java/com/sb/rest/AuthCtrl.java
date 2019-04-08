@@ -1,8 +1,10 @@
 package com.sb.rest;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -18,10 +20,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,7 +43,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sb.dto.PasswordDto;
 import com.sb.dto.UserDto;
+import com.sb.exception.InvalidOldPasswordException;
 import com.sb.pojo.User;
 import com.sb.pojo.UserTokenState;
 import com.sb.pojo.VerificationToken;
@@ -47,7 +53,9 @@ import com.sb.security.TokenHelper;
 import com.sb.security.auth.ISecurityUserService;
 import com.sb.security.registration.OnRegistrationCompleteEvent;
 import com.sb.service.UserService;
+import com.sb.service.impl.CustomUserDetailsService;
 import com.sb.util.GenericResponse;
+import com.sb.validation.ValidPassword;
 
 @RestController
 @RequestMapping(value = "/api/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,6 +67,9 @@ public class AuthCtrl {
 
     @Autowired
     private ISecurityUserService securityUserService;
+    
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     private MessageSource messages;
@@ -99,6 +110,7 @@ public class AuthCtrl {
        return new GenericResponse("success");
     }
     
+    
     @RequestMapping(value = "/verifyEmail", method = RequestMethod.GET)
     public ModelAndView confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token) throws UnsupportedEncodingException {
     	
@@ -133,7 +145,7 @@ public class AuthCtrl {
     }
 
     // user activation - verification
-
+    
     @RequestMapping(value = "/resendEmailVerification", method = RequestMethod.GET)
     @ResponseBody
     public GenericResponse resendRegistrationToken(final HttpServletRequest request, @RequestParam("token") final String existingToken) {
@@ -174,8 +186,8 @@ public class AuthCtrl {
     
 
     // Reset password
-    /*
-    @RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     @ResponseBody
     public GenericResponse resetPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
         final User user = userService.findUserByEmail(userEmail);
@@ -201,21 +213,54 @@ public class AuthCtrl {
     @ResponseBody
     public GenericResponse savePassword(final Locale locale, @Valid PasswordDto passwordDto) {
         final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userService.changeUserPassword(user, passwordDto.getNewPassword());
+        userService.changeUserPassword(user, passwordDto.getPassword());
         return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
     }
+    
 
     // change user password
-    @RequestMapping(value = "/user/updatePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     @ResponseBody
-    public GenericResponse changeUserPassword(final Locale locale, @Valid PasswordDto passwordDto) {
+    public GenericResponse changeUserPassword(final Locale locale, @Valid @RequestBody PasswordDto passwordDto) {
         final User user = userService.findUserByEmail(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail());
         if (!userService.checkIfValidOldPassword(user, passwordDto.getOldPassword())) {
             throw new InvalidOldPasswordException();
         }
-        userService.changeUserPassword(user, passwordDto.getNewPassword());
+        userService.changeUserPassword(user, passwordDto.getPassword());
         return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
     }
+    
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> changePassword(@RequestBody @Valid PasswordChanger passwordChanger) {
+    	
+    	if(passwordChanger.password.equals(passwordChanger.matchingPassword))
+    	{
+
+	        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.password);
+	        Map<String, String> result = new HashMap<>();
+	        result.put( "result", "success" );
+	        return ResponseEntity.accepted().body(result);
+    	}
+    	
+    	Map<String, String> result = new HashMap<>();
+        result.put( "result", "password doesn't match" );
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
+    
+    static class PasswordChanger {
+    	
+    	//@ValidPassword
+        public String oldPassword;
+    	
+    	@ValidPassword
+        public String password;
+    	
+    	@ValidPassword
+        public String matchingPassword;
+    }
+    
+    /*
 
     @RequestMapping(value = "/user/update/2fa", method = RequestMethod.POST)
     @ResponseBody
@@ -230,7 +275,7 @@ public class AuthCtrl {
     // ============== NON-API ============
 
     private SimpleMailMessage constructResendVerificationTokenEmail(final String contextPath, final Locale locale, final VerificationToken newToken, final User user) {
-        final String confirmationUrl = contextPath + "/registrationConfirm.html?token=" + newToken.getToken();
+        final String confirmationUrl = contextPath + "/api/auth/verifyEmail?token=" + newToken.getToken();
         final String message = messages.getMessage("message.resendToken", null, locale);
         return constructEmail("Resend Registration Token", message + " \r\n" + confirmationUrl, user);
     }
@@ -245,8 +290,7 @@ public class AuthCtrl {
         final SimpleMailMessage email = new SimpleMailMessage();
         email.setSubject(subject);
         email.setText(body);
-        //email.setTo(user.getEmail());
-        email.setTo("ezgo1010@hotmail.com");
+        email.setTo(user.getEmail());
         email.setFrom(env.getProperty("support.email"));
         return email;
     }

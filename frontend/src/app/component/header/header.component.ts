@@ -12,6 +12,7 @@ import { interval } from 'rxjs/observable/interval';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
+
 export class HeaderComponent implements OnInit {
 
   constructor(
@@ -20,31 +21,32 @@ export class HeaderComponent implements OnInit {
     private router: Router
   ) { }
 
+  
   ngOnInit() {
   }
 
   logout() {
     this.authService.logout().subscribe(res => {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     });
   }
 
-  hasSignedIn() {
+  loggedIn() {
     return !!this.userService.currentUser;
   }
 
   userName() {
     const user = this.userService.currentUser;
-    return user.firstName + ' ' + user.lastName;
-  }
-  
-  onClickMe() {
-	  
-	  this.userService.initUser();
-	  
-//var source = interval(1000);
-//var subscribe = source.subscribe(val => console.log(val));
-	
+    //return user.firstName + ' ' + user.lastName;
+	return user.username;
   }
 
+  
+  refreshToken() {
+	  
+	this.userService.initUser();
+	//var source = interval(1000);
+	//var subscribe = source.subscribe(val => console.log(val));
+	
+  }
 }

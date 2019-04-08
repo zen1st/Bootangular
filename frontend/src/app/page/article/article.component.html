@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row">
 		
-			<div class="col-lg-8 col-md-10 mx-auto" *ngIf="action=='view'&& currentUser?.username == currentArticle?.createdBy && currentUser">
+			<div class="col-lg-8 col-md-10 mx-auto" *ngIf="action=='view' && (currentUser?.username == currentArticle?.createdBy && currentUser) || adminGuard.canLoad()">
 				<button type="button" class="btn btn-danger float-right" 
 				(click)="deleteArticle()">
 				Delete</button>
@@ -18,8 +18,11 @@
 
 			<form name="postArticleForm" id="postArticleForm" [formGroup]="form" (ngSubmit)="onSubmit()" 
 			#postArticleForm="ngForm"
-			*ngIf="(action=='post' || (action=='edit'&& currentUser?.username == currentArticle?.createdBy)) 
-			&& currentUser">
+			*ngIf="action=='post' || (action=='edit'&& (currentUser?.username == currentArticle?.createdBy || adminGuard.canLoad()))">
+
+			<!--<form name="postArticleForm" id="postArticleForm" [formGroup]="form" (ngSubmit)="onSubmit()" 
+			#postArticleForm="ngForm"
+			*ngIf="accessible()">-->
 			
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">

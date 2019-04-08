@@ -86,7 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     //http.csrf().disable()
-	  http.csrf().ignoringAntMatchers("/h2/**","/api/auth/login", "/api/auth/signup")
+	  http.csrf().ignoringAntMatchers("/h2/*","/api/auth/login", "/api/auth/signup")
       .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
       .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
@@ -96,6 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       		"/api/auth/verifyEmail", 
       		"/api/auth/resendEmailVerification", 
       		"/api/auth/refreshAuthToken",
+      		"/api/auth/resetPassword",
       		"/api/article/**").permitAll()
       .antMatchers("/api/**").authenticated()
       //.anyRequest().authenticated()
@@ -120,6 +121,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       return new SessionRegistryImpl();
   }
   
+  //Prevent org.springframework.security.web.authentication.rememberme.CookieTheftException: Invalid remember-me token (Series/token) mismatch. Implies previous cookie theft attack.
   @Override
   public void configure(WebSecurity web) throws Exception {
       // TokenAuthenticationFilter will ignore the below paths
@@ -128,11 +130,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
               "/*",
               "/assets/**",
               "/webjars/**",
-              "/*.html",
               "/favicon.ico",
+              "/*.html",
               "/**/*.html",
+              "/*.css",
               "/**/*.css",
-              "/**/*.js"
+              "/*.js",
+              "/**/*.js",
+              "/*.map",
+              "/**/*.map"
           );
   }
 }

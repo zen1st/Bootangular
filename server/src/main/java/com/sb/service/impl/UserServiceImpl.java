@@ -63,11 +63,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public User registerNewUserAccount(final UserDto accountDto) {
 	  
-	  /*
+	  
       if (emailExists(accountDto.getEmail())) {
           throw new UserAlreadyExistException("There is an account with that email adress: " + accountDto.getEmail());
       }
-      */
+      
       
       if (usernameExists(accountDto.getUsername())) {
           throw new UserAlreadyExistException("There is an account with that username: " + accountDto.getUsername());

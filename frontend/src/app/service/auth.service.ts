@@ -47,4 +47,8 @@ export class AuthService {
     return this.apiService.post(this.config.change_password_url, passwordChanger);
   }
 
+  resendEmailVerification(token) {
+    return this.apiService.get(this.config.resend_email_verification_url+"?token="+token);
+  }
+  
 }

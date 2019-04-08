@@ -59,6 +59,7 @@ import {
   ArticleService
 } from './service';
 import { VerifyEmailComponent } from './page/verify-email/verify-email.component';
+import { ResetPasswordComponent } from './page/reset-password/reset-password.component';
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
 }
@@ -86,7 +87,8 @@ export function initUserFactory(userService: UserService) {
 	EscapeHtmlPipe,
 	TestCompComponent,
 	BadUserComponent,
-	VerifyEmailComponent
+	VerifyEmailComponent,
+	ResetPasswordComponent
   ],
   imports: [
     BrowserAnimationsModule,

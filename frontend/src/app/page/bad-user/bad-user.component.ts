@@ -1,22 +1,83 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
+import { AuthService } from 'app/service/index';
+import { DisplayMessage } from 'app/shared/models/display-message';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-bad-user',
   templateUrl: './bad-user.component.html',
   styleUrls: ['./bad-user.component.css']
 })
-export class BadUserComponent implements OnInit {
+export class BadUserComponent implements OnInit, OnDestroy {
 
-  //constructor() { }
-constructor(private activatedRoute: ActivatedRoute) {}
+  /**
+   * Boolean used in telling the UI
+   * that the form has been submitted
+   * and is awaiting a response
+   */
+  submitted = false;
 
+  /**
+   * Notification message from received
+   * form request or router
+   */
+  notification: DisplayMessage;
+
+  returnUrl: string;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  
+  constructor(
+	private activatedRoute: ActivatedRoute,
+	private authService: AuthService,
+	private router: Router,
+	) {}
+
+	private message: string;
+	expired: string;
+	token: string;
+
+	
   ngOnInit() {
-	      // Note: Below 'queryParams' can be replaced with 'params' depending on your requirements
+	  
+    this.activatedRoute.params
+    .takeUntil(this.ngUnsubscribe)
+    .subscribe((params: DisplayMessage) => {
+      this.notification = params;
+    });
+
     this.activatedRoute.queryParams.subscribe(params => {
-        const token = params['token'];
-        console.log(token);
+		this.message=params['message'].replace(/\+/g," ");
+		this.expired=params['expired'];
+		this.token=params['token'];
       });
+	  
+	  // get return url from route parameters or default to '/'
+    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+  
+  onClick()
+  {
+	  this.submitted = true;
+	  
+		this.authService.resendEmailVerification(this.token)
+		// show me the animation
+		.delay(1000)
+		.subscribe(
+			suc => {
+					alert(suc.message);
+					this.router.navigate([this.returnUrl]);
+				},
+				err => {
+					this.submitted = false;
+					this.notification = { msgType: 'error', msgBody: "Invalid token." };
+				}
+		);
+
+  }
 }

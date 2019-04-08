@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { ApiService } from './api.service';
 import { ConfigService } from './config.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
@@ -31,6 +32,21 @@ export class UserService {
     return this.apiService.get(this.config.reset_credentials_url);
   }
 
+  resetPassword(email) {
+	  
+	const resetPasswordHeaders = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+	
+	//const body = `email=${email}`;
+	const body = {"email":email};
+	
+    return this.apiService.post(this.config.reset_password_url+"?email="+email, body, resetPasswordHeaders).map(() => {
+      console.log("Login success");
+    });
+  }
+  
   getMyInfo() {
     return this.apiService.get(this.config.whoami_url).map(user => this.currentUser = user);
   }

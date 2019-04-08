@@ -14,37 +14,38 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" *ngIf="!hasSignedIn()" routerLink="/signup">
+              <a class="nav-link" *ngIf="!loggedIn()" routerLink="/signup">
 				<span>Sign up</span>
 			  </a>
             </li>
 			
             <li class="nav-item">
-              <a class="nav-link" *ngIf="!hasSignedIn()" routerLink="/login">
+              <a class="nav-link" *ngIf="!loggedIn()" routerLink="/login">
 			  <span>Login</span>
 			  </a>
             </li>
 			
 			<li class="nav-item">
-              <a class="nav-link" href="javascript:void(0)" *ngIf="hasSignedIn()" routerLink="/article/post">
+              <a class="nav-link" href="javascript:void(0)" *ngIf="loggedIn()" routerLink="/article/post">
 				<span>Post Article</span>
 			  </a>
             </li>
 			
+			<!--
 			<li class="nav-item">
-              <a class="nav-link" href="javascript:void(0)" *ngIf="hasSignedIn()"  (click)="onClickMe()">
+              <a class="nav-link" href="javascript:void(0)" *ngIf="loggedIn()"  (click)="refreshToken()">
 				<span>Refresh Token</span>
 			  </a>
-            </li>
+            </li>-->
 			
             <li class="nav-item">
-              <a class="nav-link greeting-button" href="javascript:void(0)" *ngIf="hasSignedIn()" [matMenuTriggerFor]="accountMenu">
+              <a class="nav-link greeting-button" href="javascript:void(0)" *ngIf="loggedIn()" [matMenuTriggerFor]="accountMenu">
 				<span>Greetings, {{userName()}}</span>
 			  </a>
             </li>
 			
             <li class="nav-item">
-              <a class="nav-link greeting-hamburger" href="javascript:void(0)" *ngIf="hasSignedIn()" href="contact.html" [matMenuTriggerFor]="accountMenu">
+              <a class="nav-link greeting-hamburger" href="javascript:void(0)" *ngIf="loggedIn()" href="contact.html" [matMenuTriggerFor]="accountMenu">
 				<mat-icon>menu</mat-icon>
 			  </a>
             </li>

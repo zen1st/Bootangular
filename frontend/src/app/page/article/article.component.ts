@@ -4,6 +4,7 @@ import { Article } from 'app/model/index';
 import { ArticleService, UserService } from 'app/service/index';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
+import { AdminGuard } from 'app/guard/index';
 
 @Component({
   selector: 'app-article',
@@ -25,13 +26,14 @@ export class ArticleComponent implements OnInit {
 	private articleService: ArticleService,
 	private userService: UserService,
 	private formBuilder: FormBuilder,
-	private router: Router
+	private router: Router,
+	private adminGuard: AdminGuard
 	) {}
 
 	ngOnInit() {
 		
 		this.currentUser = this.userService.currentUser;
-					
+		
 		this.form = this.formBuilder.group({
 		  title:[''],
 		  content: ['']
@@ -43,6 +45,7 @@ export class ArticleComponent implements OnInit {
 			
 			if(this.action == "view" && this.id) {
 				this.articleService.getArticle(this.id).subscribe(data => this.getArticleSuccess(data), err => this.failed(err));
+				
 			}
 			else if(this.action=="post"){
 				
@@ -54,20 +57,29 @@ export class ArticleComponent implements OnInit {
 				}
 			}
 			else if(this.action == "edit" && this.id){
-				
-				if (typeof this.currentUser === 'undefined' || this.currentUser === null) {
+
+				this.userService.getMyInfo().subscribe(res => {
+					this.currentUser = res;
+					
+					if (typeof this.currentUser === 'undefined' || this.currentUser === null) {
+						this.router.navigate(['/403']);
+					}
+					else{
+						this.articleService.getArticle(this.id).subscribe(
+						data => this.getArticleSuccess(data), 
+						err => this.failed(err));
+					}
+				}, 
+				err => {
 					this.router.navigate(['/403']);
-				}
-				else{
-					this.articleService.getArticle(this.id).subscribe(
-					data => this.getArticleSuccess(data), 
-					err => this.failed(err));
-				}
+				});
+		
 			}
 		});
 	}
 	
 	getArticleSuccess(data){
+		this.currentUser = this.userService.currentUser;
 		this.currentArticle = data;
 		this.title = data.title;
 		this.subheading = "By " + data.createdBy + " on " + new Date(data.createdAt);
@@ -78,6 +90,7 @@ export class ArticleComponent implements OnInit {
 			  title:[data.title],
 			  content: [data.content]
 			});
+
 		}
 	}
 
