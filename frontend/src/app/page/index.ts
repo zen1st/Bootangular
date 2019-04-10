@@ -8,4 +8,4 @@ export * from './home';
 export * from './login';
 export * from './not-found';
 export * from './signup';
-export * from './bad-user';
+export * from './bad-token';

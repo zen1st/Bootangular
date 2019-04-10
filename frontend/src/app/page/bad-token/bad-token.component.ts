@@ -5,11 +5,11 @@ import { DisplayMessage } from 'app/shared/models/display-message';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
-  selector: 'app-bad-user',
-  templateUrl: './bad-user.component.html',
-  styleUrls: ['./bad-user.component.css']
+  selector: 'app-bad-token',
+  templateUrl: './bad-token.component.html',
+  styleUrls: ['./bad-token.component.css']
 })
-export class BadUserComponent implements OnInit, OnDestroy {
+export class BadTokenComponent implements OnInit, OnDestroy {
 
   /**
    * Boolean used in telling the UI

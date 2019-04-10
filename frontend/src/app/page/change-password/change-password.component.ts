@@ -107,7 +107,7 @@ export class ChangePasswordComponent implements OnInit {
     //this.notification = undefined;
     this.submitted = true;
 
-    this.authService.changePassowrd(this.form.value)
+    this.authService.changePassword(this.form.value)
     // show me the animation
     .delay(1000)
     //.mergeMap(() => this.authService.logout())

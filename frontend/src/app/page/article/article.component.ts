@@ -58,28 +58,20 @@ export class ArticleComponent implements OnInit {
 			}
 			else if(this.action == "edit" && this.id){
 
-				this.userService.getMyInfo().subscribe(res => {
-					this.currentUser = res;
-					
-					if (typeof this.currentUser === 'undefined' || this.currentUser === null) {
-						this.router.navigate(['/403']);
-					}
-					else{
-						this.articleService.getArticle(this.id).subscribe(
-						data => this.getArticleSuccess(data), 
-						err => this.failed(err));
-					}
-				}, 
-				err => {
+				if (typeof this.currentUser === 'undefined' || this.currentUser === null) {
 					this.router.navigate(['/403']);
-				});
+				}
+				else{
+					this.articleService.getArticle(this.id).subscribe(
+					data => this.getArticleSuccess(data), 
+					err => this.failed(err));
+				}
 		
 			}
 		});
 	}
 	
 	getArticleSuccess(data){
-		this.currentUser = this.userService.currentUser;
 		this.currentArticle = data;
 		this.title = data.title;
 		this.subheading = "By " + data.createdBy + " on " + new Date(data.createdAt);

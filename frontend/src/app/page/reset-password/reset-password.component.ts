@@ -78,20 +78,17 @@ export class ResetPasswordComponent implements OnInit {
      * Innocent until proven guilty
      */
     this.notification = undefined;
-    this.submitted = true;
 	
-    this.userService.resetPassword(this.form.value.email)
-    // show me the animation
+    this.submitted = true;
+
+	this.userService.resetPassword(this.form.value.email)
     .delay(1000)
     .subscribe(data => {
-		console.log(data);
+      alert(data);
     },
     error => {
-		//console.log(error.error.message);
       this.submitted = false;
       this.notification = { msgType: 'error', msgBody: error.error.message };
     });
-
   }
-
 }

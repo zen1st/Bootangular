@@ -14,6 +14,7 @@ export class AppComponent implements OnInit{
 	constructor(private userService: UserService) { }
   
     ngOnInit() {
+		/*
       this.userService.getMyInfo()
       .subscribe(res => {
 		//console.log(localStorage.getItem('rememberMe'));
@@ -21,6 +22,6 @@ export class AppComponent implements OnInit{
         //this.forgeResonseObj(this.whoamIResponse, res, path);
       }, err => {
         //this.forgeResonseObj(this.whoamIResponse, err, path);
-      });
+      });*/
   }
 }

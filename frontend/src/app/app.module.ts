@@ -48,7 +48,7 @@ import {
   AuthTestComponent,
   ArticleComponent,
   AuthorComponent,
-  BadUserComponent
+  BadTokenComponent
 } from './page';
 import {
   ApiService,
@@ -86,7 +86,7 @@ export function initUserFactory(userService: UserService) {
     AuthorComponent,
 	EscapeHtmlPipe,
 	TestCompComponent,
-	BadUserComponent,
+	BadTokenComponent,
 	VerifyEmailComponent,
 	ResetPasswordComponent
   ],

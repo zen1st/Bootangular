@@ -17,12 +17,12 @@ export class UserService {
   initUser() {
     const promise = this.apiService.get(this.config.refresh_token_url).toPromise()
     .then(res => {
-      if (res.access_token !== null) {
+      //if (res.access_token !== null) {
         return this.getMyInfo().toPromise()
         .then(user => {
           this.currentUser = user;
         });
-      }
+      //}
     })
     .catch(() => null);
     return promise;
@@ -42,9 +42,7 @@ export class UserService {
 	//const body = `email=${email}`;
 	const body = {"email":email};
 	
-    return this.apiService.post(this.config.reset_password_url+"?email="+email, body, resetPasswordHeaders).map(() => {
-      console.log("Login success");
-    });
+    return this.apiService.post(this.config.reset_password_url+"?email="+email, body, resetPasswordHeaders);
   }
   
   getMyInfo() {

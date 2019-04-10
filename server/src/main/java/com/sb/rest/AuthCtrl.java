@@ -127,7 +127,7 @@ public class AuthCtrl {
             //model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
             //return "redirect:/?lang=" + locale.getLanguage();
             
-            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/login");
+            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/");
             modelAndView.addObject("message", messages.getMessage("message.accountVerified", null, locale));
             return modelAndView;
         }
@@ -137,7 +137,7 @@ public class AuthCtrl {
         //model.addAttribute("token", token);
         //return "redirect:/badUser?lang=" + locale.getLanguage();
 
-        ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/badUser");
+        ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/badToken");
         modelAndView.addObject("message", messages.getMessage("auth.message." + result, null, locale));
         modelAndView.addObject("expired", "expired".equals(result));
         modelAndView.addObject("token", token);
@@ -160,7 +160,7 @@ public class AuthCtrl {
     
     // Refresh Auth Token
     @RequestMapping(value = "/refreshAuthToken", method = RequestMethod.GET)
-    public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> refreshAuthenticationToken(final HttpServletRequest request, HttpServletResponse response) {
 
         String authToken = tokenHelper.getToken( request );
         if (authToken != null) {// && tokenHelper.canTokenBeRefreshed(authToken)) {
@@ -186,30 +186,47 @@ public class AuthCtrl {
     
 
     // Reset password
-    
+
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     @ResponseBody
-    public GenericResponse resetPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
+    public ResponseEntity<?> resetPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
+    	
         final User user = userService.findUserByEmail(userEmail);
         if (user != null) {
             final String token = UUID.randomUUID().toString();
             userService.createPasswordResetTokenForUser(user, token);
             mailSender.send(constructResetTokenEmail(getAppUrl(request), request.getLocale(), token, user));
+            
+	        //Map<String, String> result = new HashMap<>();
+	        //result.put( "message", "message.resetPasswordEmail");
+	        return ResponseEntity.accepted().body(new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale())));
         }
-        return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
+        
+    	Map<String, String> result = new HashMap<>();
+        result.put( "message", "User do not exist." );
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
-
-    @RequestMapping(value = "/user/changePassword", method = RequestMethod.GET)
-    public String showChangePasswordPage(final Locale locale, final Model model, @RequestParam("id") final long id, @RequestParam("token") final String token) {
+	
+    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+    public ModelAndView showChangePasswordPage(final HttpServletRequest request, final Locale locale, final Model model, @RequestParam("id") final long id, @RequestParam("token") final String token) {
         final String result = securityUserService.validatePasswordResetToken(id, token);
         if (result != null) {
             model.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
-            return "redirect:/login?lang=" + locale.getLanguage();
+            //return "redirect:/login?lang=" + locale.getLanguage();
+            
+            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/login");
+            modelAndView.addObject("message", messages.getMessage("message.accountVerified", null, locale));
+            return modelAndView;
+            
+
         }
-        return "redirect:/updatePassword.html?lang=" + locale.getLanguage();
+        //return "redirect:/updatePassword.html?lang=" + locale.getLanguage();
+        ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/login");
+        modelAndView.addObject("message", messages.getMessage("message.accountVerified", null, locale));
+        return modelAndView;
     }
 
-    @RequestMapping(value = "/user/savePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/savePassword", method = RequestMethod.POST)
     @ResponseBody
     public GenericResponse savePassword(final Locale locale, @Valid PasswordDto passwordDto) {
         final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -273,7 +290,7 @@ public class AuthCtrl {
     }*/
 
     // ============== NON-API ============
-
+    
     private SimpleMailMessage constructResendVerificationTokenEmail(final String contextPath, final Locale locale, final VerificationToken newToken, final User user) {
         final String confirmationUrl = contextPath + "/api/auth/verifyEmail?token=" + newToken.getToken();
         final String message = messages.getMessage("message.resendToken", null, locale);
@@ -281,7 +298,7 @@ public class AuthCtrl {
     }
 
     private SimpleMailMessage constructResetTokenEmail(final String contextPath, final Locale locale, final String token, final User user) {
-        final String url = contextPath + "/user/changePassword?id=" + user.getId() + "&token=" + token;
+        final String url = contextPath + "/changePassword?id=" + user.getId() + "&token=" + token;
         final String message = messages.getMessage("message.resetPassword", null, locale);
         return constructEmail("Reset Password", message + " \r\n" + url, user);
     }
@@ -326,5 +343,7 @@ public class AuthCtrl {
     	Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        
+        System.out.println((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 }

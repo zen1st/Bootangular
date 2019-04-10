@@ -41,7 +41,7 @@ import {
   AuthTestComponent,
   ArticleComponent,
   AuthorComponent,
-  BadUserComponent
+  BadTokenComponent
 } from './page';
 import { VerifyEmailComponent } from './page/verify-email/verify-email.component';
 import { ResetPasswordComponent } from './page/reset-password/reset-password.component';
@@ -69,8 +69,8 @@ export const routes: Routes = [
     canActivate: [GuestGuard]
   },
   {
-    path: 'badUser',
-    component: BadUserComponent,
+    path: 'badToken',
+    component: BadTokenComponent,
     canActivate: [GuestGuard]
   },
   {

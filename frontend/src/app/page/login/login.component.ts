@@ -111,8 +111,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 			//let source = interval(1000);
 			//let subscribe = source.subscribe(val => this.userService.initUser());
 		}
-
-		this.userService.getMyInfo().subscribe();
 		this.router.navigate([this.returnUrl]);
     },
     error => {
