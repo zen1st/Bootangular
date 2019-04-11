@@ -42,11 +42,31 @@ export class AuthService {
         this.userService.currentUser = null;
       });
   }
-  
-  changePassword(passwordChanger) {
-    return this.apiService.post(this.config.change_password_url, passwordChanger);
-  }
 
+  sendResetPasswordEmail(email) {
+	  
+	const resetPasswordHeaders = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+	
+	//const body = `email=${email}`;
+	const body = {"email":email};
+	
+    return this.apiService.post(this.config.send_reset_password_email_url+"?email="+email, body, resetPasswordHeaders);
+  }
+  
+  resetPassword(id, token, passwordChanger) {
+	  
+	const resetPasswordHeaders = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+	
+    return this.apiService.post(this.config.reset_password_url+"?id="+id+"&token="+token, passwordChanger, resetPasswordHeaders);
+  }
+  
+  
   resendEmailVerification(token) {
     return this.apiService.get(this.config.resend_email_verification_url+"?token="+token);
   }

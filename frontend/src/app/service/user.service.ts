@@ -31,18 +31,9 @@ export class UserService {
   resetCredentials() {
     return this.apiService.get(this.config.reset_credentials_url);
   }
-
-  resetPassword(email) {
-	  
-	const resetPasswordHeaders = new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
-	
-	//const body = `email=${email}`;
-	const body = {"email":email};
-	
-    return this.apiService.post(this.config.reset_password_url+"?email="+email, body, resetPasswordHeaders);
+  
+  changePassword(passwordChanger) {
+    return this.apiService.post(this.config.change_password_url, passwordChanger);
   }
   
   getMyInfo() {

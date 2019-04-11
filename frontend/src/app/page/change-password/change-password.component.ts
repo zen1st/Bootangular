@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'app/service';
+import { UserService } from 'app/service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DisplayMessage } from 'app/shared/models/display-message';
 import { Subscription } from 'rxjs/Subscription';
@@ -31,7 +31,7 @@ export class ChangePasswordComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   
   constructor(
-    private authService: AuthService,
+    private userService: UserService,
     private router: Router,
 	private route: ActivatedRoute,
     private formBuilder: FormBuilder
@@ -107,7 +107,7 @@ export class ChangePasswordComponent implements OnInit {
     //this.notification = undefined;
     this.submitted = true;
 
-    this.authService.changePassword(this.form.value)
+    this.userService.changePassword(this.form.value)
     // show me the animation
     .delay(1000)
     //.mergeMap(() => this.authService.logout())

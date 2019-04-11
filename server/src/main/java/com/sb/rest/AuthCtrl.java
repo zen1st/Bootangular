@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sb.dao.PasswordResetTokenRepository;
 import com.sb.dto.PasswordDto;
 import com.sb.dto.UserDto;
 import com.sb.exception.InvalidOldPasswordException;
@@ -89,6 +90,10 @@ public class AuthCtrl {
     @Autowired
     TokenHelper tokenHelper;
 
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    
     @Value("${jwt.expires_in}")
     private int EXPIRES_IN;
 
@@ -127,7 +132,7 @@ public class AuthCtrl {
             //model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
             //return "redirect:/?lang=" + locale.getLanguage();
             
-            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/");
+            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/login");
             modelAndView.addObject("message", messages.getMessage("message.accountVerified", null, locale));
             return modelAndView;
         }
@@ -186,19 +191,16 @@ public class AuthCtrl {
     
 
     // Reset password
-
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendResetPasswordEmail", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> resetPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
+    public ResponseEntity<?> sendResetPasswordEmail(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
     	
         final User user = userService.findUserByEmail(userEmail);
         if (user != null) {
             final String token = UUID.randomUUID().toString();
             userService.createPasswordResetTokenForUser(user, token);
             mailSender.send(constructResetTokenEmail(getAppUrl(request), request.getLocale(), token, user));
-            
-	        //Map<String, String> result = new HashMap<>();
-	        //result.put( "message", "message.resetPasswordEmail");
+
 	        return ResponseEntity.accepted().body(new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale())));
         }
         
@@ -207,33 +209,38 @@ public class AuthCtrl {
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 	
-    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
-    public ModelAndView showChangePasswordPage(final HttpServletRequest request, final Locale locale, final Model model, @RequestParam("id") final long id, @RequestParam("token") final String token) {
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    public ResponseEntity<?>  resetPassword(final HttpServletRequest request, 
+    		final Locale locale, 
+    		final Model model, 
+    		@RequestParam("id") final long id,
+    		@RequestParam("token") final String token,
+    		@Valid @RequestBody PasswordChanger2 passwordChanger
+    		) 
+    {
         final String result = securityUserService.validatePasswordResetToken(id, token);
+        
         if (result != null) {
-            model.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
-            //return "redirect:/login?lang=" + locale.getLanguage();
-            
-            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/login");
-            modelAndView.addObject("message", messages.getMessage("message.accountVerified", null, locale));
-            return modelAndView;
-            
-
+        	Map<String, String> result2 = new HashMap<>();
+            result2.put( "message", "Invalid token." );
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result2);
         }
-        //return "redirect:/updatePassword.html?lang=" + locale.getLanguage();
-        ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/login");
-        modelAndView.addObject("message", messages.getMessage("message.accountVerified", null, locale));
-        return modelAndView;
-    }
+        
+    	if(passwordChanger.password.equals(passwordChanger.matchingPassword)){
 
-    @RequestMapping(value = "/savePassword", method = RequestMethod.POST)
-    @ResponseBody
-    public GenericResponse savePassword(final Locale locale, @Valid PasswordDto passwordDto) {
-        final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userService.changeUserPassword(user, passwordDto.getPassword());
-        return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
+	        //userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.password);
+	        
+    		userService.changeUserPassword(userService.getUserByPasswordResetToken(token), passwordChanger.password);
+       
+	        return ResponseEntity.accepted().body(new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale)));
+    	}
+    	else
+    	{
+        	Map<String, String> result2 = new HashMap<>();
+            result2.put( "message", "password doesn't match" );
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result2);
+    	}
     }
-    
 
     // change user password
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
@@ -277,6 +284,15 @@ public class AuthCtrl {
         public String matchingPassword;
     }
     
+    static class PasswordChanger2 {
+    	
+    	@ValidPassword
+        public String password;
+    	
+    	@ValidPassword
+        public String matchingPassword;
+    }
+    
     /*
 
     @RequestMapping(value = "/user/update/2fa", method = RequestMethod.POST)
@@ -298,7 +314,7 @@ public class AuthCtrl {
     }
 
     private SimpleMailMessage constructResetTokenEmail(final String contextPath, final Locale locale, final String token, final User user) {
-        final String url = contextPath + "/changePassword?id=" + user.getId() + "&token=" + token;
+        final String url = contextPath + "/resetPassword?id=" + user.getId() + "&token=" + token;
         final String message = messages.getMessage("message.resetPassword", null, locale);
         return constructEmail("Reset Password", message + " \r\n" + url, user);
     }
@@ -343,7 +359,5 @@ public class AuthCtrl {
     	Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        
-        System.out.println((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 }
