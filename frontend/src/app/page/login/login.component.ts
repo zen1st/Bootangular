@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     /**
      * Innocent until proven guilty
      */
-    this.notification = undefined;
+	this.notification = { msgType: undefined, msgBody: undefined };
     this.submitted = true;
 	
     this.authService.login(this.form.value)

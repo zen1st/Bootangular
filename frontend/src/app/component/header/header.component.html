@@ -37,19 +37,30 @@
 				<span>Refresh Token</span>
 			  </a>
             </li>-->
-			
-            <li class="nav-item">
-              <a class="nav-link greeting-button" href="javascript:void(0)" *ngIf="loggedIn()" [matMenuTriggerFor]="accountMenu">
-				<span>Greetings, {{userName()}}</span>
-			  </a>
-            </li>
-			
+
             <li class="nav-item">
               <a class="nav-link greeting-hamburger" href="javascript:void(0)" *ngIf="loggedIn()" href="contact.html" [matMenuTriggerFor]="accountMenu">
 				<mat-icon>menu</mat-icon>
 			  </a>
             </li>
 			
+			<li class="nav-item">
+				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" *ngIf="loggedIn()">
+					<span>Greetings, {{userName()}}</span>
+				</a>
+			  
+				<div class="dropdown-menu" style="top:initial; left:initial;">
+				  <a class="dropdown-item" href="#"  [routerLink]="['/change-password']">CHANGE PASSWORD</a>
+				  <a class="dropdown-item" href="#" (click)="logout()">SIGN OUT</a>
+				</div>
+			</li>
+		 
+			<!--
+			<li class="nav-item">
+              <a class="nav-link greeting-button" href="javascript:void(0)" *ngIf="loggedIn()" [matMenuTriggerFor]="accountMenu">
+				<span>Greetings, {{userName()}}</span>
+			  </a>
+            </li>-->
 			<li class="nav-item">
 				<mat-menu #accountMenu
 				class="app-header-accountMenu"
@@ -60,6 +71,8 @@
             </li>
 			
           </ul>
+		  
+
         </div>
       </div>
     </nav>

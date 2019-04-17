@@ -126,7 +126,8 @@ export class ResetPasswordComponent implements OnInit {
   }
   
   onSubmit() {
-	  
+	this.notification = { msgType: undefined, msgBody: undefined };
+	
     this.submitted = true;
 
 	this.authService.sendResetPasswordEmail(this.form.value.email)
@@ -142,7 +143,8 @@ export class ResetPasswordComponent implements OnInit {
   }
   
   onSubmit2() {
-	  
+	this.notification = { msgType: undefined, msgBody: undefined };
+	
     this.submitted = true;
 
     this.authService.resetPassword(this.id, this.token, this.form2.value)

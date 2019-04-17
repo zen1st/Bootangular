@@ -104,7 +104,7 @@ export class ChangePasswordComponent implements OnInit {
     /**
      * Innocent until proven guilty
      */
-    //this.notification = undefined;
+	this.notification = { msgType: undefined, msgBody: undefined };
     this.submitted = true;
 
     this.userService.changePassword(this.form.value)

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input} from '@angular/core';
+import { Title }     from '@angular/platform-browser';
 import { ArticleService} from 'app/service/index';
 //import { POSTPREVIEWS } from '../model/postPreview';
 
@@ -11,9 +12,14 @@ export class HomeComponent implements OnInit {
 	
 	postPreviews;
 	
-	constructor(private articleService: ArticleService) {}
+	constructor(
+	private articleService: ArticleService,
+	private titleService: Title
+	) {}
 
 	ngOnInit() {
+		this.titleService.setTitle("Home");
+		
 		this.articleService.getAll().subscribe(
 		data => this.getArticleSuccess(data), 
 		err => this.failed(err));

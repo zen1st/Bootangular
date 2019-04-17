@@ -41,9 +41,7 @@ export class HeaderComponent implements OnInit {
 	return user.username;
   }
 
-  
   refreshToken() {
-	  
 	this.userService.initUser();
 	//var source = interval(1000);
 	//var subscribe = source.subscribe(val => console.log(val));

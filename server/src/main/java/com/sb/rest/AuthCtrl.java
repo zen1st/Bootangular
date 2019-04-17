@@ -115,6 +115,7 @@ public class AuthCtrl {
        return new GenericResponse("success");
     }
     
+    // user activation - verification
     
     @RequestMapping(value = "/verifyEmail", method = RequestMethod.GET)
     public ModelAndView confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token) throws UnsupportedEncodingException {
@@ -149,8 +150,6 @@ public class AuthCtrl {
         return modelAndView;
     }
 
-    // user activation - verification
-    
     @RequestMapping(value = "/resendEmailVerification", method = RequestMethod.GET)
     @ResponseBody
     public GenericResponse resendRegistrationToken(final HttpServletRequest request, @RequestParam("token") final String existingToken) {
@@ -227,15 +226,10 @@ public class AuthCtrl {
         }
         
     	if(passwordChanger.password.equals(passwordChanger.matchingPassword)){
-
-	        //userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.password);
-	        
     		userService.changeUserPassword(userService.getUserByPasswordResetToken(token), passwordChanger.password);
-       
 	        return ResponseEntity.accepted().body(new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale)));
     	}
-    	else
-    	{
+    	else{
         	Map<String, String> result2 = new HashMap<>();
             result2.put( "message", "password doesn't match" );
         	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result2);

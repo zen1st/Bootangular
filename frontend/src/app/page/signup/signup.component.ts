@@ -126,7 +126,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     /**
      * Innocent until proven guilty
      */
-    //this.notification = undefined;
+	this.notification = { msgType: undefined, msgBody: undefined };
+	
     this.submitted = true;
 
     this.authService.signup(this.form.value)
@@ -139,29 +140,14 @@ export class SignupComponent implements OnInit, OnDestroy {
       })
 	  alert("Please check your email to verify.");
       this.router.navigate([this.returnUrl]);
-	  //console.log("one");
     },
     error => {
-		//console.log("two");
       this.submitted = false;
-      console.log("Sign up error" + JSON.stringify(error));
+      //console.log("Sign up error" + JSON.stringify(error));
       this.notification = { msgType: 'error', msgBody: error.error.message };
     });
 
   }
 
 
-}
-
-function cVal(control)
-{
-	//console.log();
-	//http://regexlib.com/Search.aspx?k=strong%20password&AspxAutoDetectCookieSupport=1
-	if(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?\/&gt;.&lt;,])(?!.*\s).*$/.test(control.value))
-	{
-		console.log("yes");
-		return { cVal: true};
-	}
-	console.log("no");
-	return { cVal: false };
 }
