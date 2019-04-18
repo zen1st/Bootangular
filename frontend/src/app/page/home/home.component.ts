@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.titleService.setTitle("Home");
+		this.titleService.setTitle("Home Page");
 		
 		this.articleService.getAll().subscribe(
 		data => this.getArticleSuccess(data), 

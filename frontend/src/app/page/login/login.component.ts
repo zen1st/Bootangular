@@ -12,6 +12,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { interval } from 'rxjs/observable/interval';
+import { Title }     from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -40,6 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    private titleService: Title,
     private userService: UserService,
     private authService: AuthService,
     private router: Router,
@@ -50,6 +52,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+	this.titleService.setTitle("Login Page");
+	  
     this.route.params
     .takeUntil(this.ngUnsubscribe)
     .subscribe((params: DisplayMessage) => {

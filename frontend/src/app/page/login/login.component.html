@@ -17,12 +17,12 @@
 
         <form *ngIf="!submitted" [formGroup]="form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
           <mat-input-container>
-            <input matInput formControlName="username" required placeholder="user/admin" >
+            <input matInput formControlName="username" required placeholder="Username" >
           </mat-input-container>
           <mat-input-container>
-            <input matInput formControlName="password" required type="password" placeholder="123" >
+            <input matInput formControlName="password" required type="password" placeholder="Password" >
           </mat-input-container>
-          <input name="rememberMe" formControlName="rememberMe" type="checkbox"> Remember me on this Computer
+          <input name="rememberMe" formControlName="rememberMe" type="checkbox"> Remember me
           <br>
 		  <a style="text-decoration: underline; cursor:pointer" routerLink="/resetPassword">I forgot my password!</a>
 		  <button type="submit" [disabled]="!loginForm.form.valid" mat-raised-button color="primary">Login</button>

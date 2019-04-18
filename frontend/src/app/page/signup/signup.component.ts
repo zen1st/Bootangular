@@ -11,6 +11,7 @@ import {
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Title }     from '@angular/platform-browser';
 
 @Component({
   selector: 'app-signup',
@@ -42,6 +43,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   
   constructor(
+  private titleService: Title,
     private userService: UserService,
     private authService: AuthService,
     private router: Router,
@@ -52,6 +54,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+	this.titleService.setTitle("Signup Page");
+	
     this.route.params
     .takeUntil(this.ngUnsubscribe)
     .subscribe((params: DisplayMessage) => {

@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DisplayMessage } from 'app/shared/models/display-message';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import { Title }     from '@angular/platform-browser';
+
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
@@ -31,6 +33,7 @@ export class ChangePasswordComponent implements OnInit {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   
   constructor(
+	private titleService: Title,
     private userService: UserService,
     private router: Router,
 	private route: ActivatedRoute,
@@ -39,6 +42,9 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+	  
+	this.titleService.setTitle("Change Password Page");
+	
     this.route.params
     .takeUntil(this.ngUnsubscribe)
     .subscribe((params: DisplayMessage) => {

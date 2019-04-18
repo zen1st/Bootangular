@@ -5,6 +5,7 @@ import { ArticleService, UserService } from 'app/service/index';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { AdminGuard } from 'app/guard/index';
+import { Title }     from '@angular/platform-browser';
 
 @Component({
   selector: 'app-article',
@@ -22,7 +23,9 @@ export class ArticleComponent implements OnInit {
 	currentArticle;
 	form: FormGroup;
 	
-	constructor(private route: ActivatedRoute, 
+	constructor(
+	private titleService: Title,
+	private route: ActivatedRoute, 
 	private articleService: ArticleService,
 	private userService: UserService,
 	private formBuilder: FormBuilder,
@@ -53,7 +56,7 @@ export class ArticleComponent implements OnInit {
 					this.router.navigate(['/403']);
 				}
 				else{
-					this.title="Posting a New Article";
+					this.titleService.setTitle("Posting a New Article");
 				}
 			}
 			else if(this.action == "edit" && this.id){
@@ -75,6 +78,8 @@ export class ArticleComponent implements OnInit {
 		this.currentArticle = data;
 		this.title = data.title;
 		this.subheading = "By " + data.createdBy + " on " + new Date(data.createdAt);
+		
+		this.titleService.setTitle(this.title + " | " + this.action);
 		
 		if(this.action == "edit")
 		{

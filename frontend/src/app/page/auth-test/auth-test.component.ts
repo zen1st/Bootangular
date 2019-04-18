@@ -4,7 +4,7 @@ import {
   ConfigService,
   UserService
 } from 'app/service';
-
+import { Title }     from '@angular/platform-browser';
 @Component({
   selector: 'app-auth-test',
   templateUrl: './auth-test.component.html',
@@ -16,12 +16,14 @@ export class AuthTestComponent implements OnInit {
   whoamIResponse = {};
   allUserResponse = {};
   constructor(
+	private titleService: Title,
     private config: ConfigService,
     private fooService: FooService,
     private userService: UserService
   ) { }
 
   ngOnInit() {
+	this.titleService.setTitle("Authority Test Page");
   }
 
   makeRequest(path) {

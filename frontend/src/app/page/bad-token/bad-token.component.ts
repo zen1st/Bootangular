@@ -3,7 +3,7 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 import { AuthService } from 'app/service/index';
 import { DisplayMessage } from 'app/shared/models/display-message';
 import { Subject } from 'rxjs/Subject';
-
+import { Title }     from '@angular/platform-browser';
 @Component({
   selector: 'app-bad-token',
   templateUrl: './bad-token.component.html',
@@ -28,6 +28,7 @@ export class BadTokenComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   
   constructor(
+	private titleService: Title,
 	private activatedRoute: ActivatedRoute,
 	private authService: AuthService,
 	private router: Router,
@@ -39,7 +40,8 @@ export class BadTokenComponent implements OnInit, OnDestroy {
 
 	
   ngOnInit() {
-	  
+	this.titleService.setTitle("Bad Email Verification Page");
+	
     this.activatedRoute.params
     .takeUntil(this.ngUnsubscribe)
     .subscribe((params: DisplayMessage) => {

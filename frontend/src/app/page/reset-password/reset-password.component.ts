@@ -12,6 +12,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { interval } from 'rxjs/observable/interval';
+import { Title }     from '@angular/platform-browser';
 
 @Component({
   selector: 'app-reset-password',
@@ -44,6 +45,7 @@ export class ResetPasswordComponent implements OnInit {
   emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   constructor(
+	private titleService: Title,
     private userService: UserService,
     private authService: AuthService,
     private router: Router,
@@ -52,6 +54,8 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+	this.titleService.setTitle("Reset Password Page");
+	
     this.route.params
     .takeUntil(this.ngUnsubscribe)
     .subscribe((params: DisplayMessage) => {
