@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row">
 		
-			<div class="col-lg-8 col-md-10 mx-auto" *ngIf="action=='view' && (currentUser?.username == currentArticle?.createdBy && currentUser) || adminGuard.canLoad()">
+			<div class="col-lg-8 col-md-10 mx-auto" *ngIf="action=='view' && ((currentUser?.username == currentArticle?.createdBy && currentUser) || adminGuard.canLoad())">
 				<button type="button" class="btn btn-danger float-right" 
 				(click)="deleteArticle()">
 				Delete</button>
@@ -18,12 +18,8 @@
 
 			<form name="postArticleForm" id="postArticleForm" [formGroup]="form" (ngSubmit)="onSubmit()" 
 			#postArticleForm="ngForm"
-			*ngIf="action=='post' || (action=='edit'&& (currentUser?.username == currentArticle?.createdBy || adminGuard.canLoad()))">
-
-			<!--<form name="postArticleForm" id="postArticleForm" [formGroup]="form" (ngSubmit)="onSubmit()" 
-			#postArticleForm="ngForm"
-			*ngIf="accessible()">-->
-			
+			*ngIf="action=='post' || (action=='edit' && (currentUser?.username == currentArticle?.createdBy || adminGuard.canLoad()))">
+		
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Title</label>
@@ -33,6 +29,22 @@
                 <p class="help-block text-danger"></p>
               </div>
             </div>
+			
+			<div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Public </label>
+				
+<select class="form-control" id="exampleFormControlSelect1">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+			
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Content</label>

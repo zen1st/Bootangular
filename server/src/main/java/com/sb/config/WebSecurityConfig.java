@@ -85,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    //http.csrf().disable()
+
 	  http.csrf().ignoringAntMatchers("/h2/*","/api/auth/login", "/api/auth/signup", "/api/auth/sendResetPasswordEmail")
       .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

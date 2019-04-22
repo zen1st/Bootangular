@@ -60,8 +60,8 @@ export class ArticleComponent implements OnInit {
 				}
 			}
 			else if(this.action == "edit" && this.id){
-
-				if (typeof this.currentUser === 'undefined' || this.currentUser === null) {
+	
+				if (typeof this.currentUser === 'undefined' || this.currentUser === null ) {
 					this.router.navigate(['/403']);
 				}
 				else{
@@ -111,7 +111,7 @@ export class ArticleComponent implements OnInit {
 		else if(this.action == "edit"){
 			this.articleService.putArticle(this.id, this.form.value).subscribe(
 				suc => {
-					console.log(suc);
+					//console.log(suc);
 					this.router.navigate(['/article/view/'+suc.id]);
 				},
 				err => {

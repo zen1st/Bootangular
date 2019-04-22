@@ -129,7 +129,7 @@ public class AuthCtrl {
             // model.addAttribute("qr", userService.generateQRUrl(user));
             // return "redirect:/qrcode.html?lang=" + locale.getLanguage();
             // }
-            authWithoutPassword(user);
+            //authWithoutPassword(user);
             //model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
             //return "redirect:/?lang=" + locale.getLanguage();
             
@@ -205,7 +205,7 @@ public class AuthCtrl {
         
     	Map<String, String> result = new HashMap<>();
         result.put( "message", "User do not exist." );
-    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
 	
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
@@ -222,7 +222,7 @@ public class AuthCtrl {
         if (result != null) {
         	Map<String, String> result2 = new HashMap<>();
             result2.put( "message", "Invalid token." );
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result2);
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result2);
         }
         
     	if(passwordChanger.password.equals(passwordChanger.matchingPassword)){
@@ -232,7 +232,7 @@ public class AuthCtrl {
     	else{
         	Map<String, String> result2 = new HashMap<>();
             result2.put( "message", "password doesn't match" );
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result2);
+        	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result2);
     	}
     }
 
@@ -263,7 +263,7 @@ public class AuthCtrl {
     	
     	Map<String, String> result = new HashMap<>();
         result.put( "result", "password doesn't match" );
-    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result);
     }
     
     static class PasswordChanger {

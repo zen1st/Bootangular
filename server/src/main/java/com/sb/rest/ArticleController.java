@@ -1,6 +1,7 @@
 package com.sb.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -72,7 +73,7 @@ public class ArticleController {
 	        return ResponseEntity.ok(updatedArticle);
         }
         else {
-	        return ResponseEntity.badRequest().build();
+        	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
 
@@ -93,7 +94,7 @@ public class ArticleController {
         	return ResponseEntity.ok().build();
         }
         else {
-        	return ResponseEntity.badRequest().build();
+        	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
 }
