@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.sb.dao.ArticleRepository;
 import com.sb.dao.AuthorityRepository;
+import com.sb.dto.ArticleDto;
 import com.sb.pojo.Article;
 import com.sb.pojo.Authority;
 import com.sb.pojo.User;
@@ -42,12 +44,37 @@ public class ArticleController {
     
     // Get a Single article
     @GetMapping("/article/{id}")
-    public ResponseEntity<Article> getArticleById(@PathVariable(value = "id") Long articleId) {
-        Article article = articleRepository.findOne(articleId);
+    public ResponseEntity<ArticleDto> getArticleById(HttpServletRequest request,@PathVariable(value = "id") Long articleId) {
+    	Article article = articleRepository.findOne(articleId);
+    	
         if(article == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(article);
+        
+    	ArticleDto articleDto = new ArticleDto();
+    	
+    	//articleDto.setId(article.getId());
+    	articleDto.setTitle(article.getTitle());
+    	articleDto.setCreatedBy(article.getCreatedBy());
+    	articleDto.setCreatedAt(article.getCreatedAt());
+    	articleDto.setContent(article.getContent());
+    	
+        User user;
+        String name="";
+        
+        //Prevents ERR_TOO_MANY_REDIRECTS
+        if(!SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){
+            user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            name = user.getUsername(); //get logged in username
+        }
+        
+        if(article.getCreatedBy().equals(name) || request.isUserInRole("ROLE_ADMIN")){
+        	articleDto.setEditable(true);
+        }
+        else {
+        	articleDto.setEditable(false);
+        }
+        return ResponseEntity.ok().body(articleDto);
     }
 
 	// Update a article

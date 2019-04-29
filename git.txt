@@ -1,0 +1,116 @@
+GIT Tutorial
+
+Set profile:
+git config --global user.name "zen1st"
+git config --global user.email zhe.zeng@ryerson.ca
+
+Start a new repository and publish it to GitHub (https://guides.github.com/introduction/git-handbook/) : 
+# create a new directory, and initialize it with git-specific functions
+git init my-repo
+
+# change into the `my-repo` directory
+cd my-repo
+
+# create the first file in the project
+touch README.md
+
+# git isn't aware of the file, stage it
+git add README.md
+
+# take a snapshot of the staging area
+git commit -m "add README to initial commit"
+
+# provide the path for the repository you created on github
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+
+# push changes to github
+git push --set-upstream origin master
+or 
+git push origin master
+
+
+Merge last commits into one (https://stackoverflow.com/a/24690646) :
+If there are multiple commits, you can use git rebase -i to squash two commits into one.
+
+If there are only two commits you want to merge, and they are the "most recent two", the following commands can be used to combine the two commits into one:
+
+git reset --soft "HEAD^"
+git commit --amend
+
+You can merge as many commits as you want, as long as they are the last X commits, and not somewhere in the middle. Just run git reset --soft HEAD~10, where 10 is the number of commits you want to merge.
+
+Please add that git push -f origin master might be neccesary.
+
+
+How do you make changes on a specific commit:
+https://confluence.atlassian.com/stashkb/how-do-you-make-changes-on-a-specific-commit-747831891.html
+
+
+Cherry-pick from another repository (https://coderwall.com/p/sgpksw/git-cherry-pick-from-another-repository):
+# Cloning our fork
+
+$ git clone git clone zen1st@github.com:zen1st/Bootangular.git
+or
+$ git clone https://github.com/zen1st/Bootangular.git
+
+# Adding (as "endel") the repo from we want to cherry-pick
+$ git remote add endel git://github.com/bfwg/angular-spring-starter.git
+
+# Fetch their branches
+$ git fetch endel
+
+# List their commits
+$ git log endel/master
+
+# Cherry-pick the commit we need
+$ git cherry-pick 360d521a394250f7c8e87d35b1a1d1c459bb373b
+
+# Pushing to our master
+$ git push origin master
+
+git remote add endel 
+
+
+Updating from remote changes (https://coderwall.com/p/7aymfa/please-oh-please-use-git-pull-rebase) :
+When working on a project you usually synchronize your code by pulling it several times a day. What you might not know is that by typing
+
+git pull
+you actually issuing git fetch + git merge commands, which will result with an extra commit and ugly merge bubbles in your commit log (check out gitk to see them).
+
+It's much better to use
+
+git pull --rebase origin master
+to keep the repository clean, your commits always on top of the tree until you push them to a remote server. The command will apply all your yet-to-be-pushed commits on top of the remote tree commits allowing your commits to be straight in a row and without branches (easier git bisects, yay!).
+
+
+Numerous undo possibilities in Git (https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/):
+Discard all local changes, but save them for possible re-use later
+
+  git stash
+
+Discarding local changes (permanently) to a file
+
+  git checkout -- <file>
+
+Discard all local changes to all files permanently
+
+  git reset --hard
+
+Before executing git reset --hard, keep in mind that there is also a way to just temporary store the changes without committing them using git stash. This command resets the changes to all files, but it also saves them in case you would like to apply them at some later time. You can read more about it in section below
+
+
+reset a Git repository to a certain commit (https://www.christianengvall.se/git-reset-origin-master-to-commit/):
+Make sure you are on the branch where the commit is. I’m doing this on master.
+
+Then use git reset –hard <commit-hash> to set the current branch HEAD to the commit you want.
+
+git reset --hard cedc856
+git push --force origin master
+
+
+Revert to a specific file to a specific revision using Git (https://stackoverflow.com/questions/215718/reset-or-revert-a-specific-file-to-a-specific-revision-using-git) :
+git checkout c5f567 -- file1/to/restore file2/to/restore
+The git checkout man page gives more information.
+
+If you want to revert to the commit before c5f567, append ~1 (works with any number):
+git checkout c5f567~1 -- file1/to/restore file2/to/restore

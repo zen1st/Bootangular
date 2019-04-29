@@ -27,6 +27,7 @@ public class ArticleUiCtrl {
     private MessageSource messages;
     
     // Get a Single article
+    /*
     @GetMapping("/article/edit/{id}")
     public ModelAndView editArticleById(HttpServletRequest request,
     		@PathVariable(value = "id") Long articleId) {
@@ -58,7 +59,7 @@ public class ArticleUiCtrl {
 	        ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/403");
 	        return modelAndView;
         }
-    }
+    }*/
     
     private String getAppUrl(HttpServletRequest request) {
         return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();

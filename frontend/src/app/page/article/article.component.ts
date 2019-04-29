@@ -83,6 +83,11 @@ export class ArticleComponent implements OnInit {
 		
 		if(this.action == "edit")
 		{
+			if(!data.editable)
+			{
+				this.router.navigate(['/403']);
+			}
+			
 			this.form = this.formBuilder.group({
 			  title:[data.title],
 			  content: [data.content]
