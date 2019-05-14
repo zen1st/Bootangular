@@ -6,6 +6,7 @@ import {
 import { Router } from '@angular/router';
 
 import { interval } from 'rxjs/observable/interval';
+declare var $: any;
 
 @Component({
   selector: 'app-header',
@@ -23,8 +24,9 @@ export class HeaderComponent implements OnInit {
 
   
   ngOnInit() {
+	  $.getScript('assets/new-age/js/new-age.min.js', function(){});
   }
-
+  
   logout() {
     this.authService.logout().subscribe(res => {
       this.router.navigate(['/']);

@@ -133,7 +133,7 @@ public class AuthCtrl {
             //model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
             //return "redirect:/?lang=" + locale.getLanguage();
             
-            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/login");
+            ModelAndView modelAndView = new ModelAndView("redirect:" + getAppUrl(request) + "/");
             modelAndView.addObject("message", messages.getMessage("message.accountVerified", null, locale));
             return modelAndView;
         }

@@ -1,6 +1,9 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { Title }     from '@angular/platform-browser';
 import { ArticleService} from 'app/service/index';
+import {
+  UserService
+} from '../../service';
 //import { POSTPREVIEWS } from '../model/postPreview';
 
 @Component({
@@ -14,15 +17,17 @@ export class HomeComponent implements OnInit {
 	
 	constructor(
 	private articleService: ArticleService,
+	private userService: UserService,
 	private titleService: Title
 	) {}
-
+	
 	ngOnInit() {
 		this.titleService.setTitle("Home Page");
 		
+		/*
 		this.articleService.getAll().subscribe(
 		data => this.getArticleSuccess(data), 
-		err => this.failed(err));
+		err => this.failed(err));*/
 	}
 	
 	getArticleSuccess(data){
@@ -32,5 +37,10 @@ export class HomeComponent implements OnInit {
 	failed(err){
 		console.log(err);
 	}
+	
+	loggedIn() {
+		return !!this.userService.currentUser;
+	}
+
 }
 

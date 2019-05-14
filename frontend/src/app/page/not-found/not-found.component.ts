@@ -9,6 +9,6 @@ export class NotFoundComponent {
   constructor(private titleService: Title) { }
 
   ngOnInit() {
-	  this.titleService.setTitle("404 Not-found Page");
+	  this.titleService.setTitle("404 Not Found");
   }
 }

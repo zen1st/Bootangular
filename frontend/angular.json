@@ -23,16 +23,16 @@
             "styles": [
 				"node_modules/material-icons/css/material-icons.min.css",
 				"node_modules/font-awesome/css/font-awesome.min.css",
+				"node_modules/@fortawesome/fontawesome-free/css/all.min.css",
 				"node_modules/bootstrap/dist/css/bootstrap.min.css",
-				"src/assets/styles/clean-blog.min.css",
-				"node_modules/froala-editor/css/froala_editor.pkgd.min.css",
+				"src/assets/new-age/css/new-age.min.css",
 				"src/styles.css"
             ],
             "scripts": [
 				"node_modules/jquery/dist/jquery.min.js",
+				"node_modules/jquery.easing/jquery.easing.min.js",
 				"node_modules/bootstrap/dist/js/bootstrap.min.js",
-				"src/assets/scripts/clean-blog.js",
-				"node_modules/froala-editor/js/froala_editor.pkgd.min.js"
+				"src/assets/new-age/js/new-age.min.js"
 			]
           },
           "configurations": {

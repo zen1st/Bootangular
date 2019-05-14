@@ -5,3 +5,5 @@ export * from './api-card';
 export * from './test-comp';
 export * from './page-header';
 export * from './post-preview';
+export * from './login';
+export * from './signup';

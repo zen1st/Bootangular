@@ -35,20 +35,22 @@ import {
   GithubComponent,
   PostPreviewComponent,
   TestCompComponent,
-  PageHeaderComponent
+  PageHeaderComponent,
+  LoginComponent,
+  SignupComponent
 } from './component';
 import {
   HomeComponent,
-  LoginComponent,
   NotFoundComponent,
   ChangePasswordComponent,
   ForbiddenComponent,
   AdminComponent,
-  SignupComponent,
   AuthTestComponent,
   ArticleComponent,
   AuthorComponent,
-  BadTokenComponent
+  BadTokenComponent,
+  VerifyEmailComponent,
+  ResetPasswordComponent
 } from './page';
 import {
   ApiService,
@@ -58,8 +60,6 @@ import {
   ConfigService,
   ArticleService
 } from './service';
-import { VerifyEmailComponent } from './page/verify-email/verify-email.component';
-import { ResetPasswordComponent } from './page/reset-password/reset-password.component';
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
 }

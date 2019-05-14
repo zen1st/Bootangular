@@ -11,7 +11,7 @@ export class ForbiddenComponent implements OnInit {
   constructor(private titleService: Title) { }
 
   ngOnInit() {
-	  this.titleService.setTitle("403 Forbidden Page");
+	  this.titleService.setTitle("403 Forbidden");
   }
 
 }
