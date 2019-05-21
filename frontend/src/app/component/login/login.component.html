@@ -1,14 +1,13 @@
 <mat-card elevation="5" fxFlex>
   <mat-card-content>
 	<p [class]="notification.msgType" *ngIf="notification">{{notification.msgBody}}</p>
-
 	<form *ngIf="!submitted" [formGroup]="form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
-	  <mat-input-container>
+	  <mat-form-field>
 		<input matInput formControlName="username" required placeholder="Username" >
-	  </mat-input-container>
-	  <mat-input-container>
+	  </mat-form-field>
+	  <mat-form-field>
 		<input matInput formControlName="password" required type="password" placeholder="Password" >
-	  </mat-input-container>
+	  </mat-form-field>
 	  <input name="rememberMe" formControlName="rememberMe" type="checkbox"> Remember me
 	  <br>
 	  <a style="text-decoration: underline; cursor:pointer" routerLink="/resetPassword">I forgot my password!</a>

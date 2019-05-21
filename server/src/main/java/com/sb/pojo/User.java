@@ -35,12 +35,14 @@ public class User implements UserDetails, Serializable {
 	
     private String username;
 	
+    /*
     @Column(name = "firstname")
     private String firstName;
 
     @Column(name = "lastname")
     private String lastName;
-
+	*/
+    
     private String email;
 
     @Column(length = 60)
@@ -84,7 +86,7 @@ public class User implements UserDetails, Serializable {
     public void setUsername(final String username) {
         this.username = username;
     }
-	
+	/*
     public String getFirstName() {
         return firstName;
     }
@@ -100,7 +102,7 @@ public class User implements UserDetails, Serializable {
     public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
-
+*/
     public String getEmail() {
         return email;
     }
@@ -183,8 +185,9 @@ public class User implements UserDetails, Serializable {
         builder.append("User [id=").append(id).append(", username=").append(username).append(", firstName=").append(firstName).append(", lastName=").append(lastName).append(", email=").append(email).append(", password=").append(password).append(", enabled=").append(enabled).append(", isUsing2FA=")
                 .append(isUsing2FA).append(", secret=").append(secret).append(", authorities=").append(authorities).append("]");
         */
-        builder.append("User [id=").append(id).append(", username=").append(username).append(", firstName=").append(firstName).append(", lastName=").append(lastName).append(", email=").append(email).append(", password=").append(password).append(", enabled=").append(enabled).append(", secret=").append(secret).append(", authorities=").append(authorities).append("]");
-        
+        //builder.append("User [id=").append(id).append(", username=").append(username).append(", firstName=").append(firstName).append(", lastName=").append(lastName).append(", email=").append(email).append(", password=").append(password).append(", enabled=").append(enabled).append(", secret=").append(secret).append(", authorities=").append(authorities).append("]");
+        builder.append("User [id=").append(id).append(", username=").append(username).append(", email=").append(email).append(", password=").append(password).append(", enabled=").append(enabled).append(", secret=").append(secret).append(", authorities=").append(authorities).append("]");
+
         return builder.toString();
     }
 

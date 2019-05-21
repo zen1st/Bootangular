@@ -12,7 +12,7 @@ mat-card {
 
 }
 
-mat-input-container {
+mat-form-field {
   display: block;
 }
 
@@ -35,7 +35,6 @@ button {
   color: #8BC34A;
 }
 
-
 @media screen and (max-width: 599px) {
 
   .content {
@@ -43,12 +42,14 @@ button {
     display: block !important;
   }
 
+}
+
+@media only screen and (max-width: 992px) {
   mat-card {
     /* https://github.com/angular/flex-layout/issues/295 */
     display: block !important;
-    max-width: 999px;
+    max-width:100%;
   }
-
 }
 
 a {

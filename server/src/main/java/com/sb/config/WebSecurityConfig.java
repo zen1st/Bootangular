@@ -86,7 +86,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-	  http.csrf().ignoringAntMatchers("/h2/*","/api/auth/login", "/api/auth/signup", "/api/auth/sendResetPasswordEmail")
+	  http.csrf().ignoringAntMatchers("/h2/*",
+			  "/api/auth/login", 
+			  "/api/auth/signup", 
+			  "/api/auth/sendResetPasswordEmail",
+			  "/api/scrap/*"
+			  )
       .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
       .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
@@ -98,7 +103,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       		"/api/auth/refreshAuthToken",
       		"/api/auth/sendResetPasswordEmail",
       		"/api/auth/resetPassword",
-      		"/api/article/**").permitAll()
+      		"/api/article/**",
+      		"/api/scrap/**"
+      		).permitAll()
       .antMatchers("/api/**").authenticated()
       //.anyRequest().authenticated()
       .and().formLogin().loginPage("/api/auth/login")

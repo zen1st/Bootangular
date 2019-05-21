@@ -8,16 +8,10 @@ import { EscapeHtmlPipe } from './pipes/keep-html.pipe';
 
 // material
 import {
-  MatButtonModule,
-  MatMenuModule,
-  MatIconModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatCardModule,
-  MatInputModule,
-  MatIconRegistry,
-  MatProgressSpinnerModule
+  MatIconRegistry
 } from '@angular/material';
+import { MaterialModule } from "./material.module";
+import { FilterItemDirective } from "./filter-item.directive";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppComponent } from './app.component';
@@ -88,24 +82,18 @@ export function initUserFactory(userService: UserService) {
 	TestCompComponent,
 	BadTokenComponent,
 	VerifyEmailComponent,
-	ResetPasswordComponent
+	ResetPasswordComponent,
+	FilterItemDirective
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
+	MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
     AppRoutingModule,
-    MatMenuModule,
-    MatTooltipModule,
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatProgressSpinnerModule,
     FlexLayoutModule,
 	FroalaEditorModule.forRoot(), 
 	FroalaViewModule.forRoot()

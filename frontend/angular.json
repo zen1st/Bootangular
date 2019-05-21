@@ -31,8 +31,7 @@
             "scripts": [
 				"node_modules/jquery/dist/jquery.min.js",
 				"node_modules/jquery.easing/jquery.easing.min.js",
-				"node_modules/bootstrap/dist/js/bootstrap.min.js",
-				"src/assets/new-age/js/new-age.min.js"
+				"node_modules/bootstrap/dist/js/bootstrap.min.js"
 			]
           },
           "configurations": {

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import {
   UserService,
   AuthService
 } from '../../service';
 import { Router } from '@angular/router';
-
+import { AdminGuard } from 'app/guard/index';
 import { interval } from 'rxjs/observable/interval';
 declare var $: any;
 
@@ -14,17 +14,28 @@ declare var $: any;
   styleUrls: ['./header.component.scss']
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnChanges {
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
+	private adminGuard: AdminGuard,
     private router: Router
   ) { }
 
   
   ngOnInit() {
-	  $.getScript('assets/new-age/js/new-age.min.js', function(){});
+	  if(!this.loggedIn())
+	  {
+		$.getScript('assets/new-age/js/new-age.min.js', function(){});
+	  }
+  }
+  
+  ngOnChanges(){
+	if(!this.loggedIn())
+	{
+		$.getScript('assets/new-age/js/new-age.min.js', function(){});
+	}
   }
   
   logout() {

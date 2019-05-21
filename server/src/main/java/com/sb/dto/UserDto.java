@@ -15,13 +15,14 @@ public class UserDto {
     @Size(min = 1, message = "{Size.userDto.username}")
     private String username;
     
+    /*
     @NotNull
     @Size(min = 1, message = "{Size.userDto.firstname}")
     private String firstname;
 
     @NotNull
     @Size(min = 1, message = "{Size.userDto.lastname}")
-    private String lastname;
+    private String lastname;*/
     
     @ValidPassword
     private String password;
@@ -66,6 +67,7 @@ public class UserDto {
         this.role = role;
     }
 
+    /*
     public String getFirstname() {
         return firstname;
     }
@@ -80,7 +82,7 @@ public class UserDto {
 
     public void setLastname(final String lastName) {
         this.lastname = lastName;
-    }
+    }*/
 
     public String getPassword() {
         return password;
@@ -115,7 +117,7 @@ public class UserDto {
                 .append(isUsing2FA).append(", role=").append(role).append("]");
         */
         
-        builder.append("UserDto [username=").append(username).append(", firstName=").append(firstname).append(", lastName=").append(lastname).append(", password=").append(password).append(", isUsing2FA=")
+        builder.append("UserDto [username=").append(username).append(", password=").append(password).append(", isUsing2FA=")
         .append(isUsing2FA).append(", role=").append(role).append("]");
         
         return builder.toString();
