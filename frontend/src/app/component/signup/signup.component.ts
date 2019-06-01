@@ -68,9 +68,9 @@ export class SignupComponent implements OnInit, OnDestroy {
 	  email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
 	  // /(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?\/&gt;.&lt;,])(?!.*\s).*$/
 	  password: ['', Validators.compose([Validators.pattern(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)])],
-	  matchingPassword: ['', Validators.compose([Validators.pattern(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)])],
-      firstname:['', Validators.compose([Validators.required, Validators.minLength(1)])],
-      lastname: ['', Validators.compose([Validators.required, Validators.minLength(1)])]
+	  matchingPassword: ['', Validators.compose([Validators.pattern(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)])]
+      //firstname:['', Validators.compose([Validators.required, Validators.minLength(1)])],
+      //lastname: ['', Validators.compose([Validators.required, Validators.minLength(1)])]
     });
   }
 

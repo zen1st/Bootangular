@@ -3,6 +3,7 @@ package com.sb.service.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,12 +36,20 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, AccessDeniedException {
         User user = userRepository.findByUsername(username);
-        if (user == null) {
+        //System.out.println(user.isDisabled());
+        
+        if (user == null ) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
-        } else {
-            return user;
+        } 
+        else {
+            if(user.isDisabled()){
+            	throw new AccessDeniedException(String.format("User disabled with username '%s'.", username));
+            }
+            else{
+            	return user;
+            }
         }
     }
 

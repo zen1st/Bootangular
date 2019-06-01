@@ -50,7 +50,7 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     private boolean enabled;
-
+    private boolean disabled;
     //private boolean isUsing2FA;
 
     @JsonProperty(access = Access.WRITE_ONLY)
@@ -69,6 +69,7 @@ public class User implements UserDetails, Serializable {
         super();
         this.secret = Base32.random();
         this.enabled = false;
+        this.disabled = false;
     }
 
     public Long getId() {
@@ -135,6 +136,13 @@ public class User implements UserDetails, Serializable {
         this.enabled = enabled;
     }
 
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(final boolean disabled) {
+        this.disabled = disabled;
+    }
     /*
     public boolean isUsing2FA() {
         return isUsing2FA;
@@ -186,7 +194,7 @@ public class User implements UserDetails, Serializable {
                 .append(isUsing2FA).append(", secret=").append(secret).append(", authorities=").append(authorities).append("]");
         */
         //builder.append("User [id=").append(id).append(", username=").append(username).append(", firstName=").append(firstName).append(", lastName=").append(lastName).append(", email=").append(email).append(", password=").append(password).append(", enabled=").append(enabled).append(", secret=").append(secret).append(", authorities=").append(authorities).append("]");
-        builder.append("User [id=").append(id).append(", username=").append(username).append(", email=").append(email).append(", password=").append(password).append(", enabled=").append(enabled).append(", secret=").append(secret).append(", authorities=").append(authorities).append("]");
+        builder.append("User [id=").append(id).append(", username=").append(username).append(", email=").append(email).append(", password=").append(password).append(", enabled=").append(enabled).append(", disabled=").append(disabled).append(", secret=").append(secret).append(", authorities=").append(authorities).append("]");
 
         return builder.toString();
     }

@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 import {
   UserService,
   AuthService
-} from '../../service';
+} from 'app/service';
 import { Router } from '@angular/router';
 import { AdminGuard } from 'app/guard/index';
 import { interval } from 'rxjs/observable/interval';
@@ -15,7 +15,7 @@ declare var $: any;
 })
 
 export class HeaderComponent implements OnInit, OnChanges {
-
+	
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -38,6 +38,19 @@ export class HeaderComponent implements OnInit, OnChanges {
 	}
   }
   
+  applyStyles() {
+	  
+    var styles = {'display' : 'none'};
+	
+	if(!this.loggedIn())
+	{
+		styles = {'display' : 'flex'};
+	}
+
+    return styles;
+  }
+
+  
   logout() {
     this.authService.logout().subscribe(res => {
       this.router.navigate(['/']);
@@ -58,6 +71,5 @@ export class HeaderComponent implements OnInit, OnChanges {
 	this.userService.initUser();
 	//var source = interval(1000);
 	//var subscribe = source.subscribe(val => console.log(val));
-	
   }
 }

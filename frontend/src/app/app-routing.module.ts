@@ -9,17 +9,19 @@ import {
 import {
   //AppComponent,
   HomeComponent,
-  NotFoundComponent,
-  ChangePasswordComponent,
-  ForbiddenComponent,
-  AdminComponent,
-  AuthTestComponent,
-  ArticleComponent,
-  AuthorComponent,
   BadTokenComponent,
   VerifyEmailComponent,
-  ResetPasswordComponent
-} from './page';
+  ResetPasswordComponent,
+  ChangePasswordComponent,
+  NotFoundComponent,
+  ForbiddenComponent,
+  AuthTestComponent,
+  AdminComponent,
+  UserTableComponent,
+  PlaceholderComponent,
+  ArticleComponent,
+  AuthorComponent,
+} from './component';
 
 export const routes: Routes = [
   {
@@ -27,6 +29,17 @@ export const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full'
   },
+  /*
+  {
+    path: 'login',
+    component: HomeComponent,
+	data : {flag : 0}
+  },
+  {
+    path: 'signup',
+    component: HomeComponent,
+	data : {flag : 1}
+  },*/
   {
     path: 'verifyEmail/:token',
     component: VerifyEmailComponent,
@@ -46,16 +59,28 @@ export const routes: Routes = [
     path: 'change-password',
     component: ChangePasswordComponent,
     canActivate: [LoginGuard]
-  },
-  {
-    path: 'admin',
-    component: AdminComponent,
-    canActivate: [AdminGuard]
-  },
+  }, 
   {
     path: 'authtest',
     component: AuthTestComponent,
     pathMatch: 'full'
+  },
+  { path: 'admin', 
+	component: AdminComponent,
+	canActivate: [AdminGuard],
+    children: [
+      { path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: 'users', component: UserTableComponent },
+      { path: 'placeholder', component: PlaceholderComponent }
+    ]
+  },
+  {
+    path: 'article',
+    component: ArticleComponent
+  },
+  {
+    path: 'article/:action/:id',
+    component: ArticleComponent
   },
   {
     path: 'article/:action',

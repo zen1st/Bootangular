@@ -18,7 +18,7 @@ export class AdminGuard implements CanActivate, CanLoad {
 
     } else {
       console.log('NOT AN ADMIN ROLE');
-      this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
+      this.router.navigate(['/'], { queryParams: { returnUrl: state.url }});
       return false;
     }
   }

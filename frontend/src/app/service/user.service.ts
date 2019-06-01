@@ -40,8 +40,11 @@ export class UserService {
     return this.apiService.get(this.config.whoami_url).map(user => this.currentUser = user);
   }
 
+  deleteUser(username:string) {
+    return this.apiService.delete(this.config.users_url+"/"+username);
+  }
+  
   getAll() {
     return this.apiService.get(this.config.users_url);
   }
-
 }

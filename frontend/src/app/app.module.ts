@@ -3,8 +3,10 @@ import { NgModule, APP_INITIALIZER} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { EscapeHtmlPipe } from './pipes/keep-html.pipe';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 // material
 import {
@@ -22,38 +24,60 @@ import {
   AdminGuard 
 } from './guard';
 import {
-  AccountMenuComponent,
   HeaderComponent,
-  ApiCardComponent,
-  FooterComponent,
+  AccountMenuComponent,
   GithubComponent,
-  PostPreviewComponent,
+  ApiCardComponent,
+  PlaceholderComponent,
   TestCompComponent,
-  PageHeaderComponent,
+  
+  NavComponent,
+  
+  LandingNavComponent,
   LoginComponent,
-  SignupComponent
-} from './component';
-import {
+  SignupComponent,
+
+  LoggedInNavComponent,
+  
   HomeComponent,
-  NotFoundComponent,
-  ChangePasswordComponent,
-  ForbiddenComponent,
-  AdminComponent,
-  AuthTestComponent,
-  ArticleComponent,
-  AuthorComponent,
+  LandingHomeComponent,
   BadTokenComponent,
   VerifyEmailComponent,
-  ResetPasswordComponent
-} from './page';
+  ChangePasswordComponent,
+  ResetPasswordComponent,
+  NotFoundComponent,
+  ForbiddenComponent,
+  AuthTestComponent,
+  
+  LoggedInHomeComponent,
+  
+  AdminComponent,
+  UserTableComponent,
+  UserAddDialogComponent,
+  UserEditDialogComponent,
+  UserDeleteDialogComponent,
+  
+  ArticleComponent,
+  MastheadComponent,
+  PostPreviewComponent,
+  
+  AuthorComponent,
+  
+  FooterComponent,
+  LandingFooterComponent,
+  LoggedInFooterComponent
+} from './component';
+
+
 import {
   ApiService,
+  ConfigService,
   AuthService,
   UserService,
   FooService,
-  ConfigService,
-  ArticleService
+  ArticleService,
 } from './service';
+
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
 }
@@ -62,28 +86,40 @@ export function initUserFactory(userService: UserService) {
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent,
     ApiCardComponent,
-    HomeComponent,
     GithubComponent,
     LoginComponent,
     NotFoundComponent,
     AccountMenuComponent,
     ChangePasswordComponent,
     ForbiddenComponent,
-    AdminComponent,
     SignupComponent,
     PostPreviewComponent,
     AuthTestComponent,
     ArticleComponent,
-    PageHeaderComponent,
     AuthorComponent,
 	EscapeHtmlPipe,
 	TestCompComponent,
 	BadTokenComponent,
 	VerifyEmailComponent,
 	ResetPasswordComponent,
-	FilterItemDirective
+	FilterItemDirective,
+    PlaceholderComponent,
+    NavComponent,
+    LandingNavComponent,
+    LoggedInNavComponent,
+	HomeComponent,
+	LandingHomeComponent,
+	LoggedInHomeComponent,
+    MastheadComponent,
+	AdminComponent,
+	UserTableComponent,
+	UserAddDialogComponent,
+    UserEditDialogComponent,
+    UserDeleteDialogComponent,
+	FooterComponent,
+    LandingFooterComponent,
+    LoggedInFooterComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -95,8 +131,14 @@ export function initUserFactory(userService: UserService) {
     HttpClientModule,
     AppRoutingModule,
     FlexLayoutModule,
-	FroalaEditorModule.forRoot(), 
-	FroalaViewModule.forRoot()
+	AngularEditorModule,
+	RecaptchaModule,
+    RecaptchaFormsModule
+  ],
+  entryComponents: [
+    UserAddDialogComponent,
+    UserEditDialogComponent,
+    UserDeleteDialogComponent
   ],
   providers: [
     LoginGuard,

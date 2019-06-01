@@ -1,0 +1,14 @@
+<app-masthead [title]="title" [subheading]="subheading" [imgUrl]="imgUrl"></app-masthead>
+<div class="content container">
+<nav mat-tab-nav-bar  dynamicHeight mat-stretch-tabs class="mat-tab-group-inverted-header">
+  <a mat-tab-link
+     *ngFor="let link of navLinks"
+     [routerLink]="link.path"
+     routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">
+    {{link.label}}
+  </a>
+</nav>
+<router-outlet></router-outlet>
+</div>
+

@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +26,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.sb.dao.ArticleRepository;
+import com.sb.dao.UserRepository;
 import com.sb.dto.UserDto;
 import com.sb.dto.UserRequest;
 import com.sb.exception.ResourceConflictException;
+import com.sb.pojo.Article;
 import com.sb.pojo.User;
 import com.sb.security.registration.OnRegistrationCompleteEvent;
 import com.sb.service.UserService;
@@ -37,18 +41,59 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 	
   private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 	
   @Autowired
+  UserRepository userRepository;
+  
+  @Autowired
   private UserService userService;
 
   @Autowired
   private ApplicationEventPublisher eventPublisher;
+    
+  //from bfwg/angular-spring-starter
+  @RequestMapping(method = GET, value = "/{userId}")
+  public User loadById(@PathVariable Long userId) {
+    return this.userService.findById(userId);
+  }
 
+  @RequestMapping(method = GET)
+  public List<User> loadAll() {
+    return this.userService.findAll();
+  }
   
+  @DeleteMapping("/{username}")
+  public ResponseEntity<User> deleteArticle(HttpServletRequest request, @PathVariable(value = "username") String username) {
+	  User user = userService.findByUsername(username);
+      
+      if(user == null) {
+          return ResponseEntity.notFound().build();
+      }
+      
+      //Prevent other users from deleting your article
+      if(request.isUserInRole("ROLE_ADMIN")){
+    	  user.setDisabled(true);
+
+    	  User updatedUser = userRepository.save(user);
+    	  
+    	  return ResponseEntity.ok(updatedUser);
+      }
+      else {
+      	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+      }
+  }
+  
+  @RequestMapping("/whoami")
+  @PreAuthorize("hasRole('USER')")
+  public User user() {
+    return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  }
+
+  /*
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
   @ResponseBody
   public GenericResponse registerUserAccount(@Valid @RequestBody final UserDto accountDto, final HttpServletRequest request) {
@@ -60,26 +105,16 @@ public class UserController {
 
   private String getAppUrl(HttpServletRequest request) {
       return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-  }
-    
-  //from bfwg/angular-spring-starter
-  @RequestMapping(method = GET, value = "/user/{userId}")
-  public User loadById(@PathVariable Long userId) {
-    return this.userService.findById(userId);
-  }
-
-  @RequestMapping(method = GET, value = "/user/all")
-  public List<User> loadAll() {
-    return this.userService.findAll();
-  }
-
+  }*/
+  
+  /*
   @RequestMapping(method = GET, value = "/user/reset-credentials")
   public ResponseEntity<Map> resetCredentials() {
     this.userService.resetCredentials();
     Map<String, String> result = new HashMap<>();
     result.put("result", "success");
     return ResponseEntity.accepted().body(result);
-  }
+  }*/
 
 
   /*
@@ -101,11 +136,4 @@ public class UserController {
    * We are not using userService.findByUsername here(we could), so it is good that we are making
    * sure that the user has role "ROLE_USER" to access this endpoint.
    */
-  
-  @RequestMapping("/whoami")
-  @PreAuthorize("hasRole('USER')")
-  public User user() {
-    return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-  }
-
 }

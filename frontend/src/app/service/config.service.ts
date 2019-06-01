@@ -27,14 +27,12 @@ export class ConfigService {
   private _reset_password_url = this._auth_url + '/resetPassword';
 	
   private _change_password_url = this._auth_url + '/changePassword';
-
-  private _whoami_url = this._api_url + '/whoami';
   
-  private _user_url = this._api_url + '/user';
+  private _users_url = this._api_url + '/users';
 
-  private _users_url = this._user_url + '/all';
+  private _whoami_url = this._users_url + '/whoami';
 
-  private _reset_credentials_url = this._user_url + '/reset-credentials';
+  private _reset_credentials_url = this._users_url + '/reset-credentials';
 
   private _article_url = this._api_url + '/article';
   
@@ -81,15 +79,14 @@ export class ConfigService {
   get change_password_url(): string {
       return this._change_password_url;
   }  
-  
-  get whoami_url(): string {
-      return this._whoami_url;
-  }
-  
+
   get users_url(): string {
       return this._users_url;
   }
-  
+  get whoami_url(): string {
+      return this._whoami_url;
+  }
+
   get reset_credentials_url(): string {
       return this._reset_credentials_url;
   }

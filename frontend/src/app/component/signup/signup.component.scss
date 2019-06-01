@@ -1,15 +1,9 @@
-.content {
-    width: 100%;
-  }
-  
   mat-card {
-    max-width: 350px;
     text-align: center;
     animation: fadein 1s;
     -o-animation: fadein 1s; /* Opera */
     -moz-animation: fadein 1s; /* Firefox */
     -webkit-animation: fadein 1s; /* Safari and Chrome */
-  
   }
   
   mat-form-field {
@@ -34,28 +28,5 @@
   .success {
     color: #8BC34A;
   }
-  
-  
-@media screen and (max-width: 599px) {
 
-  .content {
-    /* https://github.com/angular/flex-layout/issues/295 */
-    display: block !important;
-  }
-
-}
-
-@media only screen and (max-width: 992px) {
-  mat-card {
-    /* https://github.com/angular/flex-layout/issues/295 */
-    display: block !important;
-    max-width:100%;
-  }
-}
-  
-  a {
-    text-decoration: none;
-    cursor: auto;  
-	/*color: #FFFFFF;*/
-  }
   

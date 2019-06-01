@@ -9,6 +9,7 @@
 		<input matInput formControlName="password" required type="password" placeholder="Password" >
 	  </mat-form-field>
 	  <input name="rememberMe" formControlName="rememberMe" type="checkbox"> Remember me
+	  <re-captcha formControlName="recaptchaReactive" siteKey="6Le0ZqUUAAAAAI7Cii6Z_pYnZdChds3UkC5o7VBB"></re-captcha>
 	  <br>
 	  <a style="text-decoration: underline; cursor:pointer" routerLink="/resetPassword">I forgot my password!</a>
 	  <button type="submit" [disabled]="!loginForm.form.valid" mat-raised-button color="primary">Login</button>

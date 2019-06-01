@@ -72,7 +72,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 	this.form = this.formBuilder.group({
 		username: ['', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(64)])],
 		password: ['', Validators.required],
-		rememberMe: true
+		rememberMe: true,
+		recaptchaReactive: ['', Validators.required]
 	});
 	//console.log(this.form);
   }

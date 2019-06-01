@@ -1,0 +1,91 @@
+<app-masthead [title]="title" [subheading]="subheading" [imgUrl]="imgUrl" [createdBy]="createdBy" [createdTime]="createdTime"></app-masthead>
+	
+	<!-- Main Content -->
+	<div class="container" *ngIf="!action">
+	<div class="row">
+	  <div class="col-lg-8 col-md-10 mx-auto">
+		<app-post-preview *ngFor="let postPreview of postPreviews"
+			[postPreview]="postPreview">
+		</app-post-preview>
+		<!-- Pager -->
+		<div class="clearfix">
+		  <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+		</div>
+	  </div>
+	</div>
+	</div>
+
+	<!-- Post Content -->
+    <article *ngIf="action">
+      <div class="container">
+        <div class="row">
+		
+			<div class="col-lg-8 col-md-10 mx-auto" *ngIf="action=='view' && ((currentUser?.username == currentArticle?.createdBy && currentUser) || adminGuard.canLoad())">
+				<button type="button" class="btn btn-danger float-right" 
+				(click)="deleteArticle()">
+				Delete</button>
+				<button type="button" class="btn btn-primary float-right" 
+				[routerLink]="['/article/edit/', id]">
+				Edit</button>
+			</div>
+		
+          <div class="col-lg-8 col-md-10 mx-auto">
+			<div [innerHTML]="currentArticle?.content | keepHtml" *ngIf="action=='view'"></div>
+
+			<form name="postArticleForm" id="postArticleForm" [formGroup]="form" (ngSubmit)="onSubmit()" 
+			#postArticleForm="ngForm"
+			*ngIf="action=='post' || (action=='edit' && (currentUser?.username == currentArticle?.createdBy || adminGuard.canLoad()))">
+		
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Title</label>
+                <input type="text" class="form-control" placeholder="Title" id="title" required 
+				formControlName="title"
+				data-validation-required-message="Please enter your title.">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+			
+			
+			<div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+				<select class="form-control" id="exampleFormControlSelect1">
+				  <option>1</option>
+				  <option>2</option>
+				</select>
+                <p class="help-block text-danger"></p>
+              </div>
+			</div>
+			
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Content</label>
+				<!--
+                <textarea rows="5" class="form-control" placeholder="Content" id="content" required 
+				formControlName="content"
+				data-validation-required-message="Please enter your content."></textarea>
+				
+				<div [froalaEditor] 
+				id="content" 
+				class="form-control" 
+				formControlName="content" 
+				required >Hello, Froala!</div>
+				-->
+				
+				<angular-editor formControlName="content"></angular-editor>
+				
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+              <button [disabled]="!postArticleForm.form.valid" type="submit" class="btn btn-primary" id="submitArticleButton">Submit</button>
+            </div>
+			</form>
+		  	  
+          </div>
+        </div>
+      </div>
+    </article>
+<hr>
