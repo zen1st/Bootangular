@@ -1,0 +1,40 @@
+<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand" routerLink="/">BlogsMade</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+		
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+              <a class="nav-link" href="javascript:void(0)" routerLink="/blogs/post">
+				<span>Post Article</span>
+			  </a>
+            </li>
+			
+			<!--
+			<li class="nav-item">
+              <a class="nav-link" href="javascript:void(0)" *ngIf="loggedIn()"  (click)="refreshToken()">
+				<span>Refresh Token</span>
+			  </a>
+            </li>
+			-->
+
+			<li class="nav-item">
+				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">
+					<span>Greetings, {{uS.currentUser.username}}</span>
+				</a>
+			  
+				<div class="dropdown-menu" style="top:initial; left:initial;">
+				  <a class="dropdown-item" href="#"  [routerLink]="['/admin']" *ngIf="aG.canLoad()">ADMIN PAGE</a>
+				  <a class="dropdown-item" href="#"  [routerLink]="['/change-password']">CHANGE PASSWORD</a>
+				  <a class="dropdown-item" href="#" (click)="logout()">SIGN OUT</a>
+				</div>
+			</li>
+          </ul>
+        </div>
+      </div>
+    </nav>

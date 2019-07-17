@@ -103,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       		"/api/auth/refreshAuthToken",
       		"/api/auth/sendResetPasswordEmail",
       		"/api/auth/resetPassword",
-      		"/api/article/**",
+      		"/api/blogs/**",
       		"/api/scrap/**"
       		).permitAll()
       .antMatchers("/api/**").authenticated()

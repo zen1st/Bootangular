@@ -24,48 +24,43 @@ import {
   AdminGuard 
 } from './guard';
 import {
-  HeaderComponent,
-  AccountMenuComponent,
-  GithubComponent,
-  ApiCardComponent,
+
   PlaceholderComponent,
   TestCompComponent,
-  
-  NavComponent,
-  
-  LandingNavComponent,
+
   LoginComponent,
   SignupComponent,
 
-  LoggedInNavComponent,
-  
-  HomeComponent,
-  LandingHomeComponent,
   BadTokenComponent,
-  VerifyEmailComponent,
   ChangePasswordComponent,
   ResetPasswordComponent,
   NotFoundComponent,
   ForbiddenComponent,
+  ApiCardComponent,
   AuthTestComponent,
   
-  LoggedInHomeComponent,
-  
+  HomeComponent,
+  RouterOutletComponent,
+
   AdminComponent,
   UserTableComponent,
   UserAddDialogComponent,
   UserEditDialogComponent,
   UserDeleteDialogComponent,
   
-  ArticleComponent,
-  MastheadComponent,
-  PostPreviewComponent,
+  NewAgeComponent,
+  NewAgeNavComponent,
+  NewAgeContentComponent,
+  NewAgeFooterComponent,
   
-  AuthorComponent,
+  CleanBlogComponent,
+  CleanBlogNavComponent,
+  CleanBlogContentComponent,
+  CleanBlogMastheadComponent,
+  CleanBlogPreviewComponent,
+  CleanBlogFooterComponent
   
-  FooterComponent,
-  LandingFooterComponent,
-  LoggedInFooterComponent
+  
 } from './component';
 
 
@@ -75,8 +70,12 @@ import {
   AuthService,
   UserService,
   FooService,
-  ArticleService,
+  BlogService,
 } from './service';
+import { ChatComponent } from './component/chat/chat.component';
+import { ChatNavComponent } from './component/chat/chat-nav/chat-nav.component';
+import { ChatContentComponent } from './component/chat/chat-content/chat-content.component';
+import { ChatFooterComponent } from './component/chat/chat-footer/chat-footer.component';
 
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
@@ -85,41 +84,40 @@ export function initUserFactory(userService: UserService) {
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     ApiCardComponent,
-    GithubComponent,
     LoginComponent,
     NotFoundComponent,
-    AccountMenuComponent,
     ChangePasswordComponent,
     ForbiddenComponent,
     SignupComponent,
-    PostPreviewComponent,
+    CleanBlogPreviewComponent,
     AuthTestComponent,
-    ArticleComponent,
-    AuthorComponent,
+    CleanBlogContentComponent,
 	EscapeHtmlPipe,
 	TestCompComponent,
 	BadTokenComponent,
-	VerifyEmailComponent,
 	ResetPasswordComponent,
 	FilterItemDirective,
     PlaceholderComponent,
-    NavComponent,
-    LandingNavComponent,
-    LoggedInNavComponent,
 	HomeComponent,
-	LandingHomeComponent,
-	LoggedInHomeComponent,
-    MastheadComponent,
+    CleanBlogMastheadComponent,
 	AdminComponent,
 	UserTableComponent,
 	UserAddDialogComponent,
     UserEditDialogComponent,
     UserDeleteDialogComponent,
-	FooterComponent,
-    LandingFooterComponent,
-    LoggedInFooterComponent,
+    CleanBlogComponent,
+    CleanBlogNavComponent,
+    CleanBlogFooterComponent,
+    NewAgeComponent,
+    NewAgeFooterComponent,
+    NewAgeNavComponent,
+    NewAgeContentComponent,
+    RouterOutletComponent,
+    ChatComponent,
+    ChatNavComponent,
+    ChatContentComponent,
+    ChatFooterComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -149,7 +147,7 @@ export function initUserFactory(userService: UserService) {
     ApiService,
     UserService,
     ConfigService,
-	ArticleService,
+	BlogService,
     MatIconRegistry,
     {
       'provide': APP_INITIALIZER,

@@ -1,3 +1,7 @@
-<app-nav *ngIf="!flg"></app-nav>
-<router-outlet></router-outlet>
-<app-footer *ngIf="!flg"></app-footer>
+<div *ngIf="!noNavFlg" style="height:100%;">
+<app-new-age *ngIf="!loggedIn()"></app-new-age>
+<app-chat *ngIf="loggedIn() && currentUrl==1"></app-chat>
+<app-clean-blog *ngIf="loggedIn() && currentUrl==2"></app-clean-blog>
+</div>
+
+<app-router-outlet *ngIf="noNavFlg"></app-router-outlet>

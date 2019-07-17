@@ -1,5 +1,7 @@
 package com.sb.config;
 
+import java.util.Optional;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -22,11 +24,19 @@ class AuditConfig {
     }
 
     public static class SecurityAuditor implements AuditorAware<String> {
-        @Override
+        /*@Override
         public String getCurrentAuditor() {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String username = auth.getName();
             return username;
+        }*/
+    	
+        @Override
+        public Optional<String> getCurrentAuditor() {
+
+            String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+            System.out.println(uname);
+            return Optional.of(uname);
         }
     }	
 }

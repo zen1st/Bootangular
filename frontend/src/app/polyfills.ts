@@ -42,7 +42,6 @@
 
 /** Evergreen browsers require these. **/
 import 'core-js/es6/reflect';
-import 'core-js/es7/reflect';
 
 
 
@@ -72,3 +71,5 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * MATERIAL 2
  */
 import 'hammerjs/hammer';
+
+import 'global-shim';

@@ -3,18 +3,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.bfwg</groupId>
+	<groupId>com.sb</groupId>
 	<artifactId>angular-spring-starter</artifactId>
 	<version>0.1.1</version>
 	<packaging>jar</packaging>
 
 	<name>angular-spring-starter</name>
-	<description>The backend server for Angular2 Spring Boot JWT Starter</description>
+	<description>The backend server for Angular 7 Spring Boot JWT Starter</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.8.RELEASE</version>
+		<version>2.1.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -34,67 +34,54 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-		<!-- 2fa -->
-		<!-- https://mvnrepository.com/artifact/org.jboss.aerogear/aerogear-otp-java -->
-<dependency>
-    <groupId>org.jboss.aerogear</groupId>
-    <artifactId>aerogear-otp-java</artifactId>
-    <version>1.0.0</version>
-    <scope>provided</scope>
-</dependency>
 		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		
+		<!-- Security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		
-		<!-- Password Validation -->
-<!-- https://mvnrepository.com/artifact/org.passay/passay -->
-<dependency>
-    <groupId>org.passay</groupId>
-    <artifactId>passay</artifactId>
-    <version>1.0</version>
-</dependency>
+		<!-- User Agent parser -->
+		<!-- https://mvnrepository.com/artifact/com.github.ua-parser/uap-java -->
+		<dependency>
+		    <groupId>com.github.ua-parser</groupId>
+		    <artifactId>uap-java</artifactId>
+		    <version>1.4.0</version>
+		</dependency>
 		
-		<!-- Spring Data JPA dependencies -->
+		<!-- 2fa -->
+		<!-- https://mvnrepository.com/artifact/org.jboss.aerogear/aerogear-otp-java -->
+		<dependency>
+		    <groupId>org.jboss.aerogear</groupId>
+		    <artifactId>aerogear-otp-java</artifactId>
+		    <version>1.0.0</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- Password Validation -->
+		<!-- https://mvnrepository.com/artifact/org.passay/passay -->
+		<dependency>
+		    <groupId>org.passay</groupId>
+		    <artifactId>passay</artifactId>
+		    <version>1.0</version>
+		</dependency>
+
+		
+		<!-- Database -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
-		<!--Formats:-->
-		<dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt</artifactId>
-      <version>0.9.0</version>
-    </dependency>
-    
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-		</dependency>
-				
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-		</dependency>
-<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-<dependency>
-    <groupId>javax.xml.bind</groupId>
-    <artifactId>jaxb-api</artifactId>
-    <version>2.3.0</version>
-</dependency>
 
-		
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
-		    <version>6.0.6</version>
 		</dependency>
 		
 		<dependency>
@@ -103,40 +90,57 @@
 			<scope>runtime</scope>
 		</dependency>
 		
-<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-<dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>27.1-jre</version>
-</dependency>
-
- <!-- User Agent parser -->
-<!-- https://mvnrepository.com/artifact/com.github.ua-parser/uap-java -->
-<dependency>
-    <groupId>com.github.ua-parser</groupId>
-    <artifactId>uap-java</artifactId>
-    <version>1.4.0</version>
-</dependency>
-
-<!-- maxmind dependency -->
-<!-- https://mvnrepository.com/artifact/com.maxmind.geoip2/geoip2 -->
-<dependency>
-    <groupId>com.maxmind.geoip2</groupId>
-    <artifactId>geoip2</artifactId>
-    <version>2.12.0</version>
-</dependency>
-
+		<!--Formats-->
+		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		    <version>2.3.0</version>
+		</dependency>
 		
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-devtools</artifactId>
-        <optional>true</optional>
-    </dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<!--
+		<dependency>
+		  <groupId>com.fasterxml.jackson.datatype</groupId>
+		  <artifactId>jackson-datatype-hibernate5</artifactId>
+		</dependency>    
+		-->
+		<dependency>
+	      <groupId>io.jsonwebtoken</groupId>
+	      <artifactId>jjwt</artifactId>
+	      <version>0.9.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+
+		<!-- Test -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-devtools</artifactId>
+	        <optional>true</optional>
+	    </dependency>
+	    
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>spring-mock-mvc</artifactId>
@@ -144,8 +148,8 @@
 			<scope>test</scope>
 		</dependency>
 		
-		        <!--Selenium:-->
-	    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<!-- Selenium -->
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
 		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
 		    <artifactId>selenium-java</artifactId>
@@ -154,6 +158,23 @@
 		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
 		    <artifactId>htmlunit-driver</artifactId>
+		</dependency>
+		
+
+		<!-- Etc. -->
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>27.1-jre</version>
+		</dependency>
+
+		<!-- maxmind dependency -->
+		<!-- https://mvnrepository.com/artifact/com.maxmind.geoip2/geoip2 -->
+		<dependency>
+		    <groupId>com.maxmind.geoip2</groupId>
+		    <artifactId>geoip2</artifactId>
+		    <version>2.12.0</version>
 		</dependency>
 	</dependencies>
 

@@ -34,7 +34,7 @@ export class ConfigService {
 
   private _reset_credentials_url = this._users_url + '/reset-credentials';
 
-  private _article_url = this._api_url + '/article';
+  private _blogs_url = this._api_url + '/blogs';
   
   get foo_url(): string {
       return this._foo_url;
@@ -91,8 +91,8 @@ export class ConfigService {
       return this._reset_credentials_url;
   }
 
-  get article_url():string {
-      return this._article_url;
+  get blogs_url():string {
+      return this._blogs_url;
   }
 
 }

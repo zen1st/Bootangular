@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.sb.dao.ArticleRepository;
+import com.sb.dao.BlogRepository;
 import com.sb.dao.UserRepository;
 import com.sb.dto.UserDto;
 import com.sb.dto.UserRequest;
 import com.sb.exception.ResourceConflictException;
-import com.sb.pojo.Article;
+import com.sb.pojo.Blog;
 import com.sb.pojo.User;
 import com.sb.security.registration.OnRegistrationCompleteEvent;
 import com.sb.service.UserService;

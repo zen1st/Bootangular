@@ -1,0 +1,1 @@
+export * from './new-age-footer.component';

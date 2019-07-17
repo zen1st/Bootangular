@@ -7,10 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
-import com.sb.pojo.Authority;
-import com.sb.pojo.PersistentLogins;
-import com.sb.pojo.User;
-
 @Configuration
 public class AppConfig {
 
@@ -19,8 +15,9 @@ public class AppConfig {
 	@Value("${spring.datasource.url}") private String url; 
 	@Value("${spring.datasource.username}") private String username; 
 	@Value("${spring.datasource.password}") private String password; 
+	@Value("${hibernate.hbm2ddl.auto}") private String hbm2ddl; 
 	
-	  @Bean
+	  @Bean(name="entityManagerFactory")
 	  public LocalSessionFactoryBean getSessionFactory() {
 	    LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 
@@ -37,7 +34,7 @@ public class AppConfig {
 	    props.setProperty("hibernate.connection.password", password);
 
 	    //props.setProperty("hibernate.show_sql", "true");
-	    //props.setProperty("hibernate.hbm2ddl.auto", "validate");
+	    props.setProperty("hibernate.hbm2ddl.auto", hbm2ddl);
 	    
 	    /*
 	    # Hibernate properties
@@ -60,8 +57,7 @@ public class AppConfig {
 	    //props.setProperty("hibernate.c3p0.max_statements", "150");
 	    
 	    factoryBean.setHibernateProperties(props);
-	    factoryBean.setAnnotatedClasses(User.class, Authority.class, PersistentLogins.class);
-
+	    factoryBean.setPackagesToScan(new String[] { "com.sb.pojo" });
 	    return factoryBean;
 	  }
 

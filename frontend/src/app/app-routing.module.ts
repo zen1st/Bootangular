@@ -10,7 +10,6 @@ import {
   //AppComponent,
   HomeComponent,
   BadTokenComponent,
-  VerifyEmailComponent,
   ResetPasswordComponent,
   ChangePasswordComponent,
   NotFoundComponent,
@@ -19,8 +18,8 @@ import {
   AdminComponent,
   UserTableComponent,
   PlaceholderComponent,
-  ArticleComponent,
-  AuthorComponent,
+  CleanBlogContentComponent,
+  ChatContentComponent
 } from './component';
 
 export const routes: Routes = [
@@ -39,12 +38,12 @@ export const routes: Routes = [
     path: 'signup',
     component: HomeComponent,
 	data : {flag : 1}
-  },*/
+  },
   {
     path: 'verifyEmail/:token',
     component: VerifyEmailComponent,
     canActivate: [GuestGuard]
-  },
+  },*/
   {
     path: 'badToken',
     component: BadTokenComponent,
@@ -75,21 +74,21 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'article',
-    component: ArticleComponent
+    path: 'blogs',
+    component: CleanBlogContentComponent
   },
   {
-    path: 'article/:action/:id',
-    component: ArticleComponent
-  },
-  {
-    path: 'article/:action',
-    component: ArticleComponent,
+    path: 'blogs/:action',
+    component: CleanBlogContentComponent,
 	canActivate: [LoginGuard]
   },
   {
-    path: 'article/:action/:id',
-    component: ArticleComponent
+    path: 'blogs/:action/:id',
+    component: CleanBlogContentComponent
+  },
+  {
+    path: 'chats',
+    component: ChatContentComponent
   },
   {
     path: '404',

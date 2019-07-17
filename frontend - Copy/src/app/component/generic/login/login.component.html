@@ -1,0 +1,24 @@
+<mat-card elevation="5" fxFlex>
+  <mat-card-content>
+	<p [class]="notification.msgType" *ngIf="notification">{{notification.msgBody}}</p>
+	<form *ngIf="!submitted" [formGroup]="form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+	  <mat-form-field>
+		<input matInput formControlName="username" required placeholder="Username" >
+	  </mat-form-field>
+	  <mat-form-field>
+		<input matInput formControlName="password" required type="password" placeholder="Password" >
+	  </mat-form-field>
+	  <input name="rememberMe" formControlName="rememberMe" type="checkbox"> Remember me
+	  <!--<re-captcha formControlName="recaptchaReactive" siteKey="6Le0ZqUUAAAAAI7Cii6Z_pYnZdChds3UkC5o7VBB"></re-captcha>-->
+	  <br>
+	  <a style="text-decoration: underline; cursor:pointer" routerLink="/resetPassword">I forgot my password!</a>
+	  <button type="submit" [disabled]="!loginForm.form.valid" mat-raised-button color="primary">Login</button>
+	</form>
+	<!-- <br>
+	<div *ngIf="!submitted" >
+	  <button matTooltip="Reset password if someone has changed it already!" (click)="onResetCredentials()" mat-raised-button color="accent">Reset Credentials</button>
+	</div>
+	-->
+	<mat-spinner *ngIf="submitted" mode="indeterminate"></mat-spinner>
+  </mat-card-content>
+</mat-card>

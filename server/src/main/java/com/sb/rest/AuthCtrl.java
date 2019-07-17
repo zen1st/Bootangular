@@ -32,6 +32,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -99,6 +100,9 @@ public class AuthCtrl {
 
     @Value("${jwt.cookie}")
     private String TOKEN_COOKIE;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     public AuthCtrl() {
         super();
@@ -250,22 +254,30 @@ public class AuthCtrl {
     
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> changePassword(@RequestBody @Valid PasswordChanger passwordChanger) {
-    	
-    	if(passwordChanger.password.equals(passwordChanger.matchingPassword))
-    	{
-
-	        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.password);
-	        Map<String, String> result = new HashMap<>();
-	        result.put( "result", "success" );
-	        return ResponseEntity.accepted().body(result);
-    	}
+    public ResponseEntity<?> changePassword(final Locale locale, @RequestBody @Valid PasswordChanger passwordChanger) {
     	
     	Map<String, String> result = new HashMap<>();
-        result.put( "result", "password doesn't match" );
+
+    	if(passwordChanger.password.equals(passwordChanger.matchingPassword))
+    	{  
+            final User user = userService.findByUsername(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+            
+            if (!userService.checkIfValidOldPassword(user, passwordChanger.oldPassword)) {
+                //throw new InvalidOldPasswordException();
+    	        result.put( "message", "Invalid old password.");
+    	    	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
+            }
+            
+            userService.changeUserPassword(user, passwordChanger.password);
+            result.put( "message", messages.getMessage("message.updatePasswordSuc", null, locale));
+            return ResponseEntity.accepted().body(result);
+            
+    	}
+    	
+        result.put( "message", "password doesn't match" );
     	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result);
     }
-    
+
     static class PasswordChanger {
     	
     	//@ValidPassword

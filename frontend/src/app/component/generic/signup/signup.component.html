@@ -1,0 +1,30 @@
+<mat-card elevation="5" fxFlex>
+<mat-card-content>
+  <p [class]="notification.msgType" *ngIf="notification.msgBody!==undefined" [innerHTML]="notification.msgBody | keepHtml"></p>
+  <form *ngIf="!submitted" [formGroup]="form" (ngSubmit)="onSubmit()" #signupForm="ngForm">
+	<mat-form-field>
+	  <input matInput formControlName="username" placeholder="Username" required >
+	</mat-form-field>
+	<mat-form-field>
+	  <input matInput formControlName="email" placeholder="Email" required type="email" (input)="onInputChange($event)">
+	</mat-form-field>
+	<mat-form-field>
+	  <input matInput formControlName="password" placeholder="Password" required type="password" (input)="onInputChange($event)">
+	</mat-form-field>
+	<mat-form-field>
+	  <input matInput formControlName="matchingPassword" placeholder="Please re-type your Password" required type="password" (input)="onInputChange($event)">
+	</mat-form-field>
+	<!--
+	<mat-form-field>
+	  <input matInput formControlName="firstname" placeholder="First Name" required>
+	</mat-form-field>
+	<mat-form-field>
+	  <input matInput formControlName="lastname" placeholder="Last Name" required>
+	</mat-form-field>
+	-->
+	<button type="submit" [disabled]="!signupForm.form.valid || signupForm.value.password !== signupForm.value.matchingPassword" mat-raised-button color="primary">Sign up</button>
+  </form>
+  <br>
+  <mat-spinner *ngIf="submitted" mode="indeterminate"></mat-spinner>
+</mat-card-content>
+</mat-card>

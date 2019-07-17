@@ -2,6 +2,7 @@ package com.sb.pojo;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -64,6 +65,14 @@ public class User implements UserDetails, Serializable {
       inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
 	  @JsonIgnoreProperties("users")
   private Collection<Authority> authorities;
+	  
+	  
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinTable(name = "user_chatRoom",
+      joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "chatRoom_id", referencedColumnName = "id"))
+	  @JsonIgnoreProperties("users")
+  private Set<ChatRoom> chatRooms;
 
     public User() {
         super();
@@ -158,6 +167,14 @@ public class User implements UserDetails, Serializable {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+    
+    public Set<ChatRoom> getChatRooms() {
+        return chatRooms;
+    }
+
+    public void setChatRooms(final Set<ChatRoom> chatRooms) {
+        this.chatRooms = chatRooms;
     }
 
     @Override

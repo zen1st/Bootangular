@@ -1,12 +1,10 @@
-export * from './nav';
-export * from './header';
-export * from './github';
-export * from './footer';
-export * from './api-card';
 export * from './test-comp';
-export * from './login';
-export * from './signup';
-export * from './dialogs';
-export * from './user-table';
 export * from './placeholder';
-export * from './content';
+
+export * from './generic';
+export * from './home';
+export * from './router-outlet';
+
+export * from './new-age';
+export * from './clean-blog';
+export * from './chat';
