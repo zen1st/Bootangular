@@ -88,7 +88,8 @@ export const routes: Routes = [
   },
   {
     path: 'chats',
-    component: ChatContentComponent
+    component: ChatContentComponent,
+	canActivate: [LoginGuard]
   },
   {
     path: '404',

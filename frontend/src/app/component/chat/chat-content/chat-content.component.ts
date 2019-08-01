@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -110,6 +110,11 @@ export class ChatContentComponent implements OnInit {
 		);
 	}
 	
+	ngOnDestroy() {
+		this.stompClient.disconnect(function() {
+			//console.log("See you next time!");
+		});
+	}
   
 	/*
 	initializeWebSocketConnection(){

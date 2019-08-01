@@ -58,11 +58,13 @@ import {
   CleanBlogContentComponent,
   CleanBlogMastheadComponent,
   CleanBlogPreviewComponent,
-  CleanBlogFooterComponent
+  CleanBlogFooterComponent,
   
-  
+  ChatComponent,
+  ChatNavComponent,
+  ChatContentComponent,
+  ChatFooterComponent
 } from './component';
-
 
 import {
   ApiService,
@@ -72,10 +74,6 @@ import {
   FooService,
   BlogService,
 } from './service';
-import { ChatComponent } from './component/chat/chat.component';
-import { ChatNavComponent } from './component/chat/chat-nav/chat-nav.component';
-import { ChatContentComponent } from './component/chat/chat-content/chat-content.component';
-import { ChatFooterComponent } from './component/chat/chat-footer/chat-footer.component';
 
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();

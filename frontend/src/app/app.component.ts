@@ -23,22 +23,24 @@ export class AppComponent implements OnInit{
 			if (event instanceof NavigationEnd ) {
 				
 				//this.currentUrl=event.url;
+				this.currentUrl = 0;
 				
-				if(event.urlAfterRedirects=="/404" || event.urlAfterRedirects=="/403" || event.urlAfterRedirects=="/resetPassword"){
+				if(event.urlAfterRedirects=="/404" || 
+					event.urlAfterRedirects=="/403" || 
+					event.urlAfterRedirects=="/resetPassword" || 
+					event.urlAfterRedirects.includes("/badToken") ||
+					event.urlAfterRedirects.includes("/admin")){
 					this.noNavFlg = true;
 				}
-				else if(event.urlAfterRedirects.includes("chats"))
-				{
+				else if(event.urlAfterRedirects.includes("chats")){
 					this.currentUrl = 1;
 				}
-				else if(event.urlAfterRedirects.includes("blogs"))
-				{
+				else if(event.urlAfterRedirects.includes("blogs")){
 					this.currentUrl = 2;
 				}
 				else{
 					this.noNavFlg = false;
 				}
-				
 				//console.log(event.urlAfterRedirects);
 				//console.log(this.noNavFlg);
 			}
