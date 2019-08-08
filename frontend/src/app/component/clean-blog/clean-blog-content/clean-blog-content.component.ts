@@ -176,6 +176,6 @@ export class CleanBlogContentComponent implements OnInit {
 	}
 	
 	ngOnDestroy() {
-		this.sub.unsubscribe();
+		//this.sub.unsubscribe();
 	}
 }

@@ -18,7 +18,7 @@ export class NewAgeComponent implements OnInit {
 	}
 	
 	ngOnDestroy(){
-		this.removeElementsByClass("landingCssJs");
+		this.removeElementsByClass("newAgeCssJs");
 	}
 	
 	removeElementsByClass(className){
@@ -35,7 +35,7 @@ export class NewAgeComponent implements OnInit {
 		link.href = url;
 		link.rel = 'stylesheet';
 		link.type = 'text/css';
-		link.classList.add('landingCssJs');
+		link.classList.add('newAgeCssJs');
 		body.after(link);
 	}
 	
@@ -44,7 +44,7 @@ export class NewAgeComponent implements OnInit {
 		let body = this.document.getElementsByTagName('body')[0];
 		let link = this.document.createElement('script');
 		link.src = url;
-		link.classList.add('landingCssJs');
+		link.classList.add('newAgeCssJs');
 		body.after(link);
 	}
 

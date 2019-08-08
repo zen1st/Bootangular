@@ -74,6 +74,7 @@ import {
   FooService,
   BlogService,
 } from './service';
+import { StylishPortfolioComponent } from './component/stylish-portfolio/stylish-portfolio.component';
 
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
@@ -116,6 +117,7 @@ export function initUserFactory(userService: UserService) {
     ChatNavComponent,
     ChatContentComponent,
     ChatFooterComponent,
+    StylishPortfolioComponent,
   ],
   imports: [
     BrowserAnimationsModule,
