@@ -9,6 +9,8 @@ import {
 import {
   //AppComponent,
   HomeComponent,
+  LoginComponent,
+  SignupComponent,
   BadTokenComponent,
   ResetPasswordComponent,
   ChangePasswordComponent,
@@ -18,6 +20,9 @@ import {
   AdminComponent,
   UserTableComponent,
   PlaceholderComponent,
+  TestTableComponent,
+  TestTableModalContainerComponent,
+  TestTableModalComponent,
   CleanBlogContentComponent,
   ChatContentComponent
 } from './component';
@@ -26,19 +31,24 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    pathMatch: 'full'
+    //pathMatch: 'full',
+	children: [
+      { path: '', component: LoginComponent, pathMatch: 'full' },
+      { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
+      { path: 'signup', component: SignupComponent, canActivate: [GuestGuard] }
+    ]
   },
-  /*
-  {
+  /*{
     path: 'login',
-    component: HomeComponent,
-	data : {flag : 0}
+    component: HomeComponent
+	//data : {flg : 0}
   },
   {
     path: 'signup',
-    component: HomeComponent,
-	data : {flag : 1}
+    component: HomeComponent
+	//data : {flg : 1}
   },
+  /*
   {
     path: 'verifyEmail/:token',
     component: VerifyEmailComponent,
@@ -71,6 +81,15 @@ export const routes: Routes = [
       { path: '', redirectTo: 'users', pathMatch: 'full' },
       { path: 'users', component: UserTableComponent },
       { path: 'placeholder', component: PlaceholderComponent }
+    ]
+  },
+  {
+    path: 'testTable',
+    component: TestTableComponent,
+	canActivate: [LoginGuard],
+	children: [
+		{ path: ':action', component: TestTableModalContainerComponent,  outlet: 'modal'},
+		{ path: ':action/:id', component: TestTableModalContainerComponent,  outlet: 'modal'}
     ]
   },
   {

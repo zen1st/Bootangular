@@ -1,18 +1,18 @@
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Component, Inject} from '@angular/core';
+import {Component, Inject } from '@angular/core';
 import {
   UserService
 } from 'app/service';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 @Component({
-  selector: 'app-user-delete.dialog',
-  templateUrl: './user.delete.dialog.html',
-  styleUrls: ['./user.delete.dialog.css']
+  selector: 'app-user-table-unable',
+  templateUrl: './user-table-unable.component.html',
+  styleUrls: ['./user-table-unable.component.css']
 })
-export class UserDeleteDialogComponent {
+export class UserTableUnableComponent {
 
-  constructor(public dialogRef: MatDialogRef<UserDeleteDialogComponent>,private httpClient: HttpClient,
+  constructor(public dialogRef: MatDialogRef<UserTableUnableComponent>,private httpClient: HttpClient,
               //@Inject(MAT_DIALOG_DATA) public data: any, public dataService: DataService) { }
 				@Inject(MAT_DIALOG_DATA) public data: any, public userService: UserService) { }
 
@@ -20,10 +20,10 @@ export class UserDeleteDialogComponent {
     this.dialogRef.close();
   }
 
-  confirmDelete(): void {
+  unable(): void {
     //this.dataService.deleteIssue(this.data.id);
 	
-	this.userService.deleteUser(this.data.username)
+	this.userService.unableUser(this.data.username)
       .subscribe(res => {
 		  //console.log(res);
       }, err => {

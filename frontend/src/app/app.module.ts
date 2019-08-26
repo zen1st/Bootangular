@@ -24,46 +24,51 @@ import {
   AdminGuard 
 } from './guard';
 import {
+	PlaceholderComponent,
+	TestCompComponent,
 
-  PlaceholderComponent,
-  TestCompComponent,
+	LoginComponent,
+	SignupComponent,
 
-  LoginComponent,
-  SignupComponent,
+	BadTokenComponent,
+	ChangePasswordComponent,
+	ResetPasswordComponent,
+	NotFoundComponent,
+	ForbiddenComponent,
+	ApiCardComponent,
+	AuthTestComponent,
 
-  BadTokenComponent,
-  ChangePasswordComponent,
-  ResetPasswordComponent,
-  NotFoundComponent,
-  ForbiddenComponent,
-  ApiCardComponent,
-  AuthTestComponent,
-  
-  HomeComponent,
-  RouterOutletComponent,
+	HomeComponent,
+	RouterOutletComponent,
 
-  AdminComponent,
-  UserTableComponent,
-  UserAddDialogComponent,
-  UserEditDialogComponent,
-  UserDeleteDialogComponent,
-  
-  NewAgeComponent,
-  NewAgeNavComponent,
-  NewAgeContentComponent,
-  NewAgeFooterComponent,
-  
-  CleanBlogComponent,
-  CleanBlogNavComponent,
-  CleanBlogContentComponent,
-  CleanBlogMastheadComponent,
-  CleanBlogPreviewComponent,
-  CleanBlogFooterComponent,
-  
-  ChatComponent,
-  ChatNavComponent,
-  ChatContentComponent,
-  ChatFooterComponent
+	AdminComponent,
+	
+	UserTableComponent,
+	UserTableDisableComponent,
+	UserTableUnableComponent,
+
+	TestTableComponent,
+	TestTableModalContainerComponent,
+	TestTableModalComponent,
+
+	StylishPortfolioComponent,
+
+	NewAgeComponent,
+	NewAgeNavComponent,
+	NewAgeContentComponent,
+	NewAgeFooterComponent,
+
+	CleanBlogComponent,
+	CleanBlogNavComponent,
+	CleanBlogContentComponent,
+	CleanBlogMastheadComponent,
+	CleanBlogPreviewComponent,
+	CleanBlogFooterComponent,
+
+	ChatComponent,
+	ChatNavComponent,
+	ChatContentComponent,
+	ChatFooterComponent
 } from './component';
 
 import {
@@ -74,7 +79,6 @@ import {
   FooService,
   BlogService,
 } from './service';
-import { StylishPortfolioComponent } from './component/stylish-portfolio/stylish-portfolio.component';
 
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
@@ -102,9 +106,10 @@ export function initUserFactory(userService: UserService) {
     CleanBlogMastheadComponent,
 	AdminComponent,
 	UserTableComponent,
-	UserAddDialogComponent,
-    UserEditDialogComponent,
-    UserDeleteDialogComponent,
+	
+	UserTableDisableComponent,
+    UserTableUnableComponent,
+
     CleanBlogComponent,
     CleanBlogNavComponent,
     CleanBlogFooterComponent,
@@ -118,6 +123,9 @@ export function initUserFactory(userService: UserService) {
     ChatContentComponent,
     ChatFooterComponent,
     StylishPortfolioComponent,
+    TestTableComponent,
+    TestTableModalContainerComponent,
+    TestTableModalComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -134,9 +142,9 @@ export function initUserFactory(userService: UserService) {
     RecaptchaFormsModule
   ],
   entryComponents: [
-    UserAddDialogComponent,
-    UserEditDialogComponent,
-    UserDeleteDialogComponent
+	TestTableModalComponent,
+	UserTableDisableComponent,
+    UserTableUnableComponent
   ],
   providers: [
     LoginGuard,

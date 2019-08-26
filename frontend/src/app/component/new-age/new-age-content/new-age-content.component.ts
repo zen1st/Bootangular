@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, NavigationError} from '@angular/router';
 @Component({
   selector: 'app-new-age-content',
   templateUrl: './new-age-content.component.html',
@@ -7,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewAgeContentComponent implements OnInit {
 
-  constructor() { }
+	private activeLinkIndex = -1;
+	private navLinks: any[];
+	
+	constructor(private router: Router) { }
 
-  ngOnInit() {
-  }
-
+	ngOnInit() {
+		
+		this.navLinks=[{"label":"Login","path":"/login"},{"label":"Signup","path":"/signup"}];
+		
+	}
+	
+	isHome()
+	{
+		if (this.router.url=="/"){
+			return true;
+		}
+		
+		return false;
+	}
 }

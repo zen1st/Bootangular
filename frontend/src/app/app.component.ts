@@ -37,10 +37,11 @@ export class AppComponent implements OnInit{
 				else if(event.urlAfterRedirects=="/"){
 					this.currentUrl = 1;
 				}
-				else if(event.urlAfterRedirects.includes("/chats")){
+				else if(event.urlAfterRedirects.includes("/blogs")||
+					event.urlAfterRedirects.includes("/testTable")){
 					this.currentUrl = 2;
 				}
-				else if(event.urlAfterRedirects.includes("/blogs")){
+				else if(event.urlAfterRedirects.includes("/chats")){
 					this.currentUrl = 3;
 				}
 				

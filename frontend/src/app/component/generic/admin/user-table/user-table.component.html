@@ -3,10 +3,12 @@
     <!-- Username Column -->
     <ng-container matColumnDef="username">
       <th mat-header-cell *matHeaderCellDef> 
-	  <span mat-sort-header arrowPosition="">Username</span>
-		<button mat-button class="btn-toggle" [matMenuTriggerFor]="menu">
+	  <span mat-sort-header arrowPosition="before" style="float:left;">
+		Username
+		<button mat-button class="btn-toggle" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
 			<mat-icon>keyboard_arrow_down</mat-icon>
 		</button>
+	  </span>
 		<mat-menu #menu>
           <div mat-menu-item mat-filter-item [disableRipple]="true">
             <mat-form-field>
@@ -21,23 +23,26 @@
             </mat-form-field>
           </div>
           <div mat-menu-item mat-filter-item [disableRipple]="true">
-            <button mat-raised-button (click)="clearColumn('username')">Clear</button>
-            <button mat-raised-button color="primary" (click)="applyFilter()">Search</button>
+            <button mat-raised-button (click)="clearColumn('username')" style="width:50%">Clear</button>
+            <button mat-raised-button color="primary" (click)="applyFilter()" style="width:50%">Search</button>
           </div>
+		  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		  <button mat-raised-button (click)="clearFilters()" style="width:100%">Clear All</button>
+		  </div>
         </mat-menu>
-	  </th>
-		  
+	  </th> 
       <td mat-cell *matCellDef="let data" data-label="username">  {{data.username}} </td>
     </ng-container>
-
-
+	
     <!-- Email Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> 
-	  <span mat-sort-header arrowPosition="">email</span>
-		<button mat-button class="btn-toggle" [matMenuTriggerFor]="menu">
+	  <span mat-sort-header arrowPosition="before" style="float:left;">
+		Email
+		<button mat-button class="btn-toggle" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
 			<mat-icon>keyboard_arrow_down</mat-icon>
 		</button>
+	  </span>
 		<mat-menu #menu>
           <div mat-menu-item mat-filter-item [disableRipple]="true">
             <mat-form-field>
@@ -52,9 +57,12 @@
             </mat-form-field>
           </div>
           <div mat-menu-item mat-filter-item [disableRipple]="true">
-            <button mat-raised-button (click)="clearColumn('email')">Clear</button>
-            <button mat-raised-button color="primary" (click)="applyFilter()">Search</button>
+            <button mat-raised-button (click)="clearColumn('email')" style="width:50%">Clear</button>
+            <button mat-raised-button color="primary" (click)="applyFilter()" style="width:50%">Search</button>
           </div>
+		  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		  <button mat-raised-button (click)="clearFilters()" style="width:100%">Clear All</button>
+		  </div>
         </mat-menu>
 	  </th>
       <td mat-cell *matCellDef="let data" data-label="email">  {{data.email}} </td>
@@ -63,22 +71,16 @@
     <!-- actions -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>
-	  <span mat-sort-header arrowPosition="">Action</span>
-		<!--
-        <button mat-icon-button color="primary" (click)="addNew()">
-          <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-        </button>-->
+	  <span arrowPosition="">Action</span>
       </th>
 
       <td mat-cell *matCellDef="let row; let i=index;" data-label="action">
-        <!--<button mat-icon-button color="accent" (click)="startEdit(i, row.id, row.title, row.state, row.url, row.created_at, row.updated_at)">-->
-		<button mat-icon-button color="accent" (click)="startEdit(i, row.username, row.email)">
-          <mat-icon aria-label="Edit">edit</mat-icon>
+		<button mat-icon-button color="accent" (click)="unable(i, row.username, row.email)" *ngIf="data[i].disabled">
+          <mat-icon aria-label="Edit">check</mat-icon>
         </button>
-
-        <!--<button mat-icon-button color="accent" (click)="deleteItem(i, row.id, row.title, row.state, row.url)">-->
-		<button mat-icon-button color="accent" (click)="deleteItem(i, row.username, row.email)">
-          <mat-icon aria-label="Delete">delete</mat-icon>
+		
+		<button mat-icon-button color="accent" (click)="disable(i, row.username, row.email)" *ngIf="!data[i].disabled">
+          <mat-icon aria-label="Delete">close</mat-icon>
         </button>
       </td>
 

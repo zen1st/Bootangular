@@ -1,40 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
-import {MatPaginator, MatSort, MatTableDataSource, MatDialog} from '@angular/material';
+import { ActivatedRoute, Router, NavigationEnd   } from '@angular/router'
 import { Subscription } from 'rxjs';
+import {MatPaginator, MatSort, MatTableDataSource, MatDialog} from '@angular/material';
+import { TestTableModalComponent } from './test-table-modal/test-table-modal.component';
+
 import {
-  UserService
+  TestEntityService,
+  BlogService
 } from 'app/service';
 
-import {UserTableDisableComponent, UserTableUnableComponent} from 'app/component/generic/admin/user-table/dialogs';
-
-/*
-export interface Authority {
-  name: string;
-  authority: string;
-}
-
-export interface User {
-  username: string;
-  email: string;
-  enabled: boolean;
-  authorities: Authority[];
-}*/
-
-export interface User {
-  username: string;
-  email: string;
-  enabled: boolean;
-}
-
-export const CONDITIONS_LIST = [
+const CONDITIONS_LIST = [
   { value: "is-empty", label: "Is empty" },
   { value: "is-not-empty", label: "Is not empty" },
   { value: "is-equal", label: "Is equal" },
   { value: "is-not-equal", label: "Is not equal" }
 ];
 
-export const CONDITIONS_FUNCTIONS = { // search method base on conditions list value
+const CONDITIONS_FUNCTIONS = { // search method base on conditions list value
   "is-empty": function (value, filterdValue) {
     return value === "";
   },
@@ -49,15 +32,19 @@ export const CONDITIONS_FUNCTIONS = { // search method base on conditions list v
   }
 };
 
+
 @Component({
-  selector: 'app-user-table',
-  templateUrl: './user-table.component.html',
-  styleUrls: ['./user-table.component.css']
+  selector: 'app-test-table',
+  templateUrl: './test-table.component.html',
+  styleUrls: ['./test-table.component.css']
 })
-export class UserTableComponent implements OnInit {
+export class TestTableComponent implements OnInit {
+
+	private title;
+	private imgUrl;
 	
-	private data: User[];
-	
+	private data: any[];
+
 	public displayedColumns: string[];// = ["username","actions"];
 	public dataSource; //= new MatTableDataSource(DATA);
 
@@ -68,31 +55,34 @@ export class UserTableComponent implements OnInit {
 
 	index: number;
 	id: number;
-  
+	
     messages: any[] = [];
     subscription: Subscription;
 	
-	//constructor( private _service: NotificationsService ) {
 	constructor(private titleService: Title,
-	public dialog: MatDialog,
-	private userService: UserService
-	) { }
-	
-	ngOnInit(){
-		//this.titleService.setTitle(this.titleService.getTitle() + " | Users");
-		//this._service.success('nat','dndnnd',this.options);
+		private router : Router, 
+		private route: ActivatedRoute,
+		public dialog: MatDialog,
+		private testEntityService: TestEntityService,
+		private blogService : BlogService) { }
+
+	ngOnInit() {
+		this.titleService.setTitle("Demo Table");
+		this.title = "Demo Table with CRUD Functions";
+		this.imgUrl="/assets/startbootstrap-clean-blog-gh-pages/img/home-bg.jpg";
 		
-		this.userService.getAll().subscribe(
+		
+		this.testEntityService.getAll().subscribe(
 			data => {
 				this.data = data;
-				this.displayedColumns = ["username", "email", "actions"];
+				this.displayedColumns = ["name", "number", "actions"];
 				this.dataSource = new MatTableDataSource(this.data);
 				this.dataSource.paginator = this.paginator;
 				this.dataSource.sort = this.sort;
 			}
 			,err => { console.log(err); }
 			,()=> {	
-				this.dataSource.filterPredicate = (p: User, filtre: any) => {
+				this.dataSource.filterPredicate = (p: any, filtre: any) => {
 					let result = true;
 					let keys = Object.keys(p); // keys of the object data 
 
@@ -110,43 +100,32 @@ export class UserTableComponent implements OnInit {
 				};
 			}
 		);
-		
-		this.subscription = this.userService.getMessage().subscribe(data => {
-			if (data) {
-				this.data = data;
-				this.dataSource = new MatTableDataSource(data);
+
+        this.subscription = this.testEntityService.getMessage().subscribe(message => {
+			if (message) {
+				this.dataSource = new MatTableDataSource(message);
 				this.refreshTable();
 			} else {
 			// clear messages when empty message received
 			//this.messages = [];
 			}
 		});
+		
 	}
-
+	
+	ngOnDestroy() {
+        // unsubscribe to ensure no memory leaks
+        //this.subscription.unsubscribe();
+    }
+	
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
 	
-	disable(i: number, username: string, email: string) {
-		this.index = i;
-		//UserTableDisableComponent
-		const dialogRef = this.dialog.open(UserTableDisableComponent, {
-			data: {username: username, email: email}
-		});
-	}
-	
-	unable(i: number, username: string, email: string) {
-		this.index = i;
-		const dialogRef = this.dialog.open(UserTableUnableComponent, {
-			data: {username: username, email: email}
-		});
-	}
-	
-	/*
 	addNew(issue: any) {
-		const dialogRef = this.dialog.open(UserAddDialogComponent, {
-		  //data: {issue: issue }
+		const dialogRef = this.dialog.open(TestTableModalComponent, {
+			//data: {issue: issue }
+			
 		});
-
 		dialogRef.afterClosed().subscribe(result => {
 			if (result === 1) {	  
 				// After dialog is closed we're doing frontend updates
@@ -154,11 +133,12 @@ export class UserTableComponent implements OnInit {
 				/*
 				this.exampleDatabase.dataChange.value.push(this.dataService.getDialogData());
 				this.refreshTable();
-				
+				*/
 			}
+			
 		});
-	}*/
-
+	}
+	
 	private refreshTable() {
 		// Refreshing table using paginator
 		// Thanks yeager-j for tips
@@ -206,4 +186,5 @@ export class UserTableComponent implements OnInit {
 		}
 		this.applyFilter();
 	}
+
 }

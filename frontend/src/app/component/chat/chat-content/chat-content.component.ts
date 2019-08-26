@@ -19,6 +19,7 @@ export class ChatContentComponent implements OnInit {
   private stompClient;
   form: FormGroup;
 
+	/*
 	private chatRooms = [
 		{
 			"name":"Chat1", 
@@ -72,7 +73,7 @@ export class ChatContentComponent implements OnInit {
 				}
 			]
 		}
-	];
+	];*/
 	
 	private currentChatIndex = 0;
   
@@ -89,6 +90,8 @@ export class ChatContentComponent implements OnInit {
 		from: ['', Validators.required],
 		message: ['', Validators.required],
 		});*/
+		
+		
 		$('#chatBtn').on('click',
 			function() {
 				

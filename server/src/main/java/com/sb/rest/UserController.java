@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,12 +27,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.google.common.primitives.Doubles;
+import com.sb.dao.AuthorityRepository;
 import com.sb.dao.BlogRepository;
 import com.sb.dao.UserRepository;
+import com.sb.dto.TestEntityDto;
 import com.sb.dto.UserDto;
 import com.sb.dto.UserRequest;
 import com.sb.exception.ResourceConflictException;
 import com.sb.pojo.Blog;
+import com.sb.pojo.TestEntity;
 import com.sb.pojo.User;
 import com.sb.security.registration.OnRegistrationCompleteEvent;
 import com.sb.service.UserService;
@@ -47,11 +52,14 @@ public class UserController {
   private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 	
   @Autowired
-  UserRepository userRepository;
+  private UserRepository userRepository;
   
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private AuthorityRepository authorityRepository;
+  
   @Autowired
   private ApplicationEventPublisher eventPublisher;
     
@@ -65,16 +73,33 @@ public class UserController {
   public List<User> loadAll() {
     return this.userService.findAll();
   }
-  
+
   @DeleteMapping("/{username}")
   public ResponseEntity<User> deleteArticle(HttpServletRequest request, @PathVariable(value = "username") String username) {
+	  
+	  User user = userService.findByUsername(username);
+      
+      if(user == null) {
+          //log.error("Id " + id + " is not existed");
+    	  return ResponseEntity.badRequest().build();
+      }
+
+      authorityRepository.
+      userService.deleteUser(user);
+      
+
+      return ResponseEntity.ok().build();
+  }
+  
+  @PutMapping("disable/{username}")
+  public ResponseEntity<User> disable(HttpServletRequest request, @PathVariable(value = "username") String username) {
 	  User user = userService.findByUsername(username);
       
       if(user == null) {
           return ResponseEntity.notFound().build();
       }
       
-      //Prevent other users from deleting your article
+      //Only admins can disable user
       if(request.isUserInRole("ROLE_ADMIN")){
     	  user.setDisabled(true);
 
@@ -85,14 +110,41 @@ public class UserController {
       else {
       	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
       }
+      
   }
   
+  @PutMapping("unable/{username}")
+  public ResponseEntity<User> unable(HttpServletRequest request, @PathVariable(value = "username") String username) {
+	  User user = userService.findByUsername(username);
+      
+      if(user == null) {
+          return ResponseEntity.notFound().build();
+      }
+      
+      //Only admins can unable user
+      if(request.isUserInRole("ROLE_ADMIN")){
+    	  user.setDisabled(false);
+
+    	  User updatedUser = userRepository.save(user);
+    	  
+    	  return ResponseEntity.ok(updatedUser);
+      }
+      else {
+      	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+      }
+  }
+  /*
+   * We are not using userService.findByUsername here(we could), so it is good that we are making
+   * sure that the user has role "ROLE_USER" to access this endpoint.
+   */
   @RequestMapping("/whoami")
   @PreAuthorize("hasRole('USER')")
   public User user() {
     return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 
+  
+  
   /*
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
   @ResponseBody
@@ -132,8 +184,5 @@ public class UserController {
     return new ResponseEntity<User>(user, HttpStatus.CREATED);
   }*/
   
-  /*
-   * We are not using userService.findByUsername here(we could), so it is good that we are making
-   * sure that the user has role "ROLE_USER" to access this endpoint.
-   */
+
 }
