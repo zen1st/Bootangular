@@ -20,9 +20,11 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,6 +41,12 @@ public class ChatRoom implements Serializable {
     @ManyToMany(mappedBy = "chatRooms")
     @JsonIgnoreProperties("chatRooms")
     private Collection<User> users;
+    
+    //@JsonIgnoreProperties("topics")
+    //private Collection<String> topics;
+    
+    @ElementCollection
+    private List<String> topics = new ArrayList<String>();
     
     @Column(name = "createdBy")
     @GeneratorType(
@@ -120,5 +128,13 @@ public class ChatRoom implements Serializable {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<String> getTopics() {
+		return topics;
+	}
+
+	public void setTopics(List<String> topics) {
+		this.topics = topics;
 	}
 }

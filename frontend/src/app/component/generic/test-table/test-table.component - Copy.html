@@ -73,7 +73,6 @@
   <th mat-header-cell *matHeaderCellDef>
   <span arrowPosition="">Action
 	<!--<button mat-icon-button color="primary" (click)="addNew()">-->
-	
 	<button mat-icon-button color="primary" routerLink="post">
 	  <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
 	</button></span>
@@ -81,7 +80,6 @@
 
   <td mat-cell *matCellDef="let row; let i=index;" data-label="action">
 	<!--<button mat-icon-button color="accent" (click)="startEdit(i, row.name, row.number)">-->
-	
 	<button mat-icon-button color="accent" [routerLink]="'edit/'+row.id">
 	  <mat-icon aria-label="Edit">edit</mat-icon>
 	</button>
@@ -92,26 +90,6 @@
 	</button>
   </td>
 </ng-container>
-
-<!--
-<ng-container matColumnDef="actions">
-  <th mat-header-cell *matHeaderCellDef>
-  <span arrowPosition="">Action
-	<button mat-icon-button color="primary" [routerLink]="[ {outlets: { modal: 'post' }}]" >
-	  <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-	</button></span>
-  </th>
-
-  <td mat-cell *matCellDef="let row; let i=index;" data-label="action">
-	<button mat-icon-button color="accent" [routerLink]="[ {outlets: { modal: 'edit/'+row.id }}]">
-	  <mat-icon aria-label="Edit">edit</mat-icon>
-	</button>
-	<button mat-icon-button color="accent" [routerLink]="[ {outlets: { modal: 'delete/'+row.id }}]">
-	  <mat-icon aria-label="Delete">delete</mat-icon>
-	</button>
-  </td>
-</ng-container>
--->
 
 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

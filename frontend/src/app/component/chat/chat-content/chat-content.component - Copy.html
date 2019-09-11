@@ -21,8 +21,16 @@
 	<i class="fas fa-plus"></i>
 </div> -->
 <div id="frame">
-	<div id="chatPanel" class="sidePanel">
+
+	<div id="chatPanel" class="sidePanel toggled">
+	<div id="bottom-bar" class="top">
+	<!--
+	<button id="addcontact"><i class="fas fa-search-plus fa-fw"></i><span>Search Chat</span></button>
+	<button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>-->
+	</div>
+	<!--
 		<div id="profile">
+			
 			<div class="wrap">
 				<img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
 				<p>Mike Ross</p>
@@ -44,14 +52,7 @@
 					<input name="twitter" type="text" value="mike.ross" />
 				</div>
 			</div>
-		</div>
-		
-		<div id="bottom-bar" class="top">
-		<!--<button id="searchChatBtn" class="d-lg-none"><i class="fas fa-search fa-fw "></i><span>Search Chat</span></button>-->
-		<button id="searchChatBtn" style="width:100%;"><i class="fas fa-search-plus fa-fw "></i><span>Search Chat</span></button>
-		<!--<button id="settingsBtn"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>-->
-		</div>
-	
+		</div>-->
 		<div id="search">
 			<input type="text" placeholder="Search my chats..." />
 			<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
@@ -64,8 +65,8 @@
 						<span class="contact-status online"></span>
 						<img src="" alt="" />
 						<div class="meta">
-							<!--<p class="name">{{chatRoom.name}}</p>-->
-							<p class="preview">{{chatRoom.name}}</p>
+							<p class="name">{{chatRoom.name}}</p>
+							<p class="preview"></p>
 						</div>
 					</div>
 				</li>
@@ -140,7 +141,6 @@
 		
 		<div id="contacts">
 			<ul>
-				<!--
 				<li *ngFor="let chatRoom of chatRooms; let i = index"  (click)="clickChat(i)" class="contact">
 					<div class="wrap">
 						<span class="contact-status online"></span>
@@ -151,30 +151,54 @@
 						</div>
 					</div>
 				</li>
-				-->
+				  
+				<!--
+				<li class="contact">
+					<div class="wrap">
+						<span class="contact-status online"></span>
+						<img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+						<div class="meta">
+							<p class="name">Louis Litt</p>
+							<p class="preview">You just got LITT up, Mike.</p>
+						</div>
+					</div>
+				</li>
+				<li class="contact active">
+					<div class="wrap">
+						<span class="contact-status busy"></span>
+						<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+						<div class="meta">
+							<p class="name">Harvey Specter</p>
+							<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+						</div>
+					</div>
+				</li>-->
 			</ul>
+		</div>
+		<div id="bottom-bar">
+			<!--
+			<button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+			<button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+			-->
 		</div>
 	</div>
 
 	<div class="content">
 		<div class="contact-profile">
-			<!--
+		
+		
+		
 			<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-			<p>Chat Name</p>
-			-->
+			<p>Harvey Specter</p>
+			
+			
+			<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+			<p>Harvey Specter2</p>
+			
 			<div class="social-media">
-				<button class="btn rightPanelToggleBtn" id="memberBtn">
-				<i class="fa fa-users" aria-hidden="true"></i>
-				<span class="d-none d-sm-block" >Members</span>
-				<i class="fas fa-chevron-left fa-xs expandBtn" aria-hidden="true"></i>
-				</button>
-				
-				<button class="btn rightPanelToggleBtn" id="requestBtn" >
-				<i class="fa fa-envelope" aria-hidden="true"></i>
-				<span class="d-none d-sm-block">Requests</span>
-				<i class="fas fa-chevron-left fa-xs expandBtn" aria-hidden="true"></i>
-				</button>
-				<!--<i class="fa fa-instagram" aria-hidden="true"></i>-->
+				<i class="fa fa-facebook" aria-hidden="true"></i>
+				<i class="fa fa-twitter" aria-hidden="true"></i>
+				 <i class="fa fa-instagram" aria-hidden="true"></i>
 			</div>
 		</div>
 		<div class="messages">
@@ -204,48 +228,6 @@
 			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
 			</form>
 			</div>
-		</div>
-	</div>
-	
-	<div id="memberPanel" class="sidePanel rightPanel">
-	<div id="bottom-bar" class="top">
-	<button id="" style="width:100%;"><i class="fas fa-users fa-fw d-lg-none"></i><span>Members</span></button>
-	</div>
-		<div id="membersList">
-			<ul>
-				<!--
-				<li *ngFor="let chatRoom of chatRooms; let i = index"  (click)="clickChat(i)" class="contact">
-					<div class="wrap">
-						<span class="contact-status online"></span>
-						<img src="" alt="" />
-						<div class="meta">
-							<p class="name">{{chatRoom.name}}</p>
-							<p class="preview"></p>
-						</div>
-					</div>
-				</li>-->
-			</ul>
-		</div>
-	</div>
-	
-	<div id="requestPanel" class="sidePanel rightPanel" style="display:none;">
-	<div id="bottom-bar" class="top">
-	<button id="" style="width:100%;"><i class="fas fa-envelope fa-fw d-lg-none"></i><span>Requests</span></button>
-	</div>
-		<div id="membersList">
-			<ul>
-				<!--
-				<li *ngFor="let chatRoom of chatRooms; let i = index"  (click)="clickChat(i)" class="contact">
-					<div class="wrap">
-						<span class="contact-status online"></span>
-						<img src="" alt="" />
-						<div class="meta">
-							<p class="name">{{chatRoom.name}}</p>
-							<p class="preview"></p>
-						</div>
-					</div>
-				</li>-->
-			</ul>
 		</div>
 	</div>
 </div>

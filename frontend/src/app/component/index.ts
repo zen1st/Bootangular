@@ -9,3 +9,4 @@ export * from './stylish-portfolio';
 export * from './new-age';
 export * from './clean-blog';
 export * from './chat';
+export * from './based-chat';

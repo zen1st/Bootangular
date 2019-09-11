@@ -65,6 +65,7 @@ public class UserController {
     
   //from bfwg/angular-spring-starter
   @RequestMapping(method = GET, value = "/{userId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public User loadById(@PathVariable Long userId) {
     return this.userService.findById(userId);
   }
@@ -74,7 +75,9 @@ public class UserController {
     return this.userService.findAll();
   }
 
+  
   @DeleteMapping("/{username}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<User> deleteArticle(HttpServletRequest request, @PathVariable(value = "username") String username) {
 	  
 	  User user = userService.findByUsername(username);
@@ -84,14 +87,13 @@ public class UserController {
     	  return ResponseEntity.badRequest().build();
       }
 
-      authorityRepository.
       userService.deleteUser(user);
       
-
       return ResponseEntity.ok().build();
   }
   
   @PutMapping("disable/{username}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<User> disable(HttpServletRequest request, @PathVariable(value = "username") String username) {
 	  User user = userService.findByUsername(username);
       
@@ -110,10 +112,10 @@ public class UserController {
       else {
       	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
       }
-      
   }
   
   @PutMapping("unable/{username}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<User> unable(HttpServletRequest request, @PathVariable(value = "username") String username) {
 	  User user = userService.findByUsername(username);
       

@@ -1,7 +1,7 @@
 import { Inject } from '@angular/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, NavigationError} from '@angular/router';
 import { DisplayMessage } from 'app/shared/models/display-message';
 import { Subscription } from 'rxjs/Subscription';
 import {
@@ -20,6 +20,8 @@ import { Title }     from '@angular/platform-browser';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+	private show : boolean;
+	
   title = 'Log in';
   githubLink = 'https://github.com/zen1st/Bootangular';
   form: FormGroup;
@@ -48,12 +50,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {
+	  
+	  
 
   }
 
   ngOnInit() {
 	//this.titleService.setTitle("Login Page");
-	  
+	
+	if(this.router.url=="/" || this.router.url=="/login") this.show = true;
+	
     this.route.params
     .takeUntil(this.ngUnsubscribe)
     .subscribe((params: DisplayMessage) => {
@@ -117,6 +123,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 			//let subscribe = source.subscribe(val => this.userService.initUser());
 		}
 		this.router.navigate([this.returnUrl]);
+		//window.location.reload();
+		//this.router.navigate(['./'], { relativeTo: this.router.parent });
     },
     error => {
 		//console.log(error.error.message);

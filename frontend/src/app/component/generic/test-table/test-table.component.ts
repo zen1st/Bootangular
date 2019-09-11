@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
-import { ActivatedRoute, Router, NavigationEnd   } from '@angular/router'
+import { ActivatedRoute, Router, NavigationEnd, RouterOutlet , ActivationStart  } from '@angular/router'
 import { Subscription } from 'rxjs';
 import {MatPaginator, MatSort, MatTableDataSource, MatDialog} from '@angular/material';
 import { TestTableModalComponent } from './test-table-modal/test-table-modal.component';
@@ -59,6 +59,8 @@ export class TestTableComponent implements OnInit {
     messages: any[] = [];
     subscription: Subscription;
 	
+	@ViewChild(RouterOutlet) outlet: RouterOutlet;
+	
 	constructor(private titleService: Title,
 		private router : Router, 
 		private route: ActivatedRoute,
@@ -70,6 +72,11 @@ export class TestTableComponent implements OnInit {
 		this.titleService.setTitle("Demo Table");
 		this.title = "Demo Table with CRUD Functions";
 		this.imgUrl="/assets/startbootstrap-clean-blog-gh-pages/img/home-bg.jpg";
+		
+		this.router.events.subscribe(e => {
+			//if (e instanceof ActivationStart && e.snapshot.outlet === "administration")
+			if (e instanceof ActivationStart)this.outlet.deactivate();
+		});
 		
 		
 		this.testEntityService.getAll().subscribe(

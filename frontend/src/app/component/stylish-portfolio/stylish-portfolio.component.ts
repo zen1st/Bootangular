@@ -5,16 +5,16 @@ import { DOCUMENT } from '@angular/platform-browser';
   templateUrl: './stylish-portfolio.component.html',
   styleUrls: ['./stylish-portfolio.component.css']
 })
-export class StylishPortfolioComponent implements OnInit {
+export class StylishPortfolioComponent implements OnInit, OnDestroy {
 
-	constructor(@Inject(DOCUMENT) private document) { }
-	
-	ngOnInit() {
+	constructor(@Inject(DOCUMENT) private document) {
 		this.addCss("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic");
 		this.addCss("assets/startbootstrap-stylish-portfolio-gh-pages/vendor/simple-line-icons/css/simple-line-icons.css");
 		this.addCss("assets/startbootstrap-stylish-portfolio-gh-pages/css/stylish-portfolio.min.css");
 		this.addJs("assets/startbootstrap-stylish-portfolio-gh-pages/js/stylish-portfolio.min.js");
 	}
+	
+	ngOnInit() {}
 	
 	ngOnDestroy(){
 		this.removeElementsByClass("stylishPortfolioCssJs");

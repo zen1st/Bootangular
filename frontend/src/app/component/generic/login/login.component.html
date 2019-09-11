@@ -1,4 +1,4 @@
-<mat-card elevation="5" fxFlex>
+<mat-card elevation="5" fxFlex *ngIf="show">
   <mat-card-content>
 	<p [class]="notification.msgType" *ngIf="notification">{{notification.msgBody}}</p>
 	<form *ngIf="!submitted" [formGroup]="form" (ngSubmit)="onSubmit()" #loginForm="ngForm">

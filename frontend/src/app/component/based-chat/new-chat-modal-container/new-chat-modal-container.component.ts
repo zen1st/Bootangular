@@ -5,14 +5,14 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { TestTableModalComponent } from '../test-table-modal/test-table-modal.component';
+import { NewChatModalComponent } from '../new-chat-modal/new-chat-modal.component';
 
 @Component({
-  selector: 'app-test-table-modal-container',
-  templateUrl: './test-table-modal-container.component.html',
-  styleUrls: ['./test-table-modal-container.component.css']
+  selector: 'app-new-chat-modal-container',
+  templateUrl: './new-chat-modal-container.component.html',
+  styleUrls: ['./new-chat-modal-container.component.css']
 })
-export class TestTableModalContainerComponent implements OnInit, OnDestroy {
+export class NewChatModalContainerComponent implements OnInit, OnDestroy {
 
   currentDialog: MatDialogRef<any> = null;
   destroy$ = new Subject<any>();
@@ -25,16 +25,26 @@ export class TestTableModalContainerComponent implements OnInit, OnDestroy {
         }
 
 		//console.log(params);
-		if(params.action=="post")
+		if(params.action=="new")
 		{
-			this.currentDialog = matDialog.open(TestTableModalComponent, {data: {action : params.action}});
+			this.currentDialog = matDialog.open(NewChatModalComponent, {
+			  width: '500px',
+			  position: {
+				top: '10vh'
+			  },
+			  data: {action : params.action}
+			});
+
 		}
+		
+		/*
 		else if (params.action=="edit" || "delete")
 		{
 			this.currentDialog = matDialog.open(TestTableModalComponent, {
 				data: {action : params.action, id: params.id }
 			});
 		}
+		*/
 		
         this.currentDialog.afterClosed().subscribe(result => {
           console.log('dialog closed');

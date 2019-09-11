@@ -28,6 +28,10 @@ export class CleanBlogContentComponent implements OnInit {
 	form: FormGroup;
 	
 	blogPreviews;
+	displayedBlogPreviews;
+	lastPreviewIndex : number;
+	maxPerPage : number = 3;
+	toggle : boolean = false;
 	
 	constructor(
 	private titleService: Title,
@@ -124,11 +128,40 @@ export class CleanBlogContentComponent implements OnInit {
 	}
 	
 	getBlogPreviewsSuccess(data){
+		
+		this.titleService.setTitle("All Blogs");
+		
 		this.blogPreviews = data;
+		
+		//console.log(this.blogPreviews);
+		
+		if(this.blogPreviews.length >= this.maxPerPage){
+			this.toggle=true;
+		}
+		
+		this.lastPreviewIndex=this.maxPerPage;
+		
+		this.displayedBlogPreviews = data.slice(0, this.maxPerPage);
+		
+		//console.log(this.blogPreviews);
 	}
 
 	getBlogPreviewsFailed(err){
 		console.log(err);
+	}
+	
+	loadMore(){
+		for(var i = this.lastPreviewIndex; i< (this.lastPreviewIndex+this.maxPerPage); i++){
+			
+			if(i == this.blogPreviews.length-1){
+				this.toggle=false;
+			}
+			
+			if(i < this.blogPreviews.length){
+				this.displayedBlogPreviews.push(this.blogPreviews[i]);	
+			}
+		}
+		this.lastPreviewIndex += this.maxPerPage;
 	}
 	
 	onSubmit(){

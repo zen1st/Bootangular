@@ -1,24 +1,27 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
+declare let $: any;
+ 
 @Component({
   selector: 'app-new-age',
   templateUrl: './new-age.component.html',
   styleUrls: ['./new-age.component.css']
 })
-export class NewAgeComponent implements OnInit {
+export class NewAgeComponent implements OnInit, OnDestroy {
 	
-	constructor(@Inject(DOCUMENT) private document) { }
-
-	ngOnInit() {
+	constructor(@Inject(DOCUMENT) private document) {
 		this.addCss("https://fonts.googleapis.com/css?family=Lato");
 		this.addCss("https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900");
 		this.addCss("https://fonts.googleapis.com/css?family=Muli");
 		this.addCss("assets/startbootstrap-new-age-gh-pages/css/new-age.min.css");
 		this.addJs("assets/startbootstrap-new-age-gh-pages/js/new-age.min.js");
 	}
+
+	ngOnInit() {}
 	
 	ngOnDestroy(){
 		this.removeElementsByClass("newAgeCssJs");
+		$("script[src='assets/startbootstrap-new-age-gh-pages/js/new-age.min.js']").remove();
 	}
 	
 	removeElementsByClass(className){

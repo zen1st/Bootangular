@@ -8,15 +8,14 @@ import { DOCUMENT } from '@angular/platform-browser';
 })
 export class CleanBlogComponent implements OnInit {
 
-  	constructor(@Inject(DOCUMENT) private document){}
-
-	ngOnInit() {
+  	constructor(@Inject(DOCUMENT) private document){
 		this.addJs("assets/startbootstrap-clean-blog-gh-pages/js/clean-blog.js");
 		this.addCss("https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic");
 		this.addCss("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800");
 		this.addCss("assets/startbootstrap-clean-blog-gh-pages/css/clean-blog.min.css");
 	}
-	
+
+	ngOnInit() {}
 	
 	ngOnDestroy(){
 		this.removeElementsByClass("loggedInCssJs");

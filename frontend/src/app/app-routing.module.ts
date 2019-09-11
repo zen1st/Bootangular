@@ -24,7 +24,9 @@ import {
   TestTableModalContainerComponent,
   TestTableModalComponent,
   CleanBlogContentComponent,
-  ChatContentComponent
+  ChatContentComponent,
+  BasedChatComponent,
+  NewChatModalContainerComponent,
 } from './component';
 
 export const routes: Routes = [
@@ -38,22 +40,6 @@ export const routes: Routes = [
       { path: 'signup', component: SignupComponent, canActivate: [GuestGuard] }
     ]
   },
-  /*{
-    path: 'login',
-    component: HomeComponent
-	//data : {flg : 0}
-  },
-  {
-    path: 'signup',
-    component: HomeComponent
-	//data : {flg : 1}
-  },
-  /*
-  {
-    path: 'verifyEmail/:token',
-    component: VerifyEmailComponent,
-    canActivate: [GuestGuard]
-  },*/
   {
     path: 'badToken',
     component: BadTokenComponent,
@@ -88,8 +74,8 @@ export const routes: Routes = [
     component: TestTableComponent,
 	canActivate: [LoginGuard],
 	children: [
-		{ path: ':action', component: TestTableModalContainerComponent,  outlet: 'modal'},
-		{ path: ':action/:id', component: TestTableModalContainerComponent,  outlet: 'modal'}
+		{ path: ':action', component: TestTableModalContainerComponent},
+		{ path: ':action/:id', component: TestTableModalContainerComponent}
     ]
   },
   {
@@ -107,8 +93,11 @@ export const routes: Routes = [
   },
   {
     path: 'chats',
-    component: ChatContentComponent,
-	canActivate: [LoginGuard]
+    component: BasedChatComponent,
+	canActivate: [LoginGuard],
+	children: [
+		{ path: ':action', component: NewChatModalContainerComponent }
+    ]
   },
   {
     path: '404',

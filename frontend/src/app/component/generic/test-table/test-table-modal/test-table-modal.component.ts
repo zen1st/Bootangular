@@ -13,22 +13,23 @@ import {
 export class TestTableModalComponent implements OnInit {
 
 	form : FormGroup;
-	formBuilder: FormBuilder;
 	
 	values : any = {};
 	
 	constructor(public dialogRef: MatDialogRef<TestTableModalComponent>, 
 		@Inject(MAT_DIALOG_DATA) public data: any,
-		public testEntityService: TestEntityService){
+		public testEntityService: TestEntityService,
+		private formBuilder: FormBuilder){
 		console.log('inject', data);
 	}
 
 	ngOnInit() {
-
-		this.form = new FormGroup({
-			name: new FormControl(),
-			number: new FormControl()
+		
+		this.form = this.formBuilder.group({
+		  name: ['',  [Validators.required]],
+		  number: ['', [Validators.required, Validators.pattern(/^\d*\.?\d+$/)]]
 		});
+	
 		
 		if(this.data.action=="edit"){
 			this.values.id = this.data.id;
@@ -36,15 +37,18 @@ export class TestTableModalComponent implements OnInit {
 			this.values.number = this.testEntityService.getCurrent(this.data.id).number;
 		}
 	}
-	  formControl = new FormControl('', [
-		Validators.required
-		// Validators.email,
-	  ]);
+	
+	formControl = new FormControl('', [
+		Validators.required,
+		Validators.email
+	]);
 
 	getErrorMessage() {
-	return this.formControl.hasError('required') ? 'Required field' :
-	  this.formControl.hasError('email') ? 'Not a valid email' :
-		'';
+		//console.log(this.form.controls.number.pattern);
+		
+		return this.formControl.hasError('required') ? 'Required field' :
+			this.formControl.hasError('email') ? 'Not a valid email' :
+			'';
 	}
 
 	submit() {

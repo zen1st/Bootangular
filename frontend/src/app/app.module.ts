@@ -68,7 +68,12 @@ import {
 	ChatComponent,
 	ChatNavComponent,
 	ChatContentComponent,
-	ChatFooterComponent
+	ChatFooterComponent,
+	
+	BasedChatComponent,
+	NewChatModalContainerComponent,
+	NewChatModalComponent
+	
 } from './component';
 
 import {
@@ -93,9 +98,7 @@ export function initUserFactory(userService: UserService) {
     ChangePasswordComponent,
     ForbiddenComponent,
     SignupComponent,
-    CleanBlogPreviewComponent,
     AuthTestComponent,
-    CleanBlogContentComponent,
 	EscapeHtmlPipe,
 	TestCompComponent,
 	BadTokenComponent,
@@ -103,15 +106,15 @@ export function initUserFactory(userService: UserService) {
 	FilterItemDirective,
     PlaceholderComponent,
 	HomeComponent,
-    CleanBlogMastheadComponent,
 	AdminComponent,
 	UserTableComponent,
-	
 	UserTableDisableComponent,
     UserTableUnableComponent,
-
     CleanBlogComponent,
     CleanBlogNavComponent,
+	CleanBlogContentComponent,
+	CleanBlogPreviewComponent,
+    CleanBlogMastheadComponent,
     CleanBlogFooterComponent,
     NewAgeComponent,
     NewAgeFooterComponent,
@@ -125,7 +128,10 @@ export function initUserFactory(userService: UserService) {
     StylishPortfolioComponent,
     TestTableComponent,
     TestTableModalContainerComponent,
-    TestTableModalComponent
+    TestTableModalComponent,
+    BasedChatComponent,
+    NewChatModalContainerComponent,
+    NewChatModalComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -142,7 +148,9 @@ export function initUserFactory(userService: UserService) {
     RecaptchaFormsModule
   ],
   entryComponents: [
+	
 	TestTableModalComponent,
+	NewChatModalComponent,
 	UserTableDisableComponent,
     UserTableUnableComponent
   ],

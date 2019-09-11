@@ -40,7 +40,7 @@ public class TestEntityCtrl {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody TestEntityDto testEntityDto) {
+    public ResponseEntity create(@Valid @RequestBody TestEntityDto testEntityDto) {
 
     	if(Doubles.tryParse(testEntityDto.getNumber())!=null)
     	{
