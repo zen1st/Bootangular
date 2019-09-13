@@ -58,6 +58,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
 	//this.titleService.setTitle("Login Page");
 	
+	//console.log(this.router.url);
+	
 	if(this.router.url=="/" || this.router.url=="/login") this.show = true;
 	
     this.route.params
@@ -78,8 +80,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 	this.form = this.formBuilder.group({
 		username: ['', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(64)])],
 		password: ['', Validators.required],
-		rememberMe: true,
-		recaptchaReactive: ['', Validators.required]
+		rememberMe: true
+		//,recaptchaReactive: ['', Validators.required]
 	});
 	//console.log(this.form);
   }

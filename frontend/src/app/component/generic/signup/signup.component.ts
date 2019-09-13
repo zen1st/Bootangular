@@ -69,8 +69,9 @@ export class SignupComponent implements OnInit, OnDestroy {
 	  // /(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?\/&gt;.&lt;,])(?!.*\s).*$/
 	  password: ['', Validators.compose([Validators.pattern(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)])],
 	  matchingPassword: ['', Validators.compose([Validators.pattern(/(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)])]
-      //firstname:['', Validators.compose([Validators.required, Validators.minLength(1)])],
-      //lastname: ['', Validators.compose([Validators.required, Validators.minLength(1)])]
+      //,firstname:['', Validators.compose([Validators.required, Validators.minLength(1)])],
+      //,lastname: ['', Validators.compose([Validators.required, Validators.minLength(1)])]
+	  , recaptchaResponse: ['', Validators.required]
     });
   }
 
@@ -139,11 +140,15 @@ export class SignupComponent implements OnInit, OnDestroy {
     .delay(1000)
     .subscribe(data => {
       console.log(data);
-      this.authService.login(this.form.value).subscribe(data =>{
+	  
+      /*this.authService.login(this.form.value).subscribe(data =>{
         this.userService.getMyInfo().subscribe();
-      })
+      })*/
+	  
 	  alert("Please check your email to verify.");
+	  
       //this.router.navigate([this.returnUrl]);
+	  
 	  this.submitted = false;
     },
     error => {
@@ -154,5 +159,9 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   }
 
+	clickMe()
+	{
+		console.log(this.form);
+	}
 
 }

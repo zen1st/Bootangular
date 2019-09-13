@@ -42,6 +42,8 @@ export class NewChatModalComponent implements OnInit {
 		if (input) {
 			input.value = '';
 		}
+		
+		console.log(this.tags);
 	}
 
 	remove(tag: Tag): void {

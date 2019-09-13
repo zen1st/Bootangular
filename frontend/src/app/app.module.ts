@@ -84,6 +84,9 @@ import {
   FooService,
   BlogService,
 } from './service';
+import { ChatMessagesComponent } from './component/based-chat/chat-messages/chat-messages.component';
+import { ScrollableDirective } from './directive/scrollable.directive';
+import { OffsetTopDirective } from './directive/offset-top.directive';
 
 export function initUserFactory(userService: UserService) {
     return () => userService.initUser();
@@ -131,7 +134,10 @@ export function initUserFactory(userService: UserService) {
     TestTableModalComponent,
     BasedChatComponent,
     NewChatModalContainerComponent,
-    NewChatModalComponent
+    NewChatModalComponent,
+    ChatMessagesComponent,
+    ScrollableDirective,
+    OffsetTopDirective
   ],
   imports: [
     BrowserAnimationsModule,

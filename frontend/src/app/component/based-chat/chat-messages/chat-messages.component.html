@@ -1,0 +1,12 @@
+<mat-list appScrollable class="chat-list" >
+  <!--<mat-list-item appOffsetTop [class.selected]='selectedItem === index' (click)='selectedItem = index' *ngFor='let chatMessage of data; let index = index'>-->
+  <mat-list-item appOffsetTop *ngFor='let chatMessage of data; let index = index'>
+	<!--<img mat-list-avatar>-->
+	<h4 mat-line >
+	  <b>{{chatMessage.username}}</b>
+	</h4>
+	<p mat-line>
+	  <span>{{chatMessage.message}}</span>
+	</p>
+  </mat-list-item>
+</mat-list>

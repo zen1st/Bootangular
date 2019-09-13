@@ -33,12 +33,13 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    //pathMatch: 'full',
+    pathMatch: 'full',
+	/*
 	children: [
-      { path: '', component: LoginComponent, pathMatch: 'full' },
       { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
-      { path: 'signup', component: SignupComponent, canActivate: [GuestGuard] }
-    ]
+      { path: 'signup', component: SignupComponent, canActivate: [GuestGuard] },
+	  { path: '**', component: LoginComponent }
+    ]*/
   },
   {
     path: 'badToken',

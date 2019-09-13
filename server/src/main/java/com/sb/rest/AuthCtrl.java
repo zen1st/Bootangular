@@ -53,6 +53,7 @@ import com.sb.pojo.UserTokenState;
 import com.sb.pojo.VerificationToken;
 import com.sb.security.TokenHelper;
 import com.sb.security.auth.ISecurityUserService;
+import com.sb.security.captcha.ICaptchaService;
 import com.sb.security.registration.OnRegistrationCompleteEvent;
 import com.sb.service.UserService;
 import com.sb.service.impl.CustomUserDetailsService;
@@ -104,12 +105,15 @@ public class AuthCtrl {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
+    @Autowired
+    private ICaptchaService captchaService;
+    
     public AuthCtrl() {
         super();
     }
 
     // Registration
-
+    /*
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
     public GenericResponse registerUserAccount(@Valid @RequestBody final UserDto accountDto, final HttpServletRequest request) {
@@ -117,6 +121,22 @@ public class AuthCtrl {
         final User registered = userService.registerNewUserAccount(accountDto);
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
        return new GenericResponse("success");
+    }*/
+    
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    @ResponseBody
+    public GenericResponse captchaRegisterUserAccount(@Valid @RequestBody final UserDto accountDto, final HttpServletRequest request) {
+
+        final String response = accountDto.getRecaptchaResponse();
+        
+        captchaService.processResponse(response);
+        
+        LOGGER.debug("Registering user account with information: {}", accountDto);
+
+        final User registered = userService.registerNewUserAccount(accountDto);
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
+        return new GenericResponse("success");
+
     }
     
     // user activation - verification
