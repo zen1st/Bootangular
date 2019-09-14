@@ -4,6 +4,7 @@ import { ApiService } from './api.service';
 import { ConfigService } from './config.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, Subject  } from "rxjs/Rx";
+import { interval } from 'rxjs/observable/interval';
 
 @Injectable()
 export class UserService {
@@ -21,12 +22,25 @@ export class UserService {
 	initUser() {
 		const promise = this.apiService.get(this.config.refresh_token_url).toPromise()
 		.then(res => {
-		  //if (res.access_token !== null) {
+		  if (res.access_token !== null) {
 			return this.getMyInfo().toPromise()
 			.then(user => {
 			  this.currentUser = user;
+			  
+			  if(localStorage.getItem("rememberMe")!=null && localStorage.getItem("rememberMe")=="false" && localStorage.getItem("expires_in")!=null){
+					//console.log("hey");
+					let source = interval(Number(localStorage.getItem("expires_in")));
+					let subscribe = source.subscribe(val => this.apiService.get(this.config.refresh_token_url).toPromise());
+			  }
 			});
-		  //}
+		  }
+		  else
+		  {
+			if(localStorage.getItem("rememberMe")!=null && localStorage.getItem("rememberMe")=="false" && localStorage.getItem("expires_in")!=null){
+				localStorage.removeItem('rememberMe');
+				localStorage.removeItem('expires_in');
+			}
+		  }
 		})
 		.catch(() => null);
 		return promise;

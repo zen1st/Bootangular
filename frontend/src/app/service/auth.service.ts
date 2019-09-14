@@ -4,6 +4,7 @@ import { ApiService } from './api.service';
 import { UserService } from './user.service';
 import { ConfigService } from './config.service';
 import { Observable } from 'rxjs/Observable';
+import { interval } from 'rxjs/observable/interval';
 
 @Injectable()
 export class AuthService {
@@ -21,9 +22,22 @@ export class AuthService {
     });
     const body = `username=${user.username}&password=${user.password}&rememberMe=${user.rememberMe}`;
     return this.apiService.post(this.config.login_url, body, loginHeaders).map((data) => {
-      console.log("Login success");
-      this.userService.getMyInfo().subscribe();
-	  console.log(data);
+		console.log("Login success");
+		
+		//console.log(user);
+		
+		this.userService.getMyInfo().subscribe();
+
+		if(!user.rememberMe)
+		{
+			//console.log(data.expires_in);
+			localStorage.setItem("rememberMe","false");
+			localStorage.setItem("expires_in",((data.expires_in-2)*1000).toString());
+			
+			let source = interval((data.expires_in-2)*1000);
+			let subscribe = source.subscribe(val => this.apiService.get(this.config.refresh_token_url).toPromise());
+		}
+
     });
   }
 
@@ -53,6 +67,16 @@ export class AuthService {
     return this.apiService.post(this.config.logout_url, {})
       .map(() => {
         this.userService.currentUser = null;
+		
+			//console.log(localStorage.getItem("rememberMe"));
+			
+			if(localStorage.getItem("rememberMe")!=null && localStorage.getItem("rememberMe")=="false"){
+				
+				//console.log(localStorage.getItem("rememberMe"));
+				
+				localStorage.removeItem('rememberMe');
+				localStorage.removeItem('expires_in');
+			}  
       });
   }
 

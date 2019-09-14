@@ -120,15 +120,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     // show me the animation
     .delay(1000)
     .subscribe(data => {
-		console.log(data);
-		
-		if (typeof this.form.value.rememberMe !== 'undefined' || !this.form.value.rememberMe){
-			localStorage.setItem("rememberMe","false");
-			
-			//let source = interval(1000);
-			//let subscribe = source.subscribe(val => this.userService.initUser());
-		}
-		
 		this.router.navigate([this.returnUrl]);
 		//window.location.reload();
 		//this.router.navigate(['./'], { relativeTo: this.router.parent });
