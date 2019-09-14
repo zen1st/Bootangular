@@ -20,7 +20,7 @@ import { Title }     from '@angular/platform-browser';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-	private show : boolean;
+	//private show : boolean;
 	
   title = 'Log in';
   githubLink = 'https://github.com/zen1st/Bootangular';
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	
 	//console.log(this.router.url);
 	
-	if(this.router.url=="/" || this.router.url=="/login") this.show = true;
+	//if(this.router.url=="/" || this.router.url=="/login") this.show = true;
 	
     this.route.params
     .takeUntil(this.ngUnsubscribe)
@@ -74,6 +74,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 		if(params['message'] && params['message'].includes("success"))
 		{
 			alert(params['message'].replace(/\+/g," ")+ ", please log in.");
+			
+			//this.show = true;
 		}
 	});
 	  
@@ -118,12 +120,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     // show me the animation
     .delay(1000)
     .subscribe(data => {
+		console.log(data);
 		
 		if (typeof this.form.value.rememberMe !== 'undefined' || !this.form.value.rememberMe){
 			localStorage.setItem("rememberMe","false");
+			
 			//let source = interval(1000);
 			//let subscribe = source.subscribe(val => this.userService.initUser());
 		}
+		
 		this.router.navigate([this.returnUrl]);
 		//window.location.reload();
 		//this.router.navigate(['./'], { relativeTo: this.router.parent });

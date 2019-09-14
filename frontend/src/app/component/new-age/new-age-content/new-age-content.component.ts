@@ -10,20 +10,28 @@ export class NewAgeContentComponent implements OnInit {
 	private activeLinkIndex = -1;
 	private navLinks: any[];
 	
-	constructor(private router: Router) { }
+	constructor(private router: Router) { 
+		
+	    this.navLinks = [
+        {
+            label: 'Login',
+            link: '/login',
+            index: 0
+        }, {
+            label: 'Signup',
+            link: '/signup',
+            index: 1
+        }
+		];
+	}
 
 	ngOnInit() {
-		
-		this.navLinks=[{"label":"Login","path":"/login"},{"label":"Signup","path":"/signup"}];
-		
+		/*
+		this.router.events.subscribe((res) => {
+			this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
+			console.log(this.activeLinkIndex);
+		});
+		*/
 	}
 	
-	isHome()
-	{
-		if (this.router.url=="/"){
-			return true;
-		}
-		
-		return false;
-	}
 }

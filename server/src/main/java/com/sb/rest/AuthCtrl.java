@@ -125,9 +125,11 @@ public class AuthCtrl {
     
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
-    public GenericResponse captchaRegisterUserAccount(@Valid @RequestBody final UserDto accountDto, final HttpServletRequest request) {
+    public GenericResponse captchaRegisterUserAccount(@Valid final UserDto accountDto, final HttpServletRequest request) {
 
-        final String response = accountDto.getRecaptchaResponse();
+        //final String response = accountDto.getRecaptchaResponse();
+        
+        final String response = request.getParameter("recaptchaResponse");
         
         captchaService.processResponse(response);
         

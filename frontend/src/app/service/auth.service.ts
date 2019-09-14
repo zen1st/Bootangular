@@ -20,18 +20,31 @@ export class AuthService {
       'Content-Type': 'application/x-www-form-urlencoded'
     });
     const body = `username=${user.username}&password=${user.password}&rememberMe=${user.rememberMe}`;
-    return this.apiService.post(this.config.login_url, body, loginHeaders).map(() => {
+    return this.apiService.post(this.config.login_url, body, loginHeaders).map((data) => {
       console.log("Login success");
       this.userService.getMyInfo().subscribe();
+	  console.log(data);
     });
   }
 
   signup(user){
+	/*
     const signupHeaders = new HttpHeaders({
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     });
-    return this.apiService.post(this.config.signup_url, JSON.stringify(user), signupHeaders).map(() =>{
+	*/
+	const signupHeaders = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+	
+	const body = `username=${user.username}&email=${user.email}&password=${user.password}&matchingPassword=${user.matchingPassword}&recaptchaResponse=${user.recaptchaResponse}`;
+	
+	//const body = `recaptchaResponse=${user.recaptchaResponse}`;
+	
+    //return this.apiService.post(this.config.signup_url, JSON.stringify(user), signupHeaders).map(() =>{
+    return this.apiService.post(this.config.signup_url, body, signupHeaders).map(() =>{
       console.log("Sign up success");
     });
   }

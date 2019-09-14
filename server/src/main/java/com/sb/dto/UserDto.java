@@ -39,11 +39,11 @@ public class UserDto {
 	
     
     private boolean isUsing2FA;
-    
+    /*
     @NotNull
     @Size(min = 1)
     private String recaptchaResponse;
-    
+    */
     public String getUsername() {
         return username;
     }
@@ -113,6 +113,7 @@ public class UserDto {
         this.isUsing2FA = isUsing2FA;
     }
 
+    /*
     public String getRecaptchaResponse() {
         return recaptchaResponse;
     }
@@ -120,6 +121,7 @@ public class UserDto {
     public void setRecaptchaResponse(final String recaptchaResponse) {
         this.recaptchaResponse = recaptchaResponse;
     }
+    */
     
     @Override
     public String toString() {
