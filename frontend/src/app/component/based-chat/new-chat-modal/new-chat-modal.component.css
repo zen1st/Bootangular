@@ -1,7 +1,9 @@
-.example-chip-list{
-width:99%;
+/*
+.mat-tab-body-content{
+	overflow: initial;
 }
-.example-stretched-tabs {
+*/
 
+mat-form-field {
+  width: 100%;
 }
-

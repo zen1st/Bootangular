@@ -21,21 +21,26 @@ export class AuthService {
       'Content-Type': 'application/x-www-form-urlencoded'
     });
     const body = `username=${user.username}&password=${user.password}&rememberMe=${user.rememberMe}`;
+	
     return this.apiService.post(this.config.login_url, body, loginHeaders).map((data) => {
 		console.log("Login success");
 		
 		//console.log(user);
 		
 		this.userService.getMyInfo().subscribe();
-
+		
+		
 		if(!user.rememberMe)
 		{
 			//console.log(data.expires_in);
-			localStorage.setItem("rememberMe","false");
-			localStorage.setItem("expires_in",((data.expires_in-2)*1000).toString());
 			
-			let source = interval((data.expires_in-2)*1000);
-			let subscribe = source.subscribe(val => this.apiService.get(this.config.refresh_token_url).toPromise());
+			localStorage.setItem("rememberMe","false");
+
+			setTimeout(()=>{    //<<<---    using ()=> syntax
+				//setInterval(()=>{this.apiService.get(this.config.refresh_token_url).toPromise()}, (data.expires_in-2)*1000);
+				let subscribe = interval((data.expires_in-2)*1000).subscribe(val => this.apiService.get(this.config.refresh_token_url).toPromise())
+			}, 1000);
+			
 		}
 
     });
@@ -71,11 +76,7 @@ export class AuthService {
 			//console.log(localStorage.getItem("rememberMe"));
 			
 			if(localStorage.getItem("rememberMe")!=null && localStorage.getItem("rememberMe")=="false"){
-				
-				//console.log(localStorage.getItem("rememberMe"));
-				
 				localStorage.removeItem('rememberMe');
-				localStorage.removeItem('expires_in');
 			}  
       });
   }

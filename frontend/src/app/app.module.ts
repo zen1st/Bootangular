@@ -72,7 +72,8 @@ import {
 	
 	BasedChatComponent,
 	NewChatModalContainerComponent,
-	NewChatModalComponent
+	NewChatModalComponent,
+	ChatConfirmDialogComponent
 	
 } from './component';
 
@@ -137,7 +138,8 @@ export function initUserFactory(userService: UserService) {
     NewChatModalComponent,
     ChatMessagesComponent,
     ScrollableDirective,
-    OffsetTopDirective
+    OffsetTopDirective,
+    ChatConfirmDialogComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -154,11 +156,11 @@ export function initUserFactory(userService: UserService) {
     RecaptchaFormsModule
   ],
   entryComponents: [
-	
+	UserTableDisableComponent,
+    UserTableUnableComponent,
 	TestTableModalComponent,
 	NewChatModalComponent,
-	UserTableDisableComponent,
-    UserTableUnableComponent
+	ChatConfirmDialogComponent
   ],
   providers: [
     LoginGuard,

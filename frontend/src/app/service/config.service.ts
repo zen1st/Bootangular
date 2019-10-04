@@ -38,6 +38,8 @@ export class ConfigService {
   
   private _blogs_url = this._api_url + '/blogs';
   
+  private _chat_rooms_url = this._api_url + '/chatRooms';
+  
   get foo_url(): string {
       return this._foo_url;
   }
@@ -101,4 +103,7 @@ export class ConfigService {
       return this._blogs_url;
   }
 
+  get chat_rooms_url():string {
+      return this._chat_rooms_url;
+  }
 }

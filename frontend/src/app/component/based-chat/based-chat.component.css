@@ -6,8 +6,11 @@
   bottom: 0;
   left: 0;
   right: 0;
-  
-  /*margin:0px 70px;*/
+}
+@media screen and (min-width: 1441px){
+	.example-container{
+		margin:19px 70px;
+	}	
 }
 
 .example-is-mobile .example-toolbar {
@@ -36,12 +39,44 @@ h1.example-app-name {
   flex: 1 0 auto;
 }
 
+.leftSidenav {
+	width: 40%;
+}
+
+@media screen and (min-width: 901px){
+	.leftSidenav {
+		width: 35%;
+	}
+}
+@media screen and (min-width: 1025px){
+	.leftSidenav {
+		width: 30%;
+	}
+}
+@media screen and (min-width: 1301px){
+	.leftSidenav {
+		width: 25%;
+	}
+}
+
+.rightSidenav{
+	width: 60%;
+}
+@media screen and (min-width: 1024px){
+	.rightSidenav{
+		width: 30%;
+	}	
+}
 .sideNavContent {
   max-width: 280px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   /*display:none;*/
+}
+
+.mat-tab-body-content{
+	overflow: initial !important;
 }
 
 .matFabGroup{
@@ -123,3 +158,4 @@ h1.example-app-name {
 .chat-notification {
     text-align: center;
 }
+

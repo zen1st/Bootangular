@@ -23,17 +23,23 @@ export class TestEntityService {
 		return this.apiService.get(this.config.test_entities_url+"/"+id).map(entity => this.currentEntity = entity);
 	}
 
-	post(body:any) {
-		return this.apiService.post(this.config.test_entities_url, body).map(entity => this.currentEntity = entity + 
-			this.entities.push(entity) + 
-			this.subject.next(this.entities));
+  	post(body:any) {
+		return this.apiService.post(this.config.test_entities_url, body).map(entity => {
+			this.currentEntity = entity;
+			this.entities.push(entity);
+			this.subject.next(this.entities);
+			return entity;
+		});
 	}
-
+	
 	put(id:number, body:any) {
-		return this.apiService.put(this.config.test_entities_url+"/"+id, body).map(entity => {this.currentEntity = entity;
+		return this.apiService.put(this.config.test_entities_url+"/"+id, body).map(entity => {
+			this.currentEntity = entity;
 			let index = this.entities.findIndex(x => x.id == id);
 			this.entities[index] = this.currentEntity;
 			this.subject.next(this.entities)
+			
+			return entity;
 		});
 	}
 
@@ -73,5 +79,4 @@ export class TestEntityService {
         return this.subject.asObservable();
     }
 	
-
 }

@@ -1,4 +1,4 @@
-package com.sb.pojo;
+package com.sb.pojo.chat;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenerationTime;
@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sb.pojo.User;
 import com.sb.util.LoggedUserGenerator;
 
 import org.springframework.data.annotation.CreatedBy;
@@ -38,15 +39,36 @@ public class ChatRoom implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
     
+    /*@ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "chatRoom_chatTags",
+      joinColumns = @JoinColumn(name = "chatRoom_id", 
+      referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "chatTag_id", 
+      referencedColumnName = "id"))
+    private Set<ChatTag> chatTags = new HashSet<>();
+    */
+    
+    /*
     @ManyToMany(mappedBy = "chatRooms")
     @JsonIgnoreProperties("chatRooms")
-    private Collection<User> users;
+    private List<User> members;
     
-    //@JsonIgnoreProperties("topics")
-    //private Collection<String> topics;
+    @ManyToMany(mappedBy = "chatRooms")
+    @JsonIgnoreProperties("chatRooms")
+    private List<User> pendingUsers;
+    */
     
     @ElementCollection
-    private List<String> topics = new ArrayList<String>();
+    private List<String> chatTags = new ArrayList<String>();
+    
+    @ElementCollection
+    private List<String> members = new ArrayList<String>();
+    
+    @ElementCollection
+    private List<String> pendingUsers = new ArrayList<String>();
+    
+    @ElementCollection
+    private List<String> blockedUsers = new ArrayList<String>();
     
     @Column(name = "createdBy")
     @GeneratorType(
@@ -68,6 +90,8 @@ public class ChatRoom implements Serializable {
     @UpdateTimestamp
     private Date updatedAt;
 
+    public ChatRoom() {}
+    
     public ChatRoom(String name) {
         this.name = name;
     }
@@ -89,15 +113,38 @@ public class ChatRoom implements Serializable {
 		this.name = name;
 	}
 
+	public List<String> getChatTags() {
+		return chatTags;
+	}
+
+	public void setChatTags(List<String> chatTags) {
+		this.chatTags = chatTags;
+	}
 	
-    public Collection<User> getUsers() {
-        return users;
+    public List<String> getMembers() {
+        return members;
     }
 
-    public void setUsers(final Collection<User> users) {
-        this.users = users;
+    public void setMembers(final List<String> members) {
+        this.members = members;
     }
-    	
+    
+    public List<String> getPendingUsers() {
+        return pendingUsers;
+    }
+
+    public void setPendingUsers(final List<String> pendingUsers) {
+        this.pendingUsers = pendingUsers;
+    }
+	
+    public List<String> getBlockedUsers() {
+        return blockedUsers;
+    }
+
+    public void setBlockedUsers(final List<String> blockedUsers) {
+        this.blockedUsers = blockedUsers;
+    }
+    
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -130,11 +177,4 @@ public class ChatRoom implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<String> getTopics() {
-		return topics;
-	}
-
-	public void setTopics(List<String> topics) {
-		this.topics = topics;
-	}
 }

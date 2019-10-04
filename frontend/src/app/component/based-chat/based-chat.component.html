@@ -3,8 +3,14 @@
   <button mat-icon-button (click)="lnav.toggle()"><mat-icon>chat</mat-icon></button>
 	<h1 class="example-app-name">Based Chat</h1>
   <span class="example-spacer"></span>
-	<span flex></span>
+  
+  <span flex></span>
 
+  <button mat-button [matMenuTriggerFor]="notificationMenu">
+  <mat-icon style="font-size: 25px">notifications</mat-icon>
+  <mat-icon style="font-size: 25px">expand_more</mat-icon>
+  </button>
+  
   <button mat-button [matMenuTriggerFor]="appMenu">
   {{userName()}}
   <mat-icon style="font-size: 25px">person</mat-icon>
@@ -17,13 +23,18 @@
   <button mat-menu-item (click)="logout()"> Logout</button>
   </mat-menu>
   
+  <mat-menu #notificationMenu="matMenu">
+  <button mat-menu-item>msg</button>
+  </mat-menu>
+  
 </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container"
                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     
     <mat-sidenav #lnav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
+				 class="leftSidenav">
       <!--<button mat-button style="width:100%;" title="New chat" [routerLink]="[ {outlets: { modal: 'new' }}]"> -->
 	  <button mat-button style="width:100%;" title="New chat" routerLink="new">
       <mat-icon>add_comment</mat-icon>
@@ -40,16 +51,17 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-  <div class="chat-container">
-  <!--<button mat-fab (click)="onClickUserInfo()">-->
-    <div class="matFabGroup">
-  <button mat-fab (click)="rnav.toggle()" title="Chat Info">
-    <mat-icon>info</mat-icon>
-  </button>
-</div>
-  <mat-card class="main-card">
+	<div class="chat-container">
+	<!--<button mat-fab (click)="onClickUserInfo()">-->
+	<div class="matFabGroup">
+	  <button mat-fab (click)="rnav.toggle()" title="Chat Info" *ngIf="show()">
+		<mat-icon>info</mat-icon>
+	  </button>
+	</div>
+	
+	<mat-card class="main-card">
   
-	<app-chat-messages [data]="chatRooms[currentChatIndex]['chatMessages']" ></app-chat-messages>
+	<app-chat-messages [data]="chatRooms[currentChatIndex]['chatMessages']" *ngIf="show('chatMessages')"></app-chat-messages>
 
 	<!--
     <mat-list class="chat-list">   
@@ -68,18 +80,9 @@
           <span> <b>{{message.content.previousUsername}}</b> is now <b>{{message.content.username}}</b> </span>
         </p>
 	</mat-list-item>
-	  
-	<mat-list-item *ngFor="let chatMessage of chatRooms[currentChatIndex]['chatMessages']">
-		<!--<img mat-list-avatar>
-		<h4 mat-line >
-		  <b>{{chatMessage.username}}</b>
-		</h4>
-		<p mat-line>
-		  <span>{{chatMessage.message}}</span>
-		</p>
-		</mat-list-item>
-    </mat-list>-->
+	-->
 
+	
 	<!--
 	<div #scrollMe class="chat-list">
     <mat-list-item *ngFor="let chatMessage of chatRooms[currentChatIndex]['chatMessages']">  
@@ -102,48 +105,145 @@
                placeholder="Type your message" 
                [(ngModel)]="messageContent" 
                (keyup.enter)="sendMessage(messageContent)">
-        <mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>
+        <!--<mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>-->
       </mat-form-field>
     </div>
     
-  </mat-card>
-</div>
+	</mat-card>
+	</div>
+	
     </mat-sidenav-content>
 
     <mat-sidenav #rnav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
-                 position="end"
-                 >
-                  <mat-tab-group>
-                  <mat-tab>
-                    <ng-template mat-tab-label>
-                    <span  class="d-none d-lg-block">Members</span>
-                    <mat-icon title="Chat Members">group</mat-icon>
-                    </ng-template>
-                    <mat-nav-list>
-                        <mat-list-item routerLink="." *ngFor="let nav of fillerNav">
-                        <img mat-list-avatar [src] class="d-none">
-                        <span class="sideNavContent">
-                        {{nav}}
-                        </span>
-                        </mat-list-item>
-                    </mat-nav-list> 
-                  </mat-tab>
-                  <mat-tab>
-                    <ng-template mat-tab-label>
-                    <span  class="d-none d-lg-block">Requests</span>
-                    <mat-icon title="Chat Requests">email</mat-icon>
-                    </ng-template>
-                    <mat-nav-list>
-                        <mat-list-item routerLink="." *ngFor="let nav of fillerNav">
-                        <img mat-list-avatar [src] class="d-none">
-                        <span class="sideNavContent">
-                        {{nav}}
-                        </span>
-                        </mat-list-item>
-                    </mat-nav-list> 
-                  </mat-tab>
-                  </mat-tab-group>
+                 position="end" 
+				 class="rightSidenav"
+				 *ngIf="show()">
+				 
+	<mat-toolbar>
+	{{chatRooms[currentChatIndex]['name']}}
+	<span class="example-spacer"></span>
+	<span flex></span>
+	<button mat-button (click)="rnav.close()"><mat-icon>close</mat-icon></button>
+	</mat-toolbar>
+		
+	<mat-toolbar>
+	Tags:&nbsp;
+		<mat-chip-list>
+		  <mat-chip *ngFor="let chatTag of chatRooms[currentChatIndex]['chatTags']">{{chatTag}}</mat-chip>
+		</mat-chip-list>
+	</mat-toolbar>
+	<!--
+	<mat-expansion-panel>
+	  <mat-expansion-panel-header>
+		<mat-panel-title>
+		Members
+		</mat-panel-title>
+		<mat-panel-description>
+		  This is a summary of the content
+		</mat-panel-description>
+	  </mat-expansion-panel-header>
+	  <p>This is the primary content of the panel.</p>
+	</mat-expansion-panel>
+
+	<mat-expansion-panel>
+	  <mat-expansion-panel-header>
+		<mat-panel-title>
+		Pending Users
+		</mat-panel-title>
+	  </mat-expansion-panel-header>
+	  <p>This is the primary content of the panel.</p>
+	</mat-expansion-panel>
+
+	<mat-expansion-panel>
+	  <mat-expansion-panel-header>
+		<mat-panel-title>
+		Blocked Users
+		</mat-panel-title>
+	  </mat-expansion-panel-header>
+	  <p>This is the primary content of the panel.</p>
+	</mat-expansion-panel>-->
+
+	  <mat-tab-group mat-stretch-tabs>
+	  <mat-tab>
+		<ng-template mat-tab-label >
+		
+		<span  class="d-none d-md-block">Members</span>
+		<mat-icon title="Chat Members">group</mat-icon>
+		
+		</ng-template>
+		<mat-nav-list  *ngIf="show('members')">
+			<mat-list-item routerLink="." *ngFor="let member of chatRooms[currentChatIndex]['members']">
+			<img mat-list-avatar [src] class="d-none">
+			<span class="">
+			{{member}} 
+			</span>
+			
+			<span class="example-spacer"></span>
+			<span flex></span>
+
+			<button mat-button title="Block" (click)="block(member)" *ngIf="userName() == chatRooms[currentChatIndex]['createdBy']">
+				<mat-icon>block</mat-icon>
+			</button>
+			
+			</mat-list-item>
+		</mat-nav-list> 
+	  </mat-tab>
+	  
+	  <mat-tab *ngIf="show('pendingUsers')">
+		<ng-template mat-tab-label>
+		
+		<span  class="d-none d-md-block">Pending Users</span>
+		<mat-icon title="Pending Users">reply</mat-icon>
+		
+		</ng-template>
+		<mat-nav-list>
+			<mat-list-item routerLink="." *ngFor="let pendingUser of chatRooms[currentChatIndex]['pendingUsers']">
+			<img mat-list-avatar [src] class="d-none">
+			<span class="">
+			{{pendingUser}}
+			</span>
+			
+			<span class="example-spacer"></span>
+			<span flex></span>
+	
+			<button mat-button title="Accept" (click)="accept(pendingUser)">
+				<mat-icon>person_add</mat-icon>
+			</button>
+			<button mat-button title="Block" (click)="block(pendingUser)">
+				<mat-icon>block</mat-icon>
+			</button>
+			
+			</mat-list-item>
+		</mat-nav-list> 
+	  </mat-tab>
+	  
+	  <mat-tab *ngIf="show('blockedUsers')">
+		<ng-template mat-tab-label>
+		
+		<span  class="d-none d-md-block">Blocked Users</span>
+		<mat-icon title="Blocked Users">block</mat-icon>
+		
+		</ng-template>
+		<mat-nav-list>
+			<mat-list-item routerLink="." *ngFor="let blockedUser of chatRooms[currentChatIndex]['blockedUsers']">
+			<img mat-list-avatar [src] class="d-none">
+			<span class="">
+			{{blockedUser}}
+			</span>
+			
+			<span class="example-spacer"></span>
+			<span flex></span>
+			
+			<button mat-button title="Unblock" (click)="unblock(blockedUser)">
+				<mat-icon>person_add</mat-icon>
+			</button>
+			
+			</mat-list-item>
+		</mat-nav-list> 
+	  </mat-tab>
+	  
+	  </mat-tab-group>
     </mat-sidenav>
 
   </mat-sidenav-container>

@@ -22,25 +22,14 @@ export class UserService {
 	initUser() {
 		const promise = this.apiService.get(this.config.refresh_token_url).toPromise()
 		.then(res => {
-		  if (res.access_token !== null) {
+			//console.log(res);
 			return this.getMyInfo().toPromise()
 			.then(user => {
 			  this.currentUser = user;
-			  
-			  if(localStorage.getItem("rememberMe")!=null && localStorage.getItem("rememberMe")=="false" && localStorage.getItem("expires_in")!=null){
-					//console.log("hey");
-					let source = interval(Number(localStorage.getItem("expires_in")));
-					let subscribe = source.subscribe(val => this.apiService.get(this.config.refresh_token_url).toPromise());
+			  if(localStorage.getItem("rememberMe")!=null && localStorage.getItem("rememberMe")=="false"){
+				let subscribe = interval((res.expires_in-2)*1000).subscribe(val => this.apiService.get(this.config.refresh_token_url).toPromise());
 			  }
 			});
-		  }
-		  else
-		  {
-			if(localStorage.getItem("rememberMe")!=null && localStorage.getItem("rememberMe")=="false" && localStorage.getItem("expires_in")!=null){
-				localStorage.removeItem('rememberMe');
-				localStorage.removeItem('expires_in');
-			}
-		  }
 		})
 		.catch(() => null);
 		return promise;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, ViewChildren, AfterViewInit, AfterViewChecked, QueryList } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, Input, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatList, MatListItem } from '@angular/material';
 
 import { ScrollableDirective } from 'app/directive/scrollable.directive';
@@ -10,23 +10,21 @@ import { OffsetTopDirective } from 'app/directive/offset-top.directive';
   templateUrl: './chat-messages.component.html',
   styleUrls: ['./chat-messages.component.css']
 })
-export class ChatMessagesComponent implements OnInit, AfterViewInit, AfterViewChecked{
+export class ChatMessagesComponent implements OnInit, AfterViewChecked{
 	@Input("data") data: any;
-
-	@ViewChildren(OffsetTopDirective) listItems: QueryList<OffsetTopDirective>;
+	data2;
+	
 	@ViewChild(ScrollableDirective) list: ScrollableDirective;
+	@ViewChildren(OffsetTopDirective) listItems: QueryList<OffsetTopDirective>;
 
     ngOnInit() { 
-		//console.log(this.data);
-        //this.scrollToBottom();
     }
-	
-	ngAfterViewInit() {
-		this.scrollToBottom();    
-	}
-	
-    ngAfterViewChecked() {        
-        this.scrollToBottom();        
+		
+    ngAfterViewChecked() {   
+		if(this.data!=this.data2){
+			this.data2 = this.data;
+			this.scrollToBottom();    
+		}
     } 
 	
     scrollToBottom(): void {

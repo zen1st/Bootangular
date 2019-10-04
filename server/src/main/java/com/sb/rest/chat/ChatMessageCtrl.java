@@ -1,4 +1,4 @@
-package com.sb.rest;
+package com.sb.rest.chat;
 
 import static java.lang.String.format;
 
@@ -12,12 +12,10 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
-//import com.example.springchat.controller.WebSocketEventListener;
-import com.sb.dto.ChatMessage;
-//import com.example.springchat.model.ChatMessage.MessageType;
+import com.sb.dto.chat.ChatMessage;
 
 @Controller
-public class ChatCtrl {
+public class ChatMessageCtrl {
 	  //private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
 	  @Autowired
@@ -42,7 +40,7 @@ public class ChatCtrl {
 	      messagingTemplate.convertAndSend(format("/channel/%s", currentRoomId), leaveMessage);
 	    }*/
 	    
-	    headerAccessor.getSessionAttributes().put("username", chatMessage.getBy());
+	    headerAccessor.getSessionAttributes().put("username", chatMessage.getUser());
 	    messagingTemplate.convertAndSend(format("/chat/%s", roomId), chatMessage);
 	  }
 }

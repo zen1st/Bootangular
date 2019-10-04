@@ -55,5 +55,6 @@ public class PersistentLogins {
   public void setLastUsed(Date lastUsed) {
     this.lastUsed = lastUsed;
   }
+
 }
 

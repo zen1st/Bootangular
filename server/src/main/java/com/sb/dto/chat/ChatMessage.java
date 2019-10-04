@@ -1,28 +1,28 @@
-package com.sb.dto;
+package com.sb.dto.chat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sb.pojo.chat.ChatRoom;
 
 public class ChatMessage {
 	
 	public enum MessageType {
-		CHAT, JOIN, LEAVE
+		REQUEST, ACCEPT, BLOCK, CHAT, JOIN, LEAVE
 	}
 
-	private MessageType type;
-	private String by;
+	private String user;
 	private Long roomId;
+	private ChatRoom chatRoom;
 	private String message;
-	  
-	public void setBy(String by)
-	{
-		this.by = by;
-	}
+	private MessageType type;
 	
-	public String getBy()
-	{
-		return this.by;
+	public String getUser() {
+		return user;
 	}
-	
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
 	public void setRoomId(Long roomId)
 	{
 		this.roomId = roomId;
@@ -50,5 +50,14 @@ public class ChatMessage {
 	public void setType(MessageType type) {
 		this.type = type;
 	}
+
+	public ChatRoom getChatRoom() {
+		return chatRoom;
+	}
+
+	public void setChatRoom(ChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+	}
 }
+
 

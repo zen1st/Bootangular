@@ -4,7 +4,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.sb.dto.ChatMessage;
+import com.sb.dto.chat.ChatMessage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,8 +25,9 @@ public class WebSocketCtrl {
     	System.out.println(message);
     	
         this.template.convertAndSend("/chat",  new SimpleDateFormat("HH:mm:ss").format(new Date())+"- "
-        + message.getBy()
+        + message.getUser()
         + " : "
         + message.getMessage());
     }
+    
 }

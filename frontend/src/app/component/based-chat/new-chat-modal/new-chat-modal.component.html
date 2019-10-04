@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>New Chat</h2>
 <mat-dialog-content class="mat-typography">
-	<mat-tab-group mat-stretch-tabs class="example-stretched-tabs">
+
+	<mat-tab-group mat-stretch-tabs class="example-stretched-tabs" animationDuration="0ms">
 	
 	<mat-tab>
 	<ng-template mat-tab-label>
@@ -8,20 +9,157 @@
 	<span  class="d-none d-lg-block">Search</span>
 	</ng-template>
 	<br>
-	<mat-form-field class="example-chip-list">
+	
+	<form [formGroup]="searchChatForm" (ngSubmit)="onSearchChatFormSubmit(searchChatForm.value)">
+	<mat-form-field>
 	  <mat-chip-list #chipList aria-label="Tag selection">
-		<mat-chip *ngFor="let tag of tags" [selectable]="selectable"
-				 [removable]="removable" (removed)="remove(tag)">
-		  {{tag.name}}
+		<mat-chip *ngFor="let chatTag of searchChatForm.value.chatTags" [selectable]="selectable"
+				 [removable]="removable" (removed)="removeSearchChatTag(chatTag)">
+		  <!--{{chatTag.name}}-->
+		  {{chatTag}}
 		  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
 		</mat-chip>
 		<input placeholder="New tag..."
 			   [matChipInputFor]="chipList"
 			   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
 			   [matChipInputAddOnBlur]="addOnBlur"
-			   (matChipInputTokenEnd)="add($event)">
+			   (matChipInputTokenEnd)="addSearchChatTag($event)">
 	  </mat-chip-list>
 	</mat-form-field>
+	
+	<mat-dialog-actions align="end">
+		<button mat-button mat-dialog-close>Cancel</button>
+		<button mat-button [disabled]="!searchChatForm.valid || searchChatForm.value.chatTags.length===0">Search</button>
+		<!--<button mat-button type="submit" >Search</button>-->
+	</mat-dialog-actions>
+	</form>
+
+<mat-spinner *ngIf="submitted" mode="indeterminate" style="margin:0 auto;" ></mat-spinner>
+
+<div *ngIf="submitted || show()" style="overflow-x: auto;">
+
+<table mat-table matSort [dataSource]="dataSource" style="width:100%;" >
+<!-- name Column -->
+<ng-container matColumnDef="name">
+  <th mat-header-cell *matHeaderCellDef> 
+  <span mat-sort-header arrowPosition="before" style="float:left;">
+	Chat Name
+	<button mat-button class="btn-toggle" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+		<mat-icon>keyboard_arrow_down</mat-icon>
+	</button>
+  </span>
+  
+	<mat-menu #menu>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<mat-form-field>
+		  <mat-select [panelClass]="'mat-elevation-z10'" placeholder='Conditions' [(value)]="searchCondition.name">
+			<mat-option *ngFor="let  condition of conditionsList" [value]="condition.value">{{condition.label}}</mat-option>
+		  </mat-select>
+		</mat-form-field>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<mat-form-field>
+		  <input matInput placeholder="Value" [(ngModel)]="searchValue.name">
+		</mat-form-field>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<button mat-raised-button (click)="clearColumn('name')" style="width:50%">Clear</button>
+		<button mat-raised-button color="primary" (click)="applyFilter()" style="width:50%">Search</button>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+	  <button mat-raised-button (click)="clearFilters()" style="width:100%">Clear All</button>
+	  </div>
+	</mat-menu>
+  </th> 
+  <td mat-cell *matCellDef="let data" data-label="name">  {{data.name}} </td>
+</ng-container>
+
+<!-- chatTag Column -->
+<ng-container matColumnDef="chatTags">
+  <th mat-header-cell *matHeaderCellDef> 
+  <!--
+  <span mat-sort-header arrowPosition="before" style="float:left;">
+	Chat Tags
+	<button mat-button class="btn-toggle" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+		<mat-icon>keyboard_arrow_down</mat-icon>
+	</button>
+  </span>
+	<mat-menu #menu>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<mat-form-field>
+		  <mat-select [panelClass]="'mat-elevation-z10'" placeholder='Conditions' [(value)]="searchCondition.chatTags">
+			<mat-option *ngFor="let  condition of conditionsList" [value]="condition.value">{{condition.label}}</mat-option>
+		  </mat-select>
+		</mat-form-field>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<mat-form-field>
+		  <input matInput placeholder="Value" [(ngModel)]="searchValue.chatTags">
+		</mat-form-field>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<button mat-raised-button (click)="clearColumn('chatTags')" style="width:50%">Clear</button>
+		<button mat-raised-button color="primary" (click)="applyFilter()" style="width:50%">Search</button>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+	  <button mat-raised-button (click)="clearFilters()" style="width:100%">Clear All</button>
+	  </div>
+	</mat-menu>-->
+	
+  <span arrowPosition="before" style="float:left;">
+	Chat Tags
+	<button mat-button class="btn-toggle" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+		<mat-icon>keyboard_arrow_down</mat-icon>
+	</button>
+  </span>
+	<mat-menu #menu>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<mat-form-field>
+		  <mat-select [panelClass]="'mat-elevation-z10'" placeholder='Conditions' [(value)]="searchCondition.chatTags">
+			<mat-option *ngFor="let  condition of conditionsList" [value]="condition.value">{{condition.label}}</mat-option>
+		  </mat-select>
+		</mat-form-field>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<mat-form-field>
+		  <input matInput placeholder="Value" [(ngModel)]="searchValue.chatTags">
+		</mat-form-field>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+		<button mat-raised-button (click)="clearColumn('chatTags')" style="width:50%">Clear</button>
+		<button mat-raised-button color="primary" (click)="applyFilter()" style="width:50%">Search</button>
+	  </div>
+	  <div mat-menu-item mat-filter-item [disableRipple]="true">
+	  <button mat-raised-button (click)="clearFilters()" style="width:100%">Clear All</button>
+	  </div>
+	</mat-menu>
+  </th>
+  <td mat-cell *matCellDef="let data" data-label="chatTags">  {{data.chatTags}} </td>
+</ng-container>
+
+<!-- actions -->
+<ng-container matColumnDef="actions">
+  <th mat-header-cell *matHeaderCellDef>
+  <span arrowPosition="">Action</span>
+  </th>
+
+  <td mat-cell *matCellDef="let row; let i=index;" data-label="action">
+	<button mat-icon-button color="accent" (click)="request(row.id)" title="Request" *ngIf="!data[i].sent">
+	  <mat-icon aria-label="Send">send</mat-icon>
+	</button>	
+	
+	<button mat-icon-button color="accent" title="Already requested" *ngIf="data[i].sent">
+	  <mat-icon aria-label="Sent">check</mat-icon>
+	</button>
+  </td>
+</ng-container>
+
+<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
+
 	</mat-tab>
 	
 	<mat-tab>
@@ -29,33 +167,46 @@
 	<mat-icon title="Make new chat">fiber_new</mat-icon>
 	</ng-template>
 	
+	<form [formGroup]="newChatForm" (ngSubmit)="onNewChatFormSubmit(newChatForm.value)">
+	
 	<mat-form-field>
-    <input matInput placeholder="Enter a chat name">
+    <input matInput  placeholder="Enter a chat name" formControlName="name">
 	</mat-form-field>
 
 
-	<mat-form-field class="example-chip-list">
+	<mat-form-field>
 	  <mat-chip-list #chipList1 aria-label="Tag selection">
-		<mat-chip *ngFor="let tag of tags" [selectable]="selectable"
-				 [removable]="removable" (removed)="remove(tag)">
-		  {{tag.name}}
+		<mat-chip *ngFor="let chatTag of newChatForm.value.chatTags" [selectable]="selectable"
+				 [removable]="removable" (removed)="removeNewChatTag(chatTag)">
+		  <!--{{chatTag.name}}-->
+		  {{chatTag}}
 		  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
 		</mat-chip>
 		<input placeholder="New tags..."
 			   [matChipInputFor]="chipList1"
 			   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
 			   [matChipInputAddOnBlur]="addOnBlur"
-			   (matChipInputTokenEnd)="add($event)">
+			   (matChipInputTokenEnd)="addNewChatTag($event)"
+			   >
 	  </mat-chip-list>
 	</mat-form-field>
+	
+	<mat-dialog-actions align="end">
+	  <button mat-button mat-dialog-close>Cancel</button>
+	  <!--<button mat-button (click)="onNewChatFormSubmit(newChatForm.value)" >New</button>-->
+	  <button mat-button type="submit" [disabled]="!newChatForm.valid || newChatForm.value.chatTags.length===0">New</button>
+	  <!--<button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>-->
+	</mat-dialog-actions>
+
+	</form>
+	
 	</mat-tab>
 	
 	</mat-tab-group>
+	
+	
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <!--<button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>-->
-</mat-dialog-actions>
+
 
 
 <!-- Copyright 2019 Google Inc. All Rights Reserved.

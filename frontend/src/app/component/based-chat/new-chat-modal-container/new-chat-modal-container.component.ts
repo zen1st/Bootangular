@@ -28,7 +28,7 @@ export class NewChatModalContainerComponent implements OnInit, OnDestroy {
 		if(params.action=="new")
 		{
 			this.currentDialog = matDialog.open(NewChatModalComponent, {
-			  width: '500px',
+			  width: '600px',
 			  position: {
 				top: '10vh'
 			  },

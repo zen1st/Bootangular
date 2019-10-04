@@ -120,6 +120,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     // show me the animation
     .delay(1000)
     .subscribe(data => {
+		
 		this.router.navigate([this.returnUrl]);
 		//window.location.reload();
 		//this.router.navigate(['./'], { relativeTo: this.router.parent });
