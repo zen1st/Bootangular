@@ -392,11 +392,8 @@ public class ChatRoomCtrl {
         }
         
     	List<String> members = obj.getMembers();
-    	
-    	members.add(me.getUsername());
-    	
+    	members.remove(me.getUsername());
     	obj.setPendingUsers(members);
-
     	obj = chatRoomDao.save(obj);
 
 	    ChatMessage message = new ChatMessage();

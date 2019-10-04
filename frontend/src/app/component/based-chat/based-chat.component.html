@@ -182,7 +182,7 @@
 			<span class="example-spacer"></span>
 			<span flex></span>
 
-			<button mat-button title="Block" (click)="block(member)" *ngIf="userName() == chatRooms[currentChatIndex]['createdBy']">
+			<button mat-button title="Block" (click)="block(member)" *ngIf="userName() == chatRooms[currentChatIndex]['createdBy'] && userName() != member">
 				<mat-icon>block</mat-icon>
 			</button>
 			

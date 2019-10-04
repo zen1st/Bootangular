@@ -285,6 +285,13 @@ export class BasedChatComponent implements OnInit {
 							}
 							
 						}
+						else if(body.type=="CHAT"){
+							if(!that.chatRooms[index].chatMessages){
+								that.chatRooms[index].chatMessages = [];
+							}
+			
+							that.chatRooms[index].chatMessages.push(body);
+						}
 						
 					}
 				});
@@ -429,20 +436,25 @@ export class BasedChatComponent implements OnInit {
 		});
 	}
 	
+	leave(roomId){
+		const dialogRef = this.dialog.open(ChatConfirmDialogComponent, {
+			data: {action: "leave", chatMessage:{roomId:this.chatRooms[this.currentChatIndex].id}}
+		});
+	}
+	
 	sendMessage(message){
 		
-		/*
 		if(message){
 			let msg = {
-			  'by' : this.userService.currentUser.username,
+			  'user' : this.userService.currentUser.username,
 			  'roomId' : this.chatRooms[this.currentChatIndex]["id"],
 			  'message' : message
 			};
 
 			//this.stompClient.send("/api/websocket/send/message" , {}, JSON.stringify(msg));
-			this.stompClient.send("/api/websocket/chat/"+this.chatRooms[this.currentChatIndex]["id"]+"/sendMessage" , {}, JSON.stringify(msg));
+			this.stompClient.send("/api/websocket/chat/sendMessage/"+this.chatRooms[this.currentChatIndex]["id"] , {}, JSON.stringify(msg));
 			$('.message-input input').val('');
-		}*/
+		}
 	}
 	
 	/*

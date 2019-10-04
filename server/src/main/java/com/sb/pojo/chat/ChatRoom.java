@@ -61,7 +61,7 @@ public class ChatRoom implements Serializable {
     @ElementCollection
     private List<String> chatTags = new ArrayList<String>();
     
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     private List<String> members = new ArrayList<String>();
     
     @ElementCollection
