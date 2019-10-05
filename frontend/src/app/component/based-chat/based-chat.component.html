@@ -7,7 +7,7 @@
   <span flex></span>
 
   <button mat-button [matMenuTriggerFor]="notificationMenu">
-  <mat-icon style="font-size: 25px">notifications</mat-icon>
+  <mat-icon style="font-size: 25px" [matBadge]="notifications.length" matBadgeColor="warn">notifications</mat-icon>
   <mat-icon style="font-size: 25px">expand_more</mat-icon>
   </button>
   
@@ -24,7 +24,10 @@
   </mat-menu>
   
   <mat-menu #notificationMenu="matMenu">
-  <button mat-menu-item>msg</button>
+  <div *ngIf="notifications.length>0">
+  <button mat-menu-item *ngFor="let notification of notifications">{{notification.message}}</button>
+  <button mat-menu-item (click)="notifications.length=0">Clear</button>
+  </div>
   </mat-menu>
   
 </mat-toolbar>

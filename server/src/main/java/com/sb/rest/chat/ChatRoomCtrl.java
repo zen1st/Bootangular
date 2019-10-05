@@ -322,7 +322,7 @@ public class ChatRoomCtrl {
 	    message.setUser(chatMessage.getUser());
 	    message.setRoomId(chatMessage.getRoomId());
 
-	    message.setMessage("You've been blocked on " + obj.getName());
+	    message.setMessage("You've been blocked from " + obj.getName());
     	this.simpMessagingTemplate.convertAndSend("/chat/"+obj.getId(), message);
 	    
     	//this.simpMessagingTemplate.convertAndSend("/notification/"+chatMessage.getUser(), message);

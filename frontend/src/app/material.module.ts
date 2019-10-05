@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule,
+  MatBadgeModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -42,6 +43,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CdkTableModule,
     BrowserAnimationsModule,
     MatAutocompleteModule,
+	MatBadgeModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,

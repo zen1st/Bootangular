@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, ChangeDetectorRef, ViewEncapsulation, ViewChild, Inject, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewEncapsulation, ViewChild, Inject } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {Router, RouterOutlet , ActivationStart  } from '@angular/router'
 import { Subscription } from 'rxjs';
@@ -7,12 +7,11 @@ import SockJS from 'sockjs-client';
 import {
   UserService,
   AuthService,
-  ChatRoomService
+  ChatRoomService,
 } from 'app/service';
 import { AdminGuard } from 'app/guard/index';
 import { DOCUMENT } from '@angular/platform-browser';
 declare var $:any;
-
 import { MatDialog } from '@angular/material';
 import { ChatConfirmDialogComponent } from 'app/component/based-chat/chat-confirm-dialog/';
 
@@ -40,6 +39,7 @@ export class BasedChatComponent implements OnInit {
 	private ws;
 	private stompClient;
 	chatSubscriptions: any[] = [];
+	notifications : any[] = [];
 
 	constructor(changeDetectorRef: ChangeDetectorRef, 
 		media: MediaMatcher, 
@@ -147,10 +147,11 @@ export class BasedChatComponent implements OnInit {
 					if(body.type=="REQUEST"){
 						//console.log(index);
 						that.chatRooms[index]['pendingUsers'].push(body.user);
+						that.notifications.push(body);
 					}
 					else if(body.type=="ACCEPT"){
 						that.chatRooms.push(body.chatRoom);
-						
+						that.notifications.push(body);
 						if(index<0){
 							that.stompClient.disconnect(function() {});
 							that.initializeWebSocketConnection();
@@ -203,6 +204,7 @@ export class BasedChatComponent implements OnInit {
 								if(index==that.currentChatIndex){
 									that.currentChatIndex=0;
 								}
+								that.notifications.push(body);
 								that.stompClient.disconnect(function() {});
 								that.initializeWebSocketConnection();
 							}
@@ -268,4 +270,5 @@ export class BasedChatComponent implements OnInit {
 			$('.message-input input').val('');
 		}
 	}
+
 }
