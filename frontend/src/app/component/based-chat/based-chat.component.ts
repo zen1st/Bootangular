@@ -31,92 +31,8 @@ export class BasedChatComponent implements OnInit {
 	@ViewChild(RouterOutlet) outlet: RouterOutlet;
 	
 	private chatRooms : any[] = [];
-	/*
-	private chatRooms = [
-	{
-		"name":"No Chat", 
-		"chatMessages":[]
-	}];
-		
-	/*
-	private chatRooms = [
-		{
-			"id":2,
-			"name":"chat2", 
-			"chatMessages":
-			[
-				{
-					"username":"u1",
-					"message":"m1"
-				},
-				{
-					"username":"u2",
-					"message":"m2"
-				},
-				{
-					"username":"u2",
-					"message":"m3"
-				},
-				{
-					"username":"u2",
-					"message":"m4"
-				},
-				{
-					"username":"u2",
-					"message":"m5"
-				},
-				{
-					"username":"u2",
-					"message":"m6"
-				},
-				{
-					"username":"u2",
-					"message":"m7"
-				},
-				{
-					"username":"u2",
-					"message":"m8"
-				},
-				{
-					"username":"u2",
-					"message":"m9"
-				},
-				{
-					"username":"u2",
-					"message":"m10"
-				},
-				{
-					"username":"u2",
-					"message":"m11"
-				},
-				{
-					"username":"u2",
-					"message":"m12 Chat 1ddddddddddddddddddddddddddddddddddddddddddddddddddd dfdfdfdfdfdfd dfdfdfdfdfd dfdfd"
-				}
-				
-			]
-		},
-		{
-			"id":1,
-			"name":"Chat 1ddddddddddddddddddddddddddddddddddddddddddddddddddd dfdfdfdfdfdfd dfdfdfdfdfd dfdfd", 
-			"chatMessages":
-			[
-				{
-					"username":"u1",
-					"message":"m1"
-				},
-				{
-					"username":"u2",
-					"message":"m2"
-				}
-			]
-		}];
-	*/
-	
+
 	private currentChatIndex = 0;
-	
-	//@ViewChild('scrollMe') private myScrollContainer: ElementRef;
-	
 	messages: any[] = [];
     subscription: Subscription;
 	
@@ -124,10 +40,6 @@ export class BasedChatComponent implements OnInit {
 	private ws;
 	private stompClient;
 	chatSubscriptions: any[] = [];
-	
-	currentChatMessages: any[] = [];
-	
-	disableScrollDown = false
 
 	constructor(changeDetectorRef: ChangeDetectorRef, 
 		media: MediaMatcher, 
@@ -177,8 +89,7 @@ export class BasedChatComponent implements OnInit {
 			//if (e instanceof ActivationStart && e.snapshot.outlet === "chats") this.outlet.deactivate();
 			if (e instanceof ActivationStart)this.outlet.deactivate();
 		});
-		
-		//this.scrollToBottom();
+
 	}
   
 	ngOnDestroy(): void {
@@ -199,7 +110,6 @@ export class BasedChatComponent implements OnInit {
 
 	clickChat(i){
 		this.currentChatIndex = i;
-		//this.scrollToBottom();
 	}
 
 	show(str?: string){
@@ -260,6 +170,10 @@ export class BasedChatComponent implements OnInit {
 						if(body.type=="ACCEPT"){
 							//everybody in chat
 							that.chatRooms[index]['members'].push(body.user);
+							if(!that.chatRooms[index].chatMessages){
+								that.chatRooms[index].chatMessages = [];
+							}
+							that.chatRooms[index]['chatMessages'].push(body);
 							
 							//chat creator
 							if(that.chatRooms[index]['createdBy'] == that.userName()){
@@ -272,6 +186,10 @@ export class BasedChatComponent implements OnInit {
 							
 							//everybody in chat
 							that.chatRooms[index]['members'] = that.chatRooms[index]['members'].filter(v => v !== body.user);
+							if(!that.chatRooms[index].chatMessages){
+								that.chatRooms[index].chatMessages = [];
+							}
+							that.chatRooms[index]['chatMessages'].push(body);
 							
 							//chat creator
 							if(that.chatRooms[index]['createdBy'] == that.userName()){
@@ -297,14 +215,6 @@ export class BasedChatComponent implements OnInit {
 							}
 							
 							that.chatRooms[index].chatMessages.push(body);
-							
-							//console.log(that.chatRooms[index].chatMessages.length);
-							
-							if(that.currentChatIndex==index){
-								that.currentChatMessages = that.chatRooms[index].chatMessages.slice();
-								//console.log(that.chatRooms[index].chatMessages.length);
-								//that.scrollToBottom();
-							}
 						}
 						
 					}
@@ -358,35 +268,4 @@ export class BasedChatComponent implements OnInit {
 			$('.message-input input').val('');
 		}
 	}
-	/*
-	private onScroll() {
-        let element = this.myScrollContainer.nativeElement;
-		if ((element.scrollHeight ==  Math.round(element.scrollTop + element.clientHeight))) {
-           this.disableScrollDown = false;
-        }
-		else {
-            this.disableScrollDown = true;
-        }
-    }
-	
-	ngAfterViewChecked() { 
-		this.scrollToBottom();	
-    } 
-
-	
-    scrollToBottom(): void {
-        try {			
-            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        } catch(err) { }
-    }
-	
-	private scrollToBottom(): void {
-		//console.log(this.disableScrollDown);
-        if (this.disableScrollDown) {
-            return
-        }
-        try {
-            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        } catch(err) { }
-    }*/
 }

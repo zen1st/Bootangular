@@ -60,62 +60,15 @@
 	</div>
 	
 	<mat-card class="main-card">
-
 	<app-chat-messages [data]="chatRooms[currentChatIndex]['chatMessages']" *ngIf="show('chatMessages')" ></app-chat-messages>
-
-	<!--
-    <mat-list class="chat-list">   
-	  <mat-list-item *ngFor="let message of messages" [ngClass]="[(message.action === undefined && message.from.id === user.id)? 'chat-list-item': '']">
-        <img mat-list-avatar *ngIf="message.action === undefined" [src]="message.from.avatar">
-        <h4 mat-line *ngIf="message.action === undefined">
-          <b>{{message.from.name}}</b>
-        </h4>
-        <p mat-line *ngIf="message.action === undefined">
-          <span> {{message.content}} </span>
-        </p>
-        <p mat-line *ngIf="message.action === action.JOINED" class="chat-notification">
-          <span> <b>{{message.from.name}}</b> joined to the conversation. </span>
-        </p>
-        <p mat-line *ngIf="message.action === action.RENAME" class="chat-notification">
-          <span> <b>{{message.content.previousUsername}}</b> is now <b>{{message.content.username}}</b> </span>
-        </p>
-	</mat-list-item>
-	-->
-	<!--
-	<div #scrollMe class="chat-list" *ngIf="show('chatMessages')" (scroll)="onScroll()">
-    <div *ngFor="let chatMessage of chatRooms[currentChatIndex]['chatMessages']">  
-		
-		<h4 mat-line >
-		  <b>{{chatMessage.user}}</b>
-		</h4>
-		<p mat-line>
-		  <span>{{chatMessage.message}}</span>
-		</p>
-		
-    </div>
-	</div>
-
-	
-	<div #scrollMe class="chat-list">
-    <mat-list-item *ngFor="let chatMessage of chatRooms[currentChatIndex]['chatMessages']">  
-		<h4 mat-line >
-		  <b>{{chatMessage.user}}</b>
-		</h4>
-		<p mat-line>
-		  <span>{{chatMessage.message}}</span>
-		</p>
-    </mat-list-item>
-	</div>
-	-->
-	
     <div class="chat-footer-container">
       <mat-icon>message</mat-icon>
       <mat-form-field class="chat-input">
         <input matInput 
                #inputMessage 
-               maxlength="140" 
                placeholder="Type your message" 
-               (keyup.enter)="sendMessage(inputMessage.value)">
+               (keyup.enter)="sendMessage(inputMessage.value); inputMessage.value='';">              
+		<!--maxlength="140" -->
         <!--<mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>-->
       </mat-form-field>
     </div>
@@ -144,37 +97,6 @@
 		  <mat-chip *ngFor="let chatTag of chatRooms[currentChatIndex]['chatTags']">{{chatTag}}</mat-chip>
 		</mat-chip-list>
 	</mat-toolbar>
-	<!--
-	<mat-expansion-panel>
-	  <mat-expansion-panel-header>
-		<mat-panel-title>
-		Members
-		</mat-panel-title>
-		<mat-panel-description>
-		  This is a summary of the content
-		</mat-panel-description>
-	  </mat-expansion-panel-header>
-	  <p>This is the primary content of the panel.</p>
-	</mat-expansion-panel>
-
-	<mat-expansion-panel>
-	  <mat-expansion-panel-header>
-		<mat-panel-title>
-		Pending Users
-		</mat-panel-title>
-	  </mat-expansion-panel-header>
-	  <p>This is the primary content of the panel.</p>
-	</mat-expansion-panel>
-
-	<mat-expansion-panel>
-	  <mat-expansion-panel-header>
-		<mat-panel-title>
-		Blocked Users
-		</mat-panel-title>
-	  </mat-expansion-panel-header>
-	  <p>This is the primary content of the panel.</p>
-	</mat-expansion-panel>-->
-
 	  <mat-tab-group mat-stretch-tabs>
 	  <mat-tab>
 		<ng-template mat-tab-label >

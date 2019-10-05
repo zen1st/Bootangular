@@ -1,10 +1,12 @@
 import { Component, OnInit, OnChanges,SimpleChanges, ElementRef,
  AfterViewInit, AfterViewChecked, Input, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatList, MatListItem } from '@angular/material';
-
 import { ScrollableDirective } from 'app/directive/scrollable.directive';
 import { OffsetTopDirective } from 'app/directive/offset-top.directive';
 
+import {
+  UserService
+} from 'app/service';
 
 @Component({
   selector: 'app-chat-messages',
@@ -20,6 +22,8 @@ export class ChatMessagesComponent implements OnInit{
 	@ViewChildren(OffsetTopDirective) listItems: QueryList<OffsetTopDirective>;
 	@ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
+	constructor(private userService : UserService) {}
+			
     ngOnInit() { 
 		//this.data = this.data.slice();
 		//this.scrollToBottom(); 

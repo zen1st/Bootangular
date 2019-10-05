@@ -2,6 +2,9 @@ package com.sb.rest.chat;
 
 import static java.lang.String.format;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -37,7 +40,7 @@ public class ChatMessageCtrl {
 			  message.setType(MessageType.CHAT);
 			  message.setUser(chatMessage.getUser());
 			  message.setRoomId(chatMessage.getRoomId());
-			  message.setMessage(chatMessage.getMessage());
+			  message.setMessage("[" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "]  " + chatMessage.getMessage());
 
 			  messagingTemplate.convertAndSend(format("/chat/%s", roomId), message);
 		  }
