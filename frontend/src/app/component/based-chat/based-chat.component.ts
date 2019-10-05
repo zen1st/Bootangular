@@ -125,6 +125,10 @@ export class BasedChatComponent implements OnInit {
 	private stompClient;
 	chatSubscriptions: any[] = [];
 	
+	currentChatMessages: any[] = [];
+	
+	disableScrollDown = false
+
 	constructor(changeDetectorRef: ChangeDetectorRef, 
 		media: MediaMatcher, 
 		@Inject(DOCUMENT) private document,
@@ -174,6 +178,7 @@ export class BasedChatComponent implements OnInit {
 			if (e instanceof ActivationStart)this.outlet.deactivate();
 		});
 		
+		//this.scrollToBottom();
 	}
   
 	ngOnDestroy(): void {
@@ -286,11 +291,20 @@ export class BasedChatComponent implements OnInit {
 							
 						}
 						else if(body.type=="CHAT"){
+							
 							if(!that.chatRooms[index].chatMessages){
 								that.chatRooms[index].chatMessages = [];
 							}
-			
+							
 							that.chatRooms[index].chatMessages.push(body);
+							
+							//console.log(that.chatRooms[index].chatMessages.length);
+							
+							if(that.currentChatIndex==index){
+								that.currentChatMessages = that.chatRooms[index].chatMessages.slice();
+								//console.log(that.chatRooms[index].chatMessages.length);
+								//that.scrollToBottom();
+							}
 						}
 						
 					}
@@ -299,103 +313,6 @@ export class BasedChatComponent implements OnInit {
 				//console.log(chatSubscription);
 				
 				that.chatSubscriptions.push(chatSubscription);
-				
-			}
-
-		});
-		
-		//console.log(that.chatSubscriptions);
-	}
-	
-	initializeWebSocketNotificationConnection(){
-		let ws = new SockJS(this.serverUrl);
-		this.stompClient = Stomp.over(ws);
-		
-		//this.ws = new SockJS(this.serverUrl);
-		//this.stompClient = Stomp.over(this.ws);
-		
-		let that = this;
-		this.stompClient.connect({}, function(frame) {
-			let url = "/notification/" + that.userName();
-				
-			that.stompClient.subscribe(url, (message) => {
-				if(message.body) {
-					let body = JSON.parse(message.body);
-					let index = that.chatRooms.findIndex(x => x.id == body.roomId);
-					if(body.type=="REQUEST"){
-						//console.log(index);
-						that.chatRooms[index]['pendingUsers'].push(body.user);
-					}
-					else if(body.type=="ACCEPT"){
-						that.chatRooms.push(body.chatRoom);
-					}
-					else if(body.type=="BLOCK"){
-						if(body.user == that.userName() && index==that.currentChatIndex){
-							that.chatRooms.splice(index, 1);
-							that.currentChatIndex=0;
-						}
-					}
-				}
-			});
-
-		});
-		
-		//console.log(that.chatSubscriptions);
-	}
-
-	initializeWebSocketChatConnection(){
-		//let ws = new SockJS(this.serverUrl);
-		//this.stompClient = Stomp.over(ws);
-		let that = this;
-		this.stompClient.connect({}, function(frame) {
-			
-			for(var k in that.chatRooms){
-				let url = "/chat/" + that.chatRooms[k]["id"];
-				
-				let chatSubscription = that.stompClient.subscribe(url, (message) => {
-					if(message.body) {
-						let body = JSON.parse(message.body);
-						let index = that.chatRooms.findIndex(x => x.id == body.roomId);
-						
-						if(body.type=="ACCEPT"){
-							//console.log(index);
-							that.chatRooms[index]['members'].push(body.user);
-							
-							//chat creator
-							if(that.chatRooms[index]['createdBy'] == that.userName()){
-								that.chatRooms[index]['pendingUsers'] = that.chatRooms[index]['pendingUsers'].filter(v => v !== body.user);
-								that.chatRooms[index]['blockedUsers'] = that.chatRooms[index]['blockedUsers'].filter(v => v !== body.user);
-							}
-							
-						}
-						else if(body.type=="BLOCK"){
-							
-							//everybody in chat
-							that.chatRooms[index]['members'] = that.chatRooms[index]['members'].filter(v => v !== body.user);
-							
-							//chat creator
-							if(that.chatRooms[index]['createdBy'] == that.userName()){
-								that.chatRooms[index]['pendingUsers'] = that.chatRooms[index]['pendingUsers'].filter(v => v !== body.user);
-								that.chatRooms[index]['blockedUsers'].push(body.user);
-							}
-							
-							//blocked user
-							if(body.user == that.userName()){
-								that.chatRooms.splice(index, 1);
-								if(index==that.currentChatIndex){	
-									that.currentChatIndex=0;
-								}
-							}
-							
-						}
-						
-					}
-				});
-				
-				//console.log(chatSubscription);
-				
-				that.chatSubscriptions.push(chatSubscription);
-				//subscription.unsubscribe();
 				
 			}
 
@@ -408,20 +325,6 @@ export class BasedChatComponent implements OnInit {
 		const dialogRef = this.dialog.open(ChatConfirmDialogComponent, {
 			data: {action: "accept", chatMessage:{roomId:this.chatRooms[this.currentChatIndex].id, user:user}}
 		});
-		
-		dialogRef.afterClosed()
-        .subscribe(
-			data => {
-				//console.log(data);
-				
-				if(data && data.roomId){
-					//console.log(data.id);
-					let index = this.chatRooms.findIndex(x => x.id == data.roomId);
-					//this.data[index].pendingUsers.push();
-					//console.log(this.data);
-				}
-			}
-		);
 	}
 	
 	block(user){
@@ -443,7 +346,6 @@ export class BasedChatComponent implements OnInit {
 	}
 	
 	sendMessage(message){
-		
 		if(message){
 			let msg = {
 			  'user' : this.userService.currentUser.username,
@@ -456,15 +358,35 @@ export class BasedChatComponent implements OnInit {
 			$('.message-input input').val('');
 		}
 	}
-	
 	/*
-	ngAfterViewChecked() {        
+	private onScroll() {
+        let element = this.myScrollContainer.nativeElement;
+		if ((element.scrollHeight ==  Math.round(element.scrollTop + element.clientHeight))) {
+           this.disableScrollDown = false;
+        }
+		else {
+            this.disableScrollDown = true;
+        }
+    }
+	
+	ngAfterViewChecked() { 
 		this.scrollToBottom();	
     } 
 
+	
     scrollToBottom(): void {
+        try {			
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        } catch(err) { }
+    }
+	
+	private scrollToBottom(): void {
+		//console.log(this.disableScrollDown);
+        if (this.disableScrollDown) {
+            return
+        }
         try {
             this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        } catch(err) { }                 
+        } catch(err) { }
     }*/
 }

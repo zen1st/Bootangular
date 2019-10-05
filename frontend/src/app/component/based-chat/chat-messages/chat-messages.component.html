@@ -1,4 +1,4 @@
-<mat-list appScrollable class="chat-list" >
+<mat-list appScrollable class="chat-list" #scrollMe (scroll)="onScroll()">
   <!--<mat-list-item appOffsetTop [class.selected]='selectedItem === index' (click)='selectedItem = index' *ngFor='let chatMessage of data; let index = index'>-->
   <mat-list-item appOffsetTop *ngFor='let chatMessage of data; let index = index'>
 	<!--<img mat-list-avatar>-->

@@ -60,8 +60,8 @@
 	</div>
 	
 	<mat-card class="main-card">
-  
-	<app-chat-messages [data]="chatRooms[currentChatIndex]['chatMessages']" *ngIf="show('chatMessages')"></app-chat-messages>
+
+	<app-chat-messages [data]="chatRooms[currentChatIndex]['chatMessages']" *ngIf="show('chatMessages')" ></app-chat-messages>
 
 	<!--
     <mat-list class="chat-list">   
@@ -81,13 +81,25 @@
         </p>
 	</mat-list-item>
 	-->
+	<!--
+	<div #scrollMe class="chat-list" *ngIf="show('chatMessages')" (scroll)="onScroll()">
+    <div *ngFor="let chatMessage of chatRooms[currentChatIndex]['chatMessages']">  
+		
+		<h4 mat-line >
+		  <b>{{chatMessage.user}}</b>
+		</h4>
+		<p mat-line>
+		  <span>{{chatMessage.message}}</span>
+		</p>
+		
+    </div>
+	</div>
 
 	
-	<!--
 	<div #scrollMe class="chat-list">
     <mat-list-item *ngFor="let chatMessage of chatRooms[currentChatIndex]['chatMessages']">  
 		<h4 mat-line >
-		  <b>{{chatMessage.username}}</b>
+		  <b>{{chatMessage.user}}</b>
 		</h4>
 		<p mat-line>
 		  <span>{{chatMessage.message}}</span>
@@ -103,8 +115,7 @@
                #inputMessage 
                maxlength="140" 
                placeholder="Type your message" 
-               [(ngModel)]="messageContent" 
-               (keyup.enter)="sendMessage(messageContent)">
+               (keyup.enter)="sendMessage(inputMessage.value)">
         <!--<mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>-->
       </mat-form-field>
     </div>
