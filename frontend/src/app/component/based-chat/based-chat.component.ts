@@ -200,13 +200,19 @@ export class BasedChatComponent implements OnInit {
 							
 							//blocked user
 							if(body.user == that.userName()){
-								that.chatRooms.splice(index, 1);
+								
 								if(index==that.currentChatIndex){
+									that.rnav.close();
 									that.currentChatIndex=0;
 								}
-								that.notifications.push(body);
-								that.stompClient.disconnect(function() {});
-								that.initializeWebSocketConnection();
+								
+								setTimeout(function(){
+									that.chatRooms.splice(index, 1);
+									that.notifications.push(body);
+									that.stompClient.disconnect(function() {});
+									that.initializeWebSocketConnection();
+									
+								}, 1)
 							}
 							
 						}
@@ -258,7 +264,7 @@ export class BasedChatComponent implements OnInit {
 	}
 	
 	sendMessage(message){
-		if(message){
+		if(message && this.chatRooms[this.currentChatIndex]){
 			let msg = {
 			  'user' : this.userService.currentUser.username,
 			  'roomId' : this.chatRooms[this.currentChatIndex]["id"],

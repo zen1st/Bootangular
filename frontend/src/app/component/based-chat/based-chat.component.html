@@ -7,7 +7,8 @@
   <span flex></span>
 
   <button mat-button [matMenuTriggerFor]="notificationMenu">
-  <mat-icon style="font-size: 25px" [matBadge]="notifications.length" matBadgeColor="warn">notifications</mat-icon>
+  <mat-icon style="font-size: 25px"  *ngIf="notifications.length==0">notifications</mat-icon>
+  <mat-icon style="font-size: 25px"  [matBadge]="notifications.length" matBadgeColor="warn" *ngIf="notifications.length!=0">notifications</mat-icon>
   <mat-icon style="font-size: 25px">expand_more</mat-icon>
   </button>
   
@@ -92,6 +93,7 @@
 	<span class="example-spacer"></span>
 	<span flex></span>
 	<button mat-button (click)="rnav.close()"><mat-icon>close</mat-icon></button>
+	<!--<button mat-button (click)="rnav.close()"><mat-icon>close</mat-icon></button>-->
 	</mat-toolbar>
 		
 	<mat-toolbar>
