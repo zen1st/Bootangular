@@ -376,16 +376,16 @@ public class ChatRoomCtrl {
     }
     
     @PostMapping("/leave")
-    public ResponseEntity<?> leave(@RequestBody ChatRoomDto chatRoomDto) {
+    public ResponseEntity<?> leave(@RequestBody ChatMessage chatMessage) {
     	
     	User me = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	
-        if (!chatRoomDao.findById(chatRoomDto.getId()).isPresent()) {
+        if (!chatRoomDao.findById(chatMessage.getRoomId()).isPresent()) {
             //log.error("Id " + id + " is not existed");
             ResponseEntity.badRequest().build();
         }
 
-    	ChatRoom obj =  chatRoomDao.findById(chatRoomDto.getId()).get();
+    	ChatRoom obj =  chatRoomDao.findById(chatMessage.getRoomId()).get();
     	
         if(!obj.getMembers().contains(me.getUsername())){
         	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You are not a member.");
@@ -393,7 +393,7 @@ public class ChatRoomCtrl {
         
     	List<String> members = obj.getMembers();
     	members.remove(me.getUsername());
-    	obj.setPendingUsers(members);
+    	obj.setMembers(members);
     	obj = chatRoomDao.save(obj);
 
 	    ChatMessage message = new ChatMessage();

@@ -16,7 +16,7 @@
 	  <span> <b>{{chatMessage.user}}</b> joined the conversation. </span>
 	</p>
 	
-	<p mat-line *ngIf="chatMessage.type==='BLOCK'" class="chat-notification">
+	<p mat-line *ngIf="chatMessage.type==='BLOCK' || chatMessage.type==='LEAVE'" class="chat-notification">
 	  <span> <b>{{chatMessage.user}}</b> left the conversation. </span>
 	</p>
   </mat-list-item>

@@ -224,6 +224,15 @@ export class BasedChatComponent implements OnInit {
 							
 							that.chatRooms[index].chatMessages.push(body);
 						}
+						else if(body.type=="LEAVE"){
+							
+							if(!that.chatRooms[index].chatMessages){
+								that.chatRooms[index].chatMessages = [];
+							}
+						
+							that.chatRooms[index].chatMessages.push(body);
+							that.chatRooms[index]['members'] = that.chatRooms[index]['members'].filter(v => v !== body.user);
+						}
 						
 					}
 				});
@@ -257,10 +266,20 @@ export class BasedChatComponent implements OnInit {
 		});
 	}
 	
-	leave(roomId){
+	leave(){
 		const dialogRef = this.dialog.open(ChatConfirmDialogComponent, {
 			data: {action: "leave", chatMessage:{roomId:this.chatRooms[this.currentChatIndex].id}}
 		});
+		
+		dialogRef.afterClosed()
+        .subscribe(
+			data => {
+				if(data){
+					this.currentChatIndex=0;
+					this.chatRooms.splice(this.currentChatIndex, 1);
+				}
+			}
+		);
 	}
 	
 	sendMessage(message){

@@ -38,7 +38,7 @@
     
     <mat-sidenav #lnav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
-				 class="leftSidenav">
+				 class="leftSidenav" [opened]="true">
       <!--<button mat-button style="width:100%;" title="New chat" [routerLink]="[ {outlets: { modal: 'new' }}]"> -->
 	  <button mat-button style="width:100%;" title="New chat" routerLink="new">
       <mat-icon>add_comment</mat-icon>
@@ -92,8 +92,10 @@
 	{{chatRooms[currentChatIndex]['name']}}
 	<span class="example-spacer"></span>
 	<span flex></span>
+	<div>
+	<button mat-button (click)="leave()"><mat-icon>exit_to_app</mat-icon></button>
 	<button mat-button (click)="rnav.close()"><mat-icon>close</mat-icon></button>
-	<!--<button mat-button (click)="rnav.close()"><mat-icon>close</mat-icon></button>-->
+	</div>
 	</mat-toolbar>
 		
 	<mat-toolbar>
