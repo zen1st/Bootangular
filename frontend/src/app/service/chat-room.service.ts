@@ -47,9 +47,9 @@ export class ChatRoomService {
 
 	delete(id:number) {
 		return this.apiService.delete(this.config.chat_rooms_url+"/"+id).map(data => {
-			let index = this.entities.findIndex(x => x.id == id);
-			this.entities.splice(index, 1);
-			this.subject.next(this.entities);
+			//let index = this.entities.findIndex(x => x.id == id);
+			//this.entities.splice(index, 1);
+			//this.subject.next(this.entities);
 		});
 	}
 	

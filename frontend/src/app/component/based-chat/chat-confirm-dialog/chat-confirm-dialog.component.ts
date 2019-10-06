@@ -57,8 +57,16 @@ export class ChatConfirmDialogComponent {
 			});
 		}
 		else if(this.data.action=="leave"){
-			console.log(this.data.chatMessage);
 			this.chatRoomService.leave(this.data.chatMessage)
+			  .subscribe(res => {
+				  //console.log(res);
+				  this.dialogRef.close(true);
+			  }, err => {
+			});
+		}
+		else if(this.data.action=="delete"){
+			//console.log(this.data.id);
+			this.chatRoomService.delete(this.data.id)
 			  .subscribe(res => {
 				  //console.log(res);
 				  this.dialogRef.close(true);

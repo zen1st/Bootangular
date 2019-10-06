@@ -71,7 +71,7 @@
         <input matInput 
                #inputMessage 
                placeholder="Type your message" 
-               (keyup.enter)="sendMessage(inputMessage.value); inputMessage.value='';">              
+               (keyup.enter)="sendMessage(inputMessage.value);inputMessage.value=''">              
 		<!--maxlength="140" -->
         <!--<mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>-->
       </mat-form-field>
@@ -93,8 +93,9 @@
 	<span class="example-spacer"></span>
 	<span flex></span>
 	<div>
-	<button mat-button (click)="leave()"><mat-icon>exit_to_app</mat-icon></button>
-	<button mat-button (click)="rnav.close()"><mat-icon>close</mat-icon></button>
+	<button mat-button (click)="delete()" title="Delete" *ngIf="chatRooms[currentChatIndex]['createdBy']==userName()"><mat-icon>delete</mat-icon></button>
+	<button mat-button (click)="leave()" title="Leave"><mat-icon>exit_to_app</mat-icon></button>
+	<button mat-button (click)="rnav.close()" title="Close"><mat-icon>close</mat-icon></button>
 	</div>
 	</mat-toolbar>
 		

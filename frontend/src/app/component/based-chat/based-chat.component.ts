@@ -27,6 +27,7 @@ export class BasedChatComponent implements OnInit {
 	private _mobileQueryListener: () => void;
 
 	@ViewChild('rnav') rnav:any;
+	@ViewChild('inputMessage') inputMessage:any;
 	@ViewChild(RouterOutlet) outlet: RouterOutlet;
 	
 	private chatRooms : any[] = [];
@@ -233,6 +234,24 @@ export class BasedChatComponent implements OnInit {
 							that.chatRooms[index].chatMessages.push(body);
 							that.chatRooms[index]['members'] = that.chatRooms[index]['members'].filter(v => v !== body.user);
 						}
+						else if(body.type=="DELETE"){
+							
+							if(index==that.currentChatIndex){
+								that.rnav.close();
+								that.currentChatIndex=0;
+							}
+							
+							setTimeout(function(){
+								
+								if(that.chatRooms[index]['createdBy'] != that.userName()){
+									that.notifications.push(body);
+								}
+								that.chatRooms.splice(index, 1);
+								that.stompClient.disconnect(function() {});
+								that.initializeWebSocketConnection();
+								
+							}, 1)
+						}
 						
 					}
 				});
@@ -282,6 +301,13 @@ export class BasedChatComponent implements OnInit {
 		);
 	}
 	
+	
+	delete(){
+		const dialogRef = this.dialog.open(ChatConfirmDialogComponent, {
+			data: {action: "delete", id: this.chatRooms[this.currentChatIndex].id}
+		});
+	}
+	
 	sendMessage(message){
 		if(message && this.chatRooms[this.currentChatIndex]){
 			let msg = {
@@ -292,7 +318,8 @@ export class BasedChatComponent implements OnInit {
 
 			//this.stompClient.send("/api/websocket/send/message" , {}, JSON.stringify(msg));
 			this.stompClient.send("/api/websocket/chat/sendMessage/"+this.chatRooms[this.currentChatIndex]["id"] , {}, JSON.stringify(msg));
-			$('.message-input input').val('');
+			//this.inputMessage.value='';
+			
 		}
 	}
 

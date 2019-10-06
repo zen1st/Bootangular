@@ -105,13 +105,29 @@ public class ChatRoomCtrl {
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
+    	
+		User me = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
         if (!chatRoomDao.findById(id).isPresent()) {
             //log.error("Id " + id + " is not existed");
             ResponseEntity.badRequest().build();
         }
 
+        ChatRoom obj =  chatRoomDao.findById(id).get();
+        
+        if(!me.getUsername().equals(obj.getCreatedBy())){
+        	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        		
         chatRoomDao.deleteById(id);
-
+        
+	    ChatMessage message = new ChatMessage();
+	    message.setType(MessageType.DELETE);
+	    message.setUser(me.getUsername());
+	    message.setRoomId(id);
+	    message.setMessage("Chatroom '"+obj.getName()+"' have been deleted.");
+    	this.simpMessagingTemplate.convertAndSend("/chat/"+id, message);
+    	
         return ResponseEntity.ok().build();
     }
     
@@ -229,7 +245,7 @@ public class ChatRoomCtrl {
 	    message.setType(MessageType.REQUEST);
 	    message.setUser(me.getUsername());
 	    message.setRoomId(chatRoomDto.getId());
-	    message.setMessage(me.getUsername() + " requested to join chatroom " + obj.getName());
+	    message.setMessage(me.getUsername() + " requested to join chatroom '" + obj.getName()+"'.");
 	      
     	this.simpMessagingTemplate.convertAndSend("/notification/"+obj.getCreatedBy(), message);
     	
@@ -273,7 +289,7 @@ public class ChatRoomCtrl {
 	    message.setRoomId(chatMessage.getRoomId());
     	this.simpMessagingTemplate.convertAndSend("/chat/"+obj.getId(), message);
     	
-	    message.setMessage("You've been accepted to " + obj.getName());
+	    message.setMessage("You've been accepted to chatroom '" + obj.getName()+"'.");
 	    obj.setPendingUsers(null);
 	    obj.setBlockedUsers(null);
 	    message.setChatRoom(obj);
@@ -322,7 +338,7 @@ public class ChatRoomCtrl {
 	    message.setUser(chatMessage.getUser());
 	    message.setRoomId(chatMessage.getRoomId());
 
-	    message.setMessage("You've been blocked from " + obj.getName());
+	    message.setMessage("You've been blocked from chatroom '" + obj.getName() +"'.");
     	this.simpMessagingTemplate.convertAndSend("/chat/"+obj.getId(), message);
 	    
     	//this.simpMessagingTemplate.convertAndSend("/notification/"+chatMessage.getUser(), message);
@@ -366,7 +382,7 @@ public class ChatRoomCtrl {
 	    message.setRoomId(chatMessage.getRoomId());
     	this.simpMessagingTemplate.convertAndSend("/chat/"+obj.getId(), message);
     	
-	    message.setMessage("You've been accepted to " + obj.getName());
+	    message.setMessage("You've been accepted to chat '" + obj.getName() + "'.");
 	    obj.setPendingUsers(null);
 	    obj.setBlockedUsers(null);
 	    message.setChatRoom(obj);
