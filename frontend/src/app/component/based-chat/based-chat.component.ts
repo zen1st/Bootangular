@@ -14,6 +14,8 @@ import { DOCUMENT } from '@angular/platform-browser';
 declare var $:any;
 import { MatDialog } from '@angular/material';
 import { ChatConfirmDialogComponent } from 'app/component/based-chat/chat-confirm-dialog/';
+import { ChatEditDialogComponent } from 'app/component/based-chat/chat-edit-dialog/';
+
 
 @Component({
   selector: 'app-based-chat',
@@ -234,6 +236,16 @@ export class BasedChatComponent implements OnInit {
 							that.chatRooms[index].chatMessages.push(body);
 							that.chatRooms[index]['members'] = that.chatRooms[index]['members'].filter(v => v !== body.user);
 						}
+						else if(body.type=="EDIT"){
+								
+							that.chatRooms[index]['name'] = body.chatRoom.name;
+							that.chatRooms[index]['chatTags'] = body.chatRoom.chatTags;
+							
+							if(!that.chatRooms[index].chatMessages){
+								that.chatRooms[index].chatMessages = [];
+							}
+							that.chatRooms[index].chatMessages.push(body);
+						}
 						else if(body.type=="DELETE"){
 							
 							if(index==that.currentChatIndex){
@@ -301,6 +313,11 @@ export class BasedChatComponent implements OnInit {
 		);
 	}
 	
+	edit(){
+		const dialogRef = this.dialog.open(ChatEditDialogComponent, {
+			data: {action: "edit", chatRoom: this.chatRooms[this.currentChatIndex]}
+		});
+	}
 	
 	delete(){
 		const dialogRef = this.dialog.open(ChatConfirmDialogComponent, {
@@ -315,11 +332,8 @@ export class BasedChatComponent implements OnInit {
 			  'roomId' : this.chatRooms[this.currentChatIndex]["id"],
 			  'message' : message
 			};
-
-			//this.stompClient.send("/api/websocket/send/message" , {}, JSON.stringify(msg));
 			this.stompClient.send("/api/websocket/chat/sendMessage/"+this.chatRooms[this.currentChatIndex]["id"] , {}, JSON.stringify(msg));
 			//this.inputMessage.value='';
-			
 		}
 	}
 

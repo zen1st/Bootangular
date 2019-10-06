@@ -73,5 +73,14 @@ export class ChatConfirmDialogComponent {
 			  }, err => {
 			});
 		}
+		else if(this.data.action=="edit"){
+			//console.log(this.data.id);
+			this.chatRoomService.put(this.data.id, this.data.chatRoom)
+			  .subscribe(res => {
+				  //console.log(res);
+				  this.dialogRef.close(true);
+			  }, err => {
+			});
+		}
 	}
 }

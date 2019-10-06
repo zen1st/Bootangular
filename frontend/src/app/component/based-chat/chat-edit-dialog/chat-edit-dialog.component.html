@@ -1,0 +1,28 @@
+<h1 mat-dialog-title></h1>
+<mat-dialog-content class="mat-typography">
+<form [formGroup]="editChatForm" (ngSubmit)="onNewChatFormSubmit(editChatForm.value)">
+<mat-form-field>
+<input matInput  placeholder="Enter a chat name" formControlName="name">
+</mat-form-field>
+
+<mat-form-field>
+  <mat-chip-list #chipList1 aria-label="Tag selection">
+	<mat-chip *ngFor="let chatTag of editChatForm.value.chatTags" [selectable]="selectable"
+			 [removable]="removable" (removed)="removeNewChatTag(chatTag)">
+	  <!--{{chatTag.name}}-->
+	  {{chatTag}}
+	  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+	</mat-chip>
+	<input placeholder="New tags..."
+		   [matChipInputFor]="chipList1"
+		   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+		   [matChipInputAddOnBlur]="addOnBlur"
+		   (matChipInputTokenEnd)="addNewChatTag($event)"
+		   >
+  </mat-chip-list>
+</mat-form-field>
+  <button mat-button type="submit" [disabled]="!editChatForm.valid || editChatForm.value.chatTags.length===0">Edit</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+ </form> 
+</mat-dialog-content>
+

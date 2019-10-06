@@ -7,9 +7,11 @@
   <span flex></span>
 
   <button mat-button [matMenuTriggerFor]="notificationMenu">
+  
   <mat-icon style="font-size: 25px"  *ngIf="notifications.length==0">notifications</mat-icon>
   <mat-icon style="font-size: 25px"  [matBadge]="notifications.length" matBadgeColor="warn" *ngIf="notifications.length!=0">notifications</mat-icon>
   <mat-icon style="font-size: 25px">expand_more</mat-icon>
+  
   </button>
   
   <button mat-button [matMenuTriggerFor]="appMenu">
@@ -25,10 +27,10 @@
   </mat-menu>
   
   <mat-menu #notificationMenu="matMenu">
-  <div *ngIf="notifications.length>0">
-  <button mat-menu-item *ngFor="let notification of notifications">{{notification.message}}</button>
-  <button mat-menu-item (click)="notifications.length=0">Clear</button>
-  </div>
+	<mat-list *ngIf="notifications.length>0" (click) = "$event.stopPropagation()">
+		<mat-list-item *ngFor="let notification of notifications">{{notification.message}}</mat-list-item>
+		<mat-list-item><button mat-menu-item (click)="notifications.length=0">Clear</button> </mat-list-item>
+	</mat-list>
   </mat-menu>
   
 </mat-toolbar>
@@ -47,7 +49,7 @@
       <mat-nav-list class="messages">
         <mat-list-item routerLink="." *ngFor="let chatRoom of chatRooms; let i = index" (click)="clickChat(i)">
         <img mat-list-avatar [src] class="d-none">
-        <span class="sideNavContent">
+        <span class="ellipsisContent">
         {{chatRoom.name}}
         </span>
         </mat-list-item>
@@ -89,22 +91,33 @@
 				 *ngIf="show()">
 				 
 	<mat-toolbar>
-	{{chatRooms[currentChatIndex]['name']}}
+	<span class="ellipsisContent" title="{{chatRooms[currentChatIndex]['name']}}"> {{chatRooms[currentChatIndex]['name']}} </span>
 	<span class="example-spacer"></span>
 	<span flex></span>
+	
 	<div>
-	<button mat-button (click)="delete()" title="Delete" *ngIf="chatRooms[currentChatIndex]['createdBy']==userName()"><mat-icon>delete</mat-icon></button>
-	<button mat-button (click)="leave()" title="Leave"><mat-icon>exit_to_app</mat-icon></button>
+	<button mat-button [matMenuTriggerFor]="chatMenu">
+	<mat-icon>more_vert</mat-icon>
+	</button>
+
+	<mat-menu #chatMenu="matMenu">
+	<button mat-menu-item (click)="leave()" title="Leave"><mat-icon>exit_to_app</mat-icon>Leave</button>
+	<button mat-menu-item (click)="edit()" title="Edit"> <mat-icon>edit</mat-icon>Edit</button>
+	<button mat-menu-item (click)="delete()" title="Delete" *ngIf="chatRooms[currentChatIndex]['createdBy']==userName()"><mat-icon>delete</mat-icon>Delete</button>
+  	</mat-menu>
+	
 	<button mat-button (click)="rnav.close()" title="Close"><mat-icon>close</mat-icon></button>
 	</div>
 	</mat-toolbar>
 		
-	<mat-toolbar>
-	Tags:&nbsp;
-		<mat-chip-list>
-		  <mat-chip *ngFor="let chatTag of chatRooms[currentChatIndex]['chatTags']">{{chatTag}}</mat-chip>
-		</mat-chip-list>
-	</mat-toolbar>
+	<mat-card>
+		Tags:&nbsp;
+		<div fxFlex>
+			<mat-chip-list>
+			  <mat-chip *ngFor="let chatTag of chatRooms[currentChatIndex]['chatTags']">{{chatTag}}</mat-chip>
+			</mat-chip-list>
+		</div>
+	</mat-card>
 	  <mat-tab-group mat-stretch-tabs>
 	  <mat-tab>
 		<ng-template mat-tab-label >
@@ -116,7 +129,7 @@
 		<mat-nav-list  *ngIf="show('members')">
 			<mat-list-item routerLink="." *ngFor="let member of chatRooms[currentChatIndex]['members']">
 			<img mat-list-avatar [src] class="d-none">
-			<span class="">
+			<span class="ellipsisContent">
 			{{member}} 
 			</span>
 			
@@ -141,7 +154,7 @@
 		<mat-nav-list>
 			<mat-list-item routerLink="." *ngFor="let pendingUser of chatRooms[currentChatIndex]['pendingUsers']">
 			<img mat-list-avatar [src] class="d-none">
-			<span class="">
+			<span class="ellipsisContent">
 			{{pendingUser}}
 			</span>
 			
@@ -169,7 +182,7 @@
 		<mat-nav-list>
 			<mat-list-item routerLink="." *ngFor="let blockedUser of chatRooms[currentChatIndex]['blockedUsers']">
 			<img mat-list-avatar [src] class="d-none">
-			<span class="">
+			<span class="ellipsisContent">
 			{{blockedUser}}
 			</span>
 			

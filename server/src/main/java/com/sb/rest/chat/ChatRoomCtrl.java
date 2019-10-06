@@ -86,19 +86,33 @@ public class ChatRoomCtrl {
     @PutMapping("/{id}")
     public ResponseEntity<ChatRoom> update(@PathVariable Long id, @Valid @RequestBody ChatRoomDto chatRoomDto) {
 
-    	/*if(Doubles.tryParse(chatRoomDto.getNumber())==null){
-        	return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
-    	}*/
-    	
+		User me = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	
         if (!chatRoomDao.findById(id).isPresent()) {
             //log.error("Id " + id + " is not existed");
             ResponseEntity.badRequest().build();
         }
-
+        
     	ChatRoom obj =  chatRoomDao.findById(id).get();
-    	
+
+        if(!me.getUsername().equals(obj.getCreatedBy())){
+        	return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        
     	obj.setName(chatRoomDto.getName());
+    	obj.setChatTags(chatRoomDto.getChatTags());
 		
+	    ChatMessage message = new ChatMessage();
+	    message.setType(MessageType.EDIT);
+	    message.setUser(me.getUsername());
+	    message.setRoomId(obj.getId());
+	    message.setMessage("Chatroom '"+obj.getName()+"' have been edited.");
+	    obj.setPendingUsers(null);
+	    obj.setBlockedUsers(null);
+	    message.setChatRoom(obj);
+	    
+    	this.simpMessagingTemplate.convertAndSend("/chat/"+obj.getId(), message);
+    	
         return ResponseEntity.ok(chatRoomDao.save(obj));
 
     }

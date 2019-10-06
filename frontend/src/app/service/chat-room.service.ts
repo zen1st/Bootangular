@@ -37,10 +37,11 @@ export class ChatRoomService {
 	}
 	
 	put(id:number, body:any) {
-		return this.apiService.put(this.config.chat_rooms_url+"/"+id, body).map(entity => {this.currentEntity = entity;
+		return this.apiService.put(this.config.chat_rooms_url+"/"+id, body).map(entity => {
+			/*this.currentEntity = entity;
 			let index = this.entities.findIndex(x => x.id == id);
 			this.entities[index] = this.currentEntity;
-			this.subject.next(this.entities)
+			this.subject.next(this.entities);*/
 		});
 	}
 

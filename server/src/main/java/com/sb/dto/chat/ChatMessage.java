@@ -6,7 +6,7 @@ import com.sb.pojo.chat.ChatRoom;
 public class ChatMessage {
 	
 	public enum MessageType {
-		REQUEST, ACCEPT, BLOCK, CHAT, JOIN, LEAVE, DELETE
+		REQUEST, ACCEPT, BLOCK, CHAT, JOIN, LEAVE, EDIT, DELETE
 	}
 
 	private String user;

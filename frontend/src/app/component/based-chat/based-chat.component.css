@@ -67,8 +67,9 @@ h1.example-app-name {
 		width: 30%;
 	}	
 }
-.sideNavContent {
-  max-width: 280px;
+
+.ellipsisContent {
+  /*max-width: 280px;*/
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
