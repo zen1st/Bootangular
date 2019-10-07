@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router'
-
+import {Location} from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ export class TestTableModalContainerComponent implements OnInit, OnDestroy {
   currentDialog: MatDialogRef<any> = null;
   destroy$ = new Subject<any>();
 
-  constructor(matDialog: MatDialog, route: ActivatedRoute, router: Router) {
+  constructor(matDialog: MatDialog, route: ActivatedRoute, router: Router, private location:Location) {
     route.params.pipe(takeUntil(this.destroy$))
       .subscribe(params => {
         if (this.currentDialog) {
@@ -38,8 +38,7 @@ export class TestTableModalContainerComponent implements OnInit, OnDestroy {
 		
         this.currentDialog.afterClosed().subscribe(result => {
           console.log('dialog closed');
-          //router.navigate(['.', {outlets: {modal: null}}], {relativeTo: route.parent});
-		  router.navigate(['./'], { relativeTo: route.parent });
+		  this.location.back();
         })
       }, () => {}, () => {
           if (this.currentDialog) {

@@ -86,7 +86,9 @@ import {
   FooService,
   BlogService,
   TestEntityService,
-  ChatRoomService
+  ChatRoomService,
+  LeftSideNavService,
+  RightSideNavService
 } from './service';
 import { ChatMessagesComponent } from './component/based-chat/chat-messages/chat-messages.component';
 import { ScrollableDirective } from './directive/scrollable.directive';
@@ -179,6 +181,8 @@ export function initUserFactory(userService: UserService) {
 	BlogService,
 	TestEntityService,
 	ChatRoomService,
+	LeftSideNavService,
+	RightSideNavService,
     MatIconRegistry,
     {
       'provide': APP_INITIALIZER,

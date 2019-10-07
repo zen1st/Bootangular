@@ -6,3 +6,5 @@ export * from './user.service';
 export * from './test-entity.service';
 export * from './blog.service';
 export * from './chat-room.service';
+export * from './left-side-nav.service';
+export * from './right-side-nav.service';

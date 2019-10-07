@@ -1,5 +1,0 @@
-<app-landing-nav *ngIf="!lG.canLoad()"></app-landing-nav>
-
-<app-logged-in-nav *ngIf="lG.canLoad() && (r.url=='/' || chatPatt.test(r.url) || adminPatt.test(r.url))"></app-logged-in-nav>
-<app-article-nav *ngIf="lG.canLoad() && articlePatt.test(r.url)"></app-article-nav>
-<!--<app-chat-nav *ngIf="lG.canLoad() && chatPatt.test(r.url)"></app-chat-nav>-->

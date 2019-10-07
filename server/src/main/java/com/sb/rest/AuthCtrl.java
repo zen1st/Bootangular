@@ -263,6 +263,7 @@ public class AuthCtrl {
     }
 
     // change user password
+    /*
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     @ResponseBody
     public GenericResponse changeUserPassword(final Locale locale, @Valid @RequestBody PasswordDto passwordDto) {
@@ -273,6 +274,7 @@ public class AuthCtrl {
         userService.changeUserPassword(user, passwordDto.getPassword());
         return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
     }
+    */
     
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     @PreAuthorize("hasRole('USER')")
@@ -337,13 +339,13 @@ public class AuthCtrl {
     
     private SimpleMailMessage constructResendVerificationTokenEmail(final String contextPath, final Locale locale, final VerificationToken newToken, final User user) {
         final String confirmationUrl = contextPath + "/api/auth/verifyEmail?token=" + newToken.getToken();
-        final String message = messages.getMessage("message.resendToken", null, locale);
+        final String message = messages.getMessage("message.resendToken" , null, locale)+". Please follow this link: ";
         return constructEmail("Resend Registration Token", message + " \r\n" + confirmationUrl, user);
     }
 
     private SimpleMailMessage constructResetTokenEmail(final String contextPath, final Locale locale, final String token, final User user) {
         final String url = contextPath + "/resetPassword?id=" + user.getId() + "&token=" + token;
-        final String message = messages.getMessage("message.resetPassword", null, locale);
+        final String message = messages.getMessage("message.resetPassword", null, locale) +  ". Please follow this link: ";
         return constructEmail("Reset Password", message + " \r\n" + url, user);
     }
 

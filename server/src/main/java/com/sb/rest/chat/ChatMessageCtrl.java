@@ -26,8 +26,6 @@ public class ChatMessageCtrl {
 
 	  @Autowired
       private ChatRoomDao chatRoomDao;
-	
-	  //new SimpleDateFormat("HH:mm:ss").format(new Date())
 		
 	  @MessageMapping("/chat/sendMessage/{roomId}")
 	  public void sendMessage(@DestinationVariable Long roomId, @Payload ChatMessage chatMessage) {

@@ -3,6 +3,7 @@ package com.sb.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,8 +31,9 @@ public class BlogCtrl {
     @Autowired
     AuthorityRepository authRepo;
 
-    // Get All Articles
+    // Get all articles
     @GetMapping("/blogs")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Blog> getAllArticle() {
         return blogRepository.findAll();
     }
@@ -42,7 +44,7 @@ public class BlogCtrl {
         return blogRepository.save(blog);
     }
     
-    // Get a Single article
+    // Get a single article
     @GetMapping("/blogs/{id}")
     public ResponseEntity<BlogDto> getArticleById(HttpServletRequest request,@PathVariable(value = "id") Long articleId) {
     	Blog blog = blogRepository.getOne(articleId);

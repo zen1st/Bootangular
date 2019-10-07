@@ -21,18 +21,16 @@ export class AppComponent implements OnInit{
 		this.router.events.subscribe((event: Event) => {
 			//console.log(event);
 			if (event instanceof NavigationEnd ) {
-				
-				//this.currentUrl=event.url;
 				this.currentUrl = 0;
 				this.noNavFlg = false;
 				
 				if(event.urlAfterRedirects=="/404" || 
 					event.urlAfterRedirects=="/403" || 
-					event.urlAfterRedirects=="/resetPassword" || 
+					event.urlAfterRedirects.includes("/resetPassword") || 
 					event.urlAfterRedirects=="/change-password" || 
 					event.urlAfterRedirects.includes("/badToken") ||
-					event.urlAfterRedirects.includes("/admin")||
-					event.urlAfterRedirects.includes("/chats")){
+					event.urlAfterRedirects.includes("/admin")){
+
 					this.noNavFlg = true;
 				}
 				else if(event.urlAfterRedirects=="/"){
@@ -42,10 +40,10 @@ export class AppComponent implements OnInit{
 					event.urlAfterRedirects.includes("/testTable")){
 					this.currentUrl = 2;
 				}
-				/*
 				else if(event.urlAfterRedirects.includes("/chats")){
 					this.currentUrl = 3;
-				}*/
+					
+				}
 				
 				//console.log(event.urlAfterRedirects);
 				//console.log(this.noNavFlg);

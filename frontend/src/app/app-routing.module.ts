@@ -8,6 +8,7 @@ import {
 } from './guard';
 import {
   //AppComponent,
+  RouterOutletComponent,
   HomeComponent,
   LoginComponent,
   SignupComponent,
@@ -33,8 +34,8 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    pathMatch: 'full'
-	/*
+	/*pathMatch:'full'
+	
 	,children: [
       { path: '', component: LoginComponent, canActivate: [GuestGuard] },
       { path: 'signup', component: SignupComponent, canActivate: [GuestGuard] },
@@ -95,10 +96,9 @@ export const routes: Routes = [
   },
   {
     path: 'chats',
-    component: BasedChatComponent,
-	canActivate: [LoginGuard],
+	component: RouterOutletComponent,
 	children: [
-		{ path: ':action', component: NewChatModalContainerComponent }
+		{ path: ':action', component: NewChatModalContainerComponent}
     ]
   },
   {

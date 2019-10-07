@@ -158,7 +158,6 @@ public class ChatRoomCtrl {
     }*/
     
     @PostMapping("/search")
-    @PreAuthorize("hasRole('USER')")
     ResponseEntity<List<ChatRoomDto>> search(@RequestBody ChatRoomDto chatRoomDto ) { 
 
   	  User me = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -194,7 +193,6 @@ public class ChatRoomCtrl {
     }
     
     @RequestMapping("/mine")
-    @PreAuthorize("hasRole('USER')")
     public List<ChatRoomDto> myChatRoom() {
 
   	  User me = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

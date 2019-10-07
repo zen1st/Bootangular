@@ -1,0 +1,27 @@
+<mat-list appScrollable class="chat-list" #scrollMe (scroll)="onScroll()">
+  <mat-list-item appOffsetTop *ngFor='let chatMessage of data; let index = index'
+  [ngClass]="[(chatMessage.type === 'CHAT' && chatMessage.user === userService.currentUser.username)? 'chat-list-item': '']">
+  
+	<div *ngIf="chatMessage.type==='CHAT'">
+	<!--<img mat-list-avatar>-->
+	<h4 mat-line >
+	  <b>{{chatMessage.user}}</b>
+	</h4>
+	<p mat-line>
+	  <span>{{chatMessage.message}}</span>
+	</p>
+	</div>
+	
+	<p mat-line *ngIf="chatMessage.type==='ACCEPT'" class="chat-notification">
+	  <span> <b>{{chatMessage.user}}</b> joined the conversation. </span>
+	</p>
+	
+	<p mat-line *ngIf="chatMessage.type==='BLOCK' || chatMessage.type==='LEAVE'" class="chat-notification">
+	  <span> <b>{{chatMessage.user}}</b> left the conversation. </span>
+	</p>
+	
+	<p mat-line *ngIf="chatMessage.type==='EDIT'" class="chat-notification">
+	  <span> <b>{{chatMessage.user}}</b> edited the conversation. </span>
+	</p>
+  </mat-list-item>
+</mat-list>

@@ -1,8 +1,0 @@
-<div class="content container">
-<h1 class="alert alert-danger">Error : {{message}}</h1>
-<button class="btn btn-primary" [routerLink]="['/']" *ngIf="expired=='false'">Please signup here.</button>
-<button class="btn btn-primary" (click)="onClick()" *ngIf="expired=='true'" [disabled]="submitted">Resend my token.</button>
-<mat-spinner *ngIf="submitted" mode="indeterminate" diameter="30" style="display:inline-block"></mat-spinner>
-
-<p [class]="notification.msgType" *ngIf="notification.msgBody!==undefined" [innerHTML]="notification.msgBody | keepHtml"></p>
-</div>
