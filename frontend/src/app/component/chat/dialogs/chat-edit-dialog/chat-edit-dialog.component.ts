@@ -4,7 +4,7 @@ import {MatDialogRef, MatDialog, MAT_DIALOG_DATA} from '@angular/material';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ChatRoomService } from 'app/service';
-import {ChatConfirmDialogComponent} from 'app/component/based-chat/chat-confirm-dialog/';
+import {ChatConfirmDialogComponent} from 'app/component/chat/dialogs/chat-confirm-dialog/';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 interface ChatTag {

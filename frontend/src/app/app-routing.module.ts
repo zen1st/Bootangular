@@ -26,16 +26,17 @@ import {
   TestTableModalComponent,
   CleanBlogContentComponent,
   ChatContentComponent,
-  BasedChatComponent,
+  //BasedChatComponent,
   NewChatModalContainerComponent,
 } from './component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
-	/*pathMatch:'full'
-	
+	//component: HomeComponent,
+	redirectTo:'chats',
+	pathMatch:'full'
+	/*
 	,children: [
       { path: '', component: LoginComponent, canActivate: [GuestGuard] },
       { path: 'signup', component: SignupComponent, canActivate: [GuestGuard] },

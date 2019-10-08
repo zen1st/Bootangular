@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Title }     from '@angular/platform-browser';
 import {MediaMatcher} from '@angular/cdk/layout';
 import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, NavigationError, ActivationStart, RouterOutlet} from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -43,6 +44,7 @@ export class ChatComponent implements OnInit {
 
 	constructor(changeDetectorRef: ChangeDetectorRef, 
 		media: MediaMatcher, 
+		private titleService: Title,
 		private router : Router,
 		private activatedRoute: ActivatedRoute, 
 		private userService : UserService,
@@ -84,6 +86,7 @@ export class ChatComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.titleService.setTitle('Based Chat');
 		
 		this.leftSideNavService.sideNavToggleSubject.subscribe(()=> {
 			this.lnav.toggle();

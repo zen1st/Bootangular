@@ -70,7 +70,7 @@ import {
 	ChatContentComponent,
 	ChatFooterComponent,
 	
-	BasedChatComponent,
+	//BasedChatComponent,
 	NewChatModalContainerComponent,
 	NewChatModalComponent,
 	ChatConfirmDialogComponent,
@@ -138,7 +138,7 @@ export function initUserFactory(userService: UserService) {
     TestTableComponent,
     TestTableModalContainerComponent,
     TestTableModalComponent,
-    BasedChatComponent,
+    //BasedChatComponent,
     NewChatModalContainerComponent,
     NewChatModalComponent,
     ChatMessagesComponent,
