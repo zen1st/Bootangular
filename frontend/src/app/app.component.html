@@ -1,7 +1,7 @@
 <div *ngIf="!noNavFlg" style="height:100%;">
 <app-new-age *ngIf="!loggedIn()"></app-new-age>
-<app-stylish-portfolio *ngIf="loggedIn() && currentUrl==1"></app-stylish-portfolio>
+<!--<app-stylish-portfolio *ngIf="loggedIn() && currentUrl==1"></app-stylish-portfolio>-->
 <app-clean-blog *ngIf="loggedIn() && currentUrl==2"></app-clean-blog>
-<app-chat *ngIf="loggedIn() && currentUrl==3"></app-chat>
+<app-chat *ngIf="loggedIn() && (currentUrl==3 ||  currentUrl==1)"></app-chat>
 </div>
 <app-router-outlet *ngIf="noNavFlg"></app-router-outlet>

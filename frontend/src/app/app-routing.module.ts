@@ -33,8 +33,8 @@ import {
 export const routes: Routes = [
   {
     path: '',
-	//component: HomeComponent,
-	redirectTo:'chats',
+	component: HomeComponent,
+	//redirectTo:'chats',
 	pathMatch:'full'
 	/*
 	,children: [
@@ -84,7 +84,8 @@ export const routes: Routes = [
   },
   {
     path: 'blogs',
-    component: CleanBlogContentComponent
+    component: CleanBlogContentComponent,
+	canActivate: [LoginGuard]
   },
   {
     path: 'blogs/:action',
@@ -93,11 +94,13 @@ export const routes: Routes = [
   },
   {
     path: 'blogs/:action/:id',
-    component: CleanBlogContentComponent
+    component: CleanBlogContentComponent,
+	canActivate: [LoginGuard]
   },
   {
     path: 'chats',
 	component: RouterOutletComponent,
+	canActivate: [LoginGuard],
 	children: [
 		{ path: ':action', component: NewChatModalContainerComponent}
     ]

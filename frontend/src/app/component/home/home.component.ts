@@ -16,6 +16,11 @@ export class HomeComponent implements OnInit {
   constructor(private titleService: Title,private lG: LoginGuard) { }
   ngOnInit() {
 	this.titleService.setTitle("Home");
+	
+	if(this.lG.canLoad()){
+		//this
+	}
+	
   }
 }
 
