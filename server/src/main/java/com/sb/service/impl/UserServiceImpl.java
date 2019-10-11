@@ -1,8 +1,10 @@
 package com.sb.service.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,7 +65,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public User registerNewUserAccount(final UserDto accountDto) {
 	  
-	  
       if (emailExists(accountDto.getEmail())) {
           throw new UserAlreadyExistException("There is an account with that email adress: " + accountDto.getEmail());
       }
@@ -73,20 +74,38 @@ public class UserServiceImpl implements UserService {
           throw new UserAlreadyExistException("There is an account with that username: " + accountDto.getUsername());
       }
       
-      
       final User user = new User();
 
-      user.setUsername(accountDto.getUsername());
-      //user.setFirstName(accountDto.getFirstname());
-     //user.setLastName(accountDto.getLastname());
-      user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
+	  if(accountDto.getUsername().equals("admin")){
+		  	user.setUsername(accountDto.getUsername());
+	    	
+	    	Authority adminAuthority = new Authority();
+	    	adminAuthority.setName("ROLE_ADMIN");
+
+	    	Authority userAuthority = new Authority();
+	    	userAuthority.setName("ROLE_USER");
+	    	
+	    	Collection<Authority> authorities = new ArrayList<Authority>();
+	    	authorities.add(roleRepository.save(adminAuthority));
+	    	authorities.add(roleRepository.save(userAuthority));
+
+		    user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
+		    user.setEmail(accountDto.getEmail());
+	    	user.setAuthorities(authorities);
+	  }
+	  else
+	  {
+	      user.setUsername(accountDto.getUsername());
+	      //user.setFirstName(accountDto.getFirstname());
+	     //user.setLastName(accountDto.getLastname());
+	      user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
+	      //comment this out for email verification
+	      //user.setEnabled(true);
+	      user.setEmail(accountDto.getEmail());
+	      //user.setUsing2FA(accountDto.isUsing2FA());
+	      user.setAuthorities(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+	  }
       
-      //comment this out for email verification
-      //user.setEnabled(true);
-      
-      user.setEmail(accountDto.getEmail());
-      //user.setUsing2FA(accountDto.isUsing2FA());
-      user.setAuthorities(Arrays.asList(roleRepository.findByName("ROLE_USER")));
       return userRepository.save(user);
   }
   

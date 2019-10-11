@@ -27,6 +27,7 @@ import static java.util.Objects.nonNull;
 
 @Component
 public class DeviceService {
+	/*
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final String UNKNOWN = "UNKNOWN";
@@ -159,5 +160,5 @@ public class DeviceService {
 
         mailSender.send(notification);
     }
-
+    */
 }

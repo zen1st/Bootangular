@@ -1,4 +1,4 @@
-package com.sb.validation;
+package com.sb.exception;
 
 @SuppressWarnings("serial")
 public class EmailExistsException extends Throwable {

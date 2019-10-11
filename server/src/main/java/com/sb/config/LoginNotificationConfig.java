@@ -12,6 +12,7 @@ import java.io.IOException;
 @Configuration
 public class LoginNotificationConfig {
 
+	/*
     @Bean
     public Parser uaParser() throws IOException {
         return new Parser();
@@ -23,5 +24,5 @@ public class LoginNotificationConfig {
         		.getFile("classpath:maxmind/GeoLite2-City.mmdb");
         return new DatabaseReader.Builder(database)
                 .build();
-    }
+    }*/
 }

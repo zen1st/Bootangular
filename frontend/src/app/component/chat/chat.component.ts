@@ -36,7 +36,7 @@ export class ChatComponent implements OnInit {
 	private currentChatIndex = 0;
     subscription: Subscription;
 	
-	private serverUrl = 'http://localhost:8080/api/websocket'
+	private serverUrl = 'http://basedchat-env-1.bjw86amm2m.us-east-1.elasticbeanstalk.com/api/websocket'
 	private ws;
 	private stompClient;
 	chatSubscriptions: any[] = [];

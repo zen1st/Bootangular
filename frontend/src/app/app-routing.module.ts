@@ -76,7 +76,7 @@ export const routes: Routes = [
   {
     path: 'testTable',
     component: TestTableComponent,
-	canActivate: [LoginGuard],
+	canActivate: [AdminGuard],
 	children: [
 		{ path: ':action', component: TestTableModalContainerComponent},
 		{ path: ':action/:id', component: TestTableModalContainerComponent}

@@ -28,6 +28,7 @@ export class AppComponent implements OnInit{
 					event.urlAfterRedirects=="/403" || 
 					event.urlAfterRedirects.includes("/resetPassword") || 
 					event.urlAfterRedirects=="/change-password" || 
+					event.urlAfterRedirects=="/authtest" || 
 					event.urlAfterRedirects.includes("/badToken") ||
 					event.urlAfterRedirects.includes("/admin")){
 

@@ -6,7 +6,7 @@ export class ConfigService {
 
   private _api_url = '/api'
   
-  private _foo_url = this._api_url + '/foo';
+  private _foo_url = this._api_url + '/test/1';
 
   private _auth_url = this._api_url + '/auth';
 

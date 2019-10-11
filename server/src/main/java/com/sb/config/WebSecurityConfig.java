@@ -90,6 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			  "/api/auth/login", 
 			  "/api/auth/signup", 
 			  "/api/auth/sendResetPasswordEmail",
+			  "/api/test/*",
 			  "/api/scrap/*"
 			  )
       .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
@@ -103,6 +104,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       		"/api/auth/refreshAuthToken",
       		"/api/auth/sendResetPasswordEmail",
       		"/api/auth/resetPassword",
+      		"/api/test/*",
       		"/api/scrap/**"
       		).permitAll()
       .antMatchers("/api/**").authenticated()

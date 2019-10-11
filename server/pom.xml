@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.sb</groupId>
-	<artifactId>angular-spring-starter</artifactId>
+	<artifactId>angular-spring</artifactId>
 	<version>0.1.1</version>
 	<packaging>jar</packaging>
 
-	<name>angular-spring-starter</name>
-	<description>The backend server for Angular 7 Spring Boot JWT Starter</description>
+	<name>angular-spring</name>
+	<description>The backend server for Bootangular</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -187,6 +187,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
