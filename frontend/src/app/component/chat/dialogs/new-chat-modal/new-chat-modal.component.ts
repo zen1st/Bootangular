@@ -5,7 +5,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { ChatRoomService } from 'app/service';
-import {ChatConfirmDialogComponent} from 'app/component/based-chat/chat-confirm-dialog/';
+import {ChatConfirmDialogComponent} from 'app/component/chat/dialogs/chat-confirm-dialog';
 
 export interface ChatTag {
     name: string;

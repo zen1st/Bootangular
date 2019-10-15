@@ -68,6 +68,7 @@ import {
 	ChatComponent,
 	ChatNavComponent,
 	ChatContentComponent,
+	ChatMessagesComponent,
 	ChatFooterComponent,
 	
 	//BasedChatComponent,
@@ -90,7 +91,7 @@ import {
   LeftSideNavService,
   RightSideNavService
 } from './service';
-import { ChatMessagesComponent } from './component/based-chat/chat-messages/chat-messages.component';
+import {CookieService} from 'ngx-cookie-service';
 import { ScrollableDirective } from './directive/scrollable.directive';
 import { OffsetTopDirective } from './directive/offset-top.directive';
 
@@ -183,6 +184,7 @@ export function initUserFactory(userService: UserService) {
 	ChatRoomService,
 	LeftSideNavService,
 	RightSideNavService,
+	CookieService,
     MatIconRegistry,
     {
       'provide': APP_INITIALIZER,

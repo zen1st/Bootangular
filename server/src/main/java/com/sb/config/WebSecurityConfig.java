@@ -20,7 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.sb.security.auth.AuthenticationFailureHandler;
 import com.sb.security.auth.AuthenticationSuccessHandler;
@@ -91,6 +93,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			  "/api/auth/signup", 
 			  "/api/auth/sendResetPasswordEmail",
 			  "/api/test/*",
+	      		"/api/websocket/**",
+			  "/api/websocket/info*",
 			  "/api/scrap/*"
 			  )
       .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
@@ -105,6 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       		"/api/auth/sendResetPasswordEmail",
       		"/api/auth/resetPassword",
       		"/api/test/*",
+      		"/api/websocket/**",
       		"/api/scrap/**"
       		).permitAll()
       .antMatchers("/api/**").authenticated()
@@ -113,16 +118,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
       .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
       .logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE);
-	    
+	  
 	  http.rememberMe()
 	  .rememberMeParameter("rememberMe")
 	  .rememberMeCookieName("remember-me")
 	  .tokenRepository(persistentTokenRepository)
 	  .userDetailsService(jwtUserDetailsService);
 
-    //unables h2 db ui
-    http.headers().frameOptions().sameOrigin();
+	  //unables h2 db ui
+	  //http.headers().frameOptions().sameOrigin();
 
+      //Fixes Access to XMLHttpRequest at 'http://basedchat-env-1.bjw86amm2m.us-east-1.elasticbeanstalk.com/api/websocket/info?t=1571010693774' from origin 'http://www.basedchat.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+	  http.cors();
   }
 	
   @Bean

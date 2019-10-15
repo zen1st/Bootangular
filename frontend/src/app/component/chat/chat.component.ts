@@ -11,6 +11,7 @@ import {
   LeftSideNavService,
   RightSideNavService
 } from 'app/service';
+import {CookieService} from 'ngx-cookie-service';
 import { MatDialog } from '@angular/material';
 import { ChatConfirmDialogComponent, ChatEditDialogComponent } from 'app/component/chat/dialogs'
 
@@ -36,21 +37,23 @@ export class ChatComponent implements OnInit {
 	private currentChatIndex = 0;
     subscription: Subscription;
 	
-	private serverUrl = 'http://basedchat-env-1.bjw86amm2m.us-east-1.elasticbeanstalk.com/api/websocket'
+	//private serverUrl = 'http://basedchat-env-1.bjw86amm2m.us-east-1.elasticbeanstalk.com/api/websocket'
+	private serverUrl = 'http://localhost:8080/api/websocket'
 	private ws;
 	private stompClient;
 	chatSubscriptions: any[] = [];
 	notifications : any[] = [];
 
-	constructor(changeDetectorRef: ChangeDetectorRef, 
-		media: MediaMatcher, 
-		private titleService: Title,
+	constructor(changeDetectorRef : ChangeDetectorRef, 
+		media : MediaMatcher, 
+		private titleService : Title,
 		private router : Router,
-		private activatedRoute: ActivatedRoute, 
+		private activatedRoute : ActivatedRoute, 
 		private userService : UserService,
 		private chatRoomService : ChatRoomService,
-		private leftSideNavService: LeftSideNavService,
-		private rightSideNavService: RightSideNavService,
+		private leftSideNavService : LeftSideNavService,
+		private rightSideNavService : RightSideNavService,
+		private cookieService : CookieService,
 		public dialog: MatDialog) {
 		
 		this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -86,6 +89,7 @@ export class ChatComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		
 		this.titleService.setTitle('Based Chat');
 		
 		this.leftSideNavService.sideNavToggleSubject.subscribe(()=> {
@@ -95,6 +99,8 @@ export class ChatComponent implements OnInit {
 		this.rightSideNavService.sideNavToggleSubject.subscribe(()=> {
 			this.rnav.toggle();
 		});
+		//console.log(document.cookie);
+		//console.log(this.cookieService.getAll());
 	}
   
 	ngOnDestroy(): void {
@@ -133,7 +139,7 @@ export class ChatComponent implements OnInit {
 	initializeWebSocketConnection(){
 		let ws = new SockJS(this.serverUrl);
 		this.stompClient = Stomp.over(ws);
-		
+		console.log(this.cookieService.getAll());
 		let that = this;
 		this.stompClient.connect({}, function(frame) {
 			let url = "/notification/" + that.userName();

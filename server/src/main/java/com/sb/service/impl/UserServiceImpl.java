@@ -1,6 +1,10 @@
 package com.sb.service.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -74,27 +78,31 @@ public class UserServiceImpl implements UserService {
           throw new UserAlreadyExistException("There is an account with that username: " + accountDto.getUsername());
       }
       
-      final User user = new User();
-
-	  if(accountDto.getUsername().equals("admin")){
-		  	user.setUsername(accountDto.getUsername());
-	    	
-	    	Authority adminAuthority = new Authority();
-	    	adminAuthority.setName("ROLE_ADMIN");
-
-	    	Authority userAuthority = new Authority();
-	    	userAuthority.setName("ROLE_USER");
-	    	
-	    	Collection<Authority> authorities = new ArrayList<Authority>();
-	    	authorities.add(roleRepository.save(adminAuthority));
-	    	authorities.add(roleRepository.save(userAuthority));
-
+      User user = new User();
+      
+	  if(accountDto.getUsername().trim().equalsIgnoreCase("admin")){
+		  	//System.out.println("one");
+		  	
+		    user.setUsername(accountDto.getUsername());
 		    user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
 		    user.setEmail(accountDto.getEmail());
+		    user.setEnabled(true);
+		    user.setDisabled(false);
+		    
+		    Authority userAuthority = new Authority();
+		    userAuthority.setName("ROLE_USER");
+		    Authority adminAuthority = new Authority();
+		    adminAuthority.setName("ROLE_ADMIN");
+		    
+	    	Collection<Authority> authorities = new ArrayList<Authority>();
+	    	authorities.add(roleRepository.save(userAuthority));
+	    	authorities.add(roleRepository.save(adminAuthority));
 	    	user.setAuthorities(authorities);
+		  
 	  }
-	  else
-	  {
+	  else if(!accountDto.getUsername().trim().equalsIgnoreCase("admin")){
+		  //System.out.println("two");
+		  
 	      user.setUsername(accountDto.getUsername());
 	      //user.setFirstName(accountDto.getFirstname());
 	     //user.setLastName(accountDto.getLastname());
