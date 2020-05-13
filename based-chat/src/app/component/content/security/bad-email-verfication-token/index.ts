@@ -1,0 +1,1 @@
+export * from './bad-email-verfication-token.component';

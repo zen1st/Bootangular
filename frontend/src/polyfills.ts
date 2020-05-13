@@ -71,3 +71,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * MATERIAL 2
  */
 import 'hammerjs/hammer';
+
+//Fixes “Uncaught ReferenceError: global is not defined”
+(window as any).global = window;

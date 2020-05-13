@@ -1,0 +1,35 @@
+<mat-toolbar color="primary" class="example-toolbar">
+  <button mat-icon-button (click)="toggle()"><mat-icon>chat</mat-icon></button>
+	<h1 class="example-app-name">Based Chat</h1>
+  <span class="example-spacer"></span>
+  
+  <span flex></span>
+
+  <button mat-button [matMenuTriggerFor]="notificationMenu">
+  
+  <mat-icon style="font-size: 25px"  *ngIf="notifications.length==0">notifications</mat-icon>
+  <mat-icon style="font-size: 25px"  [matBadge]="notifications.length" matBadgeColor="warn" *ngIf="notifications.length!=0">notifications</mat-icon>
+  <mat-icon style="font-size: 25px">expand_more</mat-icon>
+  
+  </button>
+  
+  <button mat-button [matMenuTriggerFor]="appMenu">
+  {{userName()}}
+  <mat-icon style="font-size: 25px">person</mat-icon>
+  <mat-icon style="font-size: 25px">expand_more</mat-icon>
+  </button>
+
+  <mat-menu #appMenu="matMenu">
+  <button mat-menu-item [routerLink]="['/admin']" *ngIf="adminGuard.canLoad()">Admin Page</button>
+  <button mat-menu-item [routerLink]="['/change-password']">Change Password</button>
+  <button mat-menu-item (click)="logout()"> Logout</button>
+  </mat-menu>
+
+</mat-toolbar>
+
+  <mat-menu #notificationMenu="matMenu" style="width:430px">
+	<mat-list *ngIf="notifications.length>0" (click) = "$event.stopPropagation()">
+		<mat-list-item *ngFor="let notification of notifications">{{notification.message}}</mat-list-item>
+		<mat-list-item><button mat-menu-item (click)="notifications.length=0">Clear</button> </mat-list-item>
+	</mat-list>
+  </mat-menu>

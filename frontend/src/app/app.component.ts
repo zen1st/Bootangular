@@ -2,7 +2,7 @@ import {Component,OnInit} from '@angular/core';
 import {
   UserService
 } from './service';
-import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, NavigationError} from '@angular/router';
+import { Router, Event, NavigationEnd, NavigationError} from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,33 +15,39 @@ export class AppComponent implements OnInit{
 	private currentUrl : number;
 	
 	constructor(private router: Router,
-	private userService: UserService) { }
-  
-    ngOnInit() {
+		private userService: UserService){ 
+
 		this.router.events.subscribe((event: Event) => {
+			
 			//console.log(event);
+			
 			if (event instanceof NavigationEnd ) {
+				
+				//console.log(event);
+				
 				this.currentUrl = 0;
 				this.noNavFlg = false;
 				
-				if(event.urlAfterRedirects=="/404" || 
-					event.urlAfterRedirects=="/403" || 
-					event.urlAfterRedirects.includes("/resetPassword") || 
-					event.urlAfterRedirects=="/change-password" || 
-					event.urlAfterRedirects=="/authtest" || 
-					event.urlAfterRedirects.includes("/badToken") ||
-					event.urlAfterRedirects.includes("/admin")){
+				let url = router.url;
+				
+				if(url=="/404" || 
+					url=="/403" || 
+					url.includes("/resetPassword") || 
+					url=="/change-password" || 
+					url=="/authtest" || 
+					url.includes("/badToken") ||
+					url.includes("/admin")){
 
 					this.noNavFlg = true;
 				}
-				else if(event.urlAfterRedirects=="/"){
+				else if(url=="/"){
 					this.currentUrl = 1;
 				}
-				else if(event.urlAfterRedirects.includes("/blogs")||
-					event.urlAfterRedirects.includes("/testTable")){
+				else if(url.includes("/blogs")||
+					url.includes("/testTable")){
 					this.currentUrl = 2;
 				}
-				else if(event.urlAfterRedirects.includes("/chats")){
+				else if(url.includes("/chats")){
 					this.currentUrl = 3;
 					
 				}
@@ -51,6 +57,8 @@ export class AppComponent implements OnInit{
 			}
 		});
 	}
+  
+    ngOnInit() {}
 	
   	loggedIn() {
 		return !!this.userService.currentUser;

@@ -1,0 +1,24 @@
+<div class="chat-container">
+<!--<button mat-fab (click)="onClickUserInfo()">-->
+<div class="matFabGroup">
+  <button mat-fab (click)="toggle()" title="Chat Info">
+	<mat-icon>info</mat-icon>
+  </button>
+</div>
+
+<mat-card class="main-card">
+<app-chat-messages [data]="chatRooms[currentChatIndex]['chatMessages']"></app-chat-messages>
+<div class="chat-footer-container">
+  <mat-icon>message</mat-icon>
+  <mat-form-field class="chat-input">
+	<input matInput 
+		   #inputMessage 
+		   placeholder="Type your message" 
+		   (keyup.enter)="sendMessage(inputMessage.value);inputMessage.value=''">              
+	<!--maxlength="140" -->
+	<!--<mat-hint align="end">{{inputMessage.value.length}}/140</mat-hint>-->
+  </mat-form-field>
+</div>
+
+</mat-card>
+</div>

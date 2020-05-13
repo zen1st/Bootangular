@@ -12,7 +12,10 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer{
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/api/websocket")
         		.setAllowedOrigins("*")
-        		//.setAllowedOrigins("http://basedchat.com","http://www.basedchat.com")
+        		/*
+        		.setAllowedOrigins("http://basedchat.com",
+        				"http://www.basedchat.com",
+        				"http://www.basedchat-env-1.bjw86amm2m.us-east-1.elasticbeanstalk.com/api/websocket/info?t=1571010693774")*/
                 .withSockJS();
     }
 
